@@ -1,4 +1,5 @@
 import { parseInquiry } from "./inquiries";
+import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } from "./catalog-pages";
 
 const JSON_HEADERS = {
   "content-type": "application/json; charset=utf-8",
@@ -9,6 +10,17 @@ const MAX_BODY_BYTES = 16_384;
 
 function json(data: unknown, status = 200): Response {
   return Response.json(data, { status, headers: JSON_HEADERS });
+}
+
+function html(markup: string, status = 200): Response {
+  return new Response(markup, {
+    status,
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": status === 200 ? "public, max-age=300" : "no-store",
+      "x-content-type-options": "nosniff",
+    },
+  });
 }
 
 async function readLimitedJson(request: Request): Promise<unknown> {
@@ -84,7 +96,18 @@ async function handleApi(request: Request, env: Env): Promise<Response> {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     try {
-      if (new URL(request.url).pathname.startsWith("/api/")) return await handleApi(request, env);
+      const url = new URL(request.url);
+      if (url.pathname.startsWith("/api/")) return await handleApi(request, env);
+      if (request.method === "GET" && url.pathname === "/sitemap.xml") {
+        return new Response(renderSitemap(url.origin), { headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" } });
+      }
+      if (request.method === "GET" && url.pathname === "/robots.txt") {
+        return new Response(renderRobots(url.origin), { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } });
+      }
+      if (request.method === "GET" && url.pathname.startsWith("/products/")) {
+        const product = findCatalogProduct(decodeURIComponent(url.pathname.slice("/products/".length).replace(/\/$/, "")));
+        return product ? html(renderProductPage(product, url.origin)) : html("<!doctype html><title>Product not found</title><h1>Product not found</h1><p><a href='/#catalog'>Return to the wholesale catalog</a></p>", 404);
+      }
       return env.ASSETS.fetch(request);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unexpected error";

@@ -28,9 +28,9 @@ function usd(value) {
 
 function card(product) {
   const image = safeImage(product.mainImage);
-  return `<article class="product-card" tabindex="0" role="button" aria-label="View ${escapeHtml(product.title)}" data-slug="${escapeHtml(product.slug)}">
+  return `<article class="product-card-wrap"><a class="product-card" href="/products/${encodeURIComponent(product.slug)}" aria-label="View ${escapeHtml(product.title)}" data-slug="${escapeHtml(product.slug)}">
     <div class="image-wrap">
-      ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(product.title)}" loading="lazy" referrerpolicy="no-referrer">` : ""}
+      ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(`${product.title} wholesale product`)}" width="480" height="480" loading="lazy" referrerpolicy="no-referrer">` : ""}
       <span class="view-mark">↗</span>
     </div>
     <div class="card-meta">
@@ -38,7 +38,7 @@ function card(product) {
       <strong>${usd(product.priceUsd)}</strong>
       <p>${product.skus?.length || 0} ${product.skus?.length === 1 ? "variant" : "variants"} · reference price</p>
     </div>
-  </article>`;
+  </a></article>`;
 }
 
 function render(list) {
@@ -97,15 +97,9 @@ function openInquiry(product = null) {
 grid.addEventListener("click", (event) => {
   const element = event.target.closest("[data-slug]");
   const product = products.find((item) => item.slug === element?.dataset.slug);
-  if (product) openProduct(product);
-});
-
-grid.addEventListener("keydown", (event) => {
-  if (event.key !== "Enter" && event.key !== " ") return;
+  if (!product || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
-  const element = event.target.closest("[data-slug]");
-  const product = products.find((item) => item.slug === element?.dataset.slug);
-  if (product) openProduct(product);
+  openProduct(product);
 });
 
 dialogContent.addEventListener("click", (event) => {
@@ -159,6 +153,7 @@ inquiryForm.addEventListener("submit", async (event) => {
 inquiryDialog.addEventListener("close", () => {
   inquirySubmit.hidden = false;
   inquiryForm.querySelectorAll("input, textarea").forEach((field) => { field.disabled = false; });
+  if (location.search.includes("inquiry=")) history.replaceState(null, "", "/#catalog");
 });
 
 async function loadProducts() {
@@ -172,6 +167,9 @@ async function loadProducts() {
     const slug = new URLSearchParams(location.hash.replace(/^#/, "")).get("product");
     const selected = products.find((product) => product.slug === slug);
     if (selected) openProduct(selected);
+    const inquiryId = new URLSearchParams(location.search).get("inquiry");
+    const inquirySelection = products.find((product) => product.id === inquiryId);
+    if (inquiryId) openInquiry(inquirySelection || null);
   } catch (error) {
     status.hidden = false;
     status.textContent = "The catalog is temporarily unavailable.";
