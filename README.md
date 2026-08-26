@@ -9,7 +9,7 @@
 3. Codex 逐项核对商品图与商品标题、SKU 图片与 SKU 名称，然后生成英文名称。
 4. 表内价格视为美元进货成本，展示价按 `成本 × 1.25` 计算并保留两位小数。
 5. 生成公开的 `public/products.json` 并更新网站。
-6. 推送 GitHub 后由 GitHub Actions 部署到 Cloudflare Workers 免费域名。
+6. 推送 GitHub 保存代码，再通过 Wrangler 部署到 Cloudflare Workers 免费域名。
 
 公开网站不包含进货成本、1688 来源链接、购物车、支付或结账。买家只能提交询盘；最终价格、MOQ、包装、物流和交易条款线下确认。
 
@@ -54,14 +54,12 @@ npx wrangler deploy
 
 Wrangler 会返回 `https://desktop-game.<你的子域>.workers.dev` 网站地址。
 
-## GitHub 自动部署
+## 当前线上地址
 
-GitHub Actions 会在 push 到 `main` 后执行测试、类型检查、部署和数据库迁移。仓库设置中需要添加：
+- GitHub：`git@github.com:jayce1005/deskgame.git`
+- Cloudflare：`https://desktop-game.ocbinks.workers.dev`
 
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
-
-Cloudflare API Token 需要 Workers Scripts 和 D1 的编辑权限。
+部署方式与 UOUDIO 日本官网项目一致：先推送 `main` 到 GitHub，再使用已登录的 Wrangler 执行 `npm run deploy`。该命令会先应用 D1 数据库迁移，再部署 Worker 和静态商品目录。
 
 ## 更新下一批商品
 
