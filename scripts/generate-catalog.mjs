@@ -11,7 +11,8 @@ function urls(value, separator = /[\n|]+/) {
 }
 
 function usd(cost) {
-  return Math.round(Number(cost) * 1.25 * 100) / 100;
+  const costCents = Math.round(Number(cost) * 100);
+  return Math.round(costCents * 1.25) / 100;
 }
 
 function slug(title, id) {
