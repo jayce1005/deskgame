@@ -147,7 +147,7 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
         <a class="text-link" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Request a quotation <span>↗</span></a>
       </section>
     </main>
-    <footer><a class="logo footer-logo" href="/"><span class="logo-symbol"><i></i><i></i><i></i></span><span>DESKTOP <b>GAME</b></span></a><p>Wholesale card games and party games.<br>Pricing shown for reference only.</p><span>© 2026 Desktop Game</span></footer>
+    <footer><a class="logo footer-logo" href="/"><span class="logo-symbol"><i></i><i></i><i></i></span><span>DESKTOP <b>GAME</b></span></a><p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p><span>© 2026 Desktop Game</span></footer>
   </body>
 </html>`;
 }

@@ -16,16 +16,16 @@ describe("SEO catalog pages", () => {
     expect(html).toContain(product!.skus[0].name);
   });
 
-  it("publishes the homepage and all 69 product URLs in the sitemap", () => {
+  it("publishes the homepage and all 190 product URLs in the sitemap", () => {
     const sitemap = renderSitemap(origin);
-    expect(sitemap.match(/<url>/g)).toHaveLength(70);
+    expect(sitemap.match(/<url>/g)).toHaveLength(191);
     expect(sitemap).toContain("/products/last-call-english-drinking-card-game");
     expect(renderRobots(origin)).toContain(`Sitemap: ${origin}/sitemap.xml`);
   });
 
   it("includes canonical, social and structured metadata on the catalog page", () => {
     const homepage = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
-    expect(homepage).toContain("Wholesale Card Games &amp; Party Games");
+    expect(homepage).toContain("Wholesale Games, Journals &amp; Gift Products");
     expect(homepage).toContain('<link rel="canonical"');
     expect(homepage).toContain('type="application/ld+json"');
     expect(homepage).toContain("B2B sourcing catalog");
