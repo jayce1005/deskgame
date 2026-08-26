@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const catalog = JSON.parse(readFileSync(new URL("../public/products.json", import.meta.url), "utf8"));
@@ -31,5 +31,20 @@ describe("public catalog", () => {
   it("keeps product IDs and SEO slugs unique", () => {
     expect(new Set(catalog.products.map((product: { id: string }) => product.id)).size).toBe(catalog.products.length);
     expect(new Set(catalog.products.map((product: { slug: string }) => product.slug)).size).toBe(catalog.products.length);
+  });
+
+  it("serves every catalog image from a checked-in local asset", () => {
+    const images = new Set<string>();
+    for (const product of catalog.products) {
+      images.add(product.mainImage);
+      for (const image of product.images) images.add(image);
+      for (const sku of product.skus) images.add(sku.image);
+    }
+    expect(images.size).toBe(1144);
+    for (const image of images) {
+      expect(image).toMatch(/^https:\/\/desktop-game\.ocbinks\.workers\.dev\/images\/catalog\/[a-f0-9]{64}\.(?:jpg|png|webp|gif|avif)$/);
+      const pathname = new URL(image).pathname;
+      expect(existsSync(new URL(`../public${pathname}`, import.meta.url))).toBe(true);
+    }
   });
 });
