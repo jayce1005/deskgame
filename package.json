@@ -1,0 +1,19 @@
+{
+  "name": "desktop-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler d1 migrations apply DB --remote && wrangler deploy",
+    "cf-typegen": "WRANGLER_LOG_PATH=/tmp/desktop-game-wrangler.log wrangler types --include-runtime false --strict-vars false",
+    "check": "npm run cf-typegen && tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "latest",
+    "typescript": "latest",
+    "vitest": "latest",
+    "wrangler": "latest"
+  }
+}
