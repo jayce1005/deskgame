@@ -1,6 +1,8 @@
 import { newCopyById } from "./catalog-copy-20260826.mjs";
+import { incomingCopyById } from "./catalog-copy-20260827.mjs";
 
 export const copyById = {
+  ...incomingCopyById,
   ...newCopyById,
   "69284351488125925": { title: "Last Call English Drinking Card Game for Friends and Family Parties", skus: ["Last Call"] },
   "69284351488125867": { title: "GO WILD Together Couples Scratch-Off Challenge Cards", skus: ["GO WILD Together"] },

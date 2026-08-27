@@ -16,9 +16,9 @@ describe("SEO catalog pages", () => {
     expect(html).toContain(product!.skus[0].name);
   });
 
-  it("publishes the homepage and all 190 product URLs in the sitemap", () => {
+  it("publishes the homepage and all 431 product URLs in the sitemap", () => {
     const sitemap = renderSitemap(origin);
-    expect(sitemap.match(/<url>/g)).toHaveLength(191);
+    expect(sitemap.match(/<url>/g)).toHaveLength(432);
     expect(sitemap).toContain("/products/last-call-english-drinking-card-game");
     expect(renderRobots(origin)).toContain(`Sitemap: ${origin}/sitemap.xml`);
   });

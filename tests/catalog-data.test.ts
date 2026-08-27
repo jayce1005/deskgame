@@ -4,9 +4,9 @@ import { describe, expect, it } from "vitest";
 const catalog = JSON.parse(readFileSync(new URL("../public/products.json", import.meta.url), "utf8"));
 
 describe("public catalog", () => {
-  it("contains all 190 products and 456 SKU rows", () => {
-    expect(catalog.products).toHaveLength(190);
-    expect(catalog.products.flatMap((product: { skus: unknown[] }) => product.skus)).toHaveLength(456);
+  it("contains all 431 products and 756 SKU rows", () => {
+    expect(catalog.products).toHaveLength(431);
+    expect(catalog.products.flatMap((product: { skus: unknown[] }) => product.skus)).toHaveLength(756);
   });
 
   it("keeps English names, public USD prices, and valid images", () => {
@@ -40,7 +40,7 @@ describe("public catalog", () => {
       for (const image of product.images) images.add(image);
       for (const sku of product.skus) images.add(sku.image);
     }
-    expect(images.size).toBe(1144);
+    expect(images.size).toBe(2032);
     for (const image of images) {
       expect(image).toMatch(/^https:\/\/desktop-game\.ocbinks\.workers\.dev\/images\/catalog\/[a-f0-9]{64}\.(?:jpg|png|webp|gif|avif)$/);
       const pathname = new URL(image).pathname;

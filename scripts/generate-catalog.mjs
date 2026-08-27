@@ -35,6 +35,10 @@ for (const row of records) {
 const products = [];
 for (const [id, productRows] of grouped) {
   const copy = copyById[id];
+  if (copy?.exclude) {
+    console.log(`Excluded non-product ${id}: ${copy.reason || "marked for exclusion"}`);
+    continue;
+  }
   if (!copy) throw new Error(`Missing English copy for product ${id}`);
   if (copy.skus.length !== productRows.length) {
     throw new Error(`SKU count mismatch for ${id}: ${copy.skus.length} names for ${productRows.length} rows`);
@@ -46,12 +50,16 @@ for (const [id, productRows] of grouped) {
   const mainImage = allImages[(copy.mainImageIndex || 1) - 1] || gallery[0] || "";
   if (!gallery.includes(mainImage)) gallery.unshift(mainImage);
 
-  const skus = productRows.map((row, position) => ({
-    id: `${id}-${position + 1}`,
-    name: copy.skus[position],
-    image: urls(row[index["变种图片"]])[0] || mainImage,
-    priceUsd: usd(row[index["全球价格"]]),
-  }));
+  const skus = productRows.map((row, position) => {
+    const configuredIndex = copy.skuImageIndexes?.[position];
+    const variantImage = configuredIndex === 0 ? "" : urls(row[index["变种图片"]])[(configuredIndex || 1) - 1];
+    return {
+      id: `${id}-${position + 1}`,
+      name: copy.skus[position],
+      image: variantImage || mainImage,
+      priceUsd: usd(row[index["全球价格"]]),
+    };
+  });
 
   products.push({
     id,
