@@ -1,6 +1,8 @@
 const grid = document.querySelector("#productGrid");
 const status = document.querySelector("#catalogStatus");
 const search = document.querySelector("#searchInput");
+const summary = document.querySelector("#catalogSummary");
+const pagination = document.querySelector("#pagination");
 const productDialog = document.querySelector("#productDialog");
 const dialogContent = document.querySelector("#dialogContent");
 const inquiryDialog = document.querySelector("#inquiryDialog");
@@ -10,6 +12,8 @@ const inquiryStatus = document.querySelector("#inquiryStatus");
 const inquirySubmit = document.querySelector("#inquirySubmit");
 let products = [];
 let currentProduct = null;
+let currentPage = 1;
+const PAGE_SIZE = 100;
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
@@ -41,10 +45,39 @@ function card(product) {
   </a></article>`;
 }
 
-function render(list) {
+function catalogMatches() {
+  const query = search.value.trim().toLowerCase();
+  if (!query) return products;
+  return products.filter((product) => `${product.title} ${(product.skus || []).map((sku) => sku.name).join(" ")}`.toLowerCase().includes(query));
+}
+
+function pageButton(label, page, options = {}) {
+  const { active = false, disabled = false, ariaLabel = "" } = options;
+  return `<button type="button" data-page="${page}"${active ? ' class="active" aria-current="page"' : ""}${disabled ? " disabled" : ""}${ariaLabel ? ` aria-label="${ariaLabel}"` : ""}>${label}</button>`;
+}
+
+function render() {
+  const list = catalogMatches();
+  const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  currentPage = Math.min(Math.max(currentPage, 1), totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const visible = list.slice(start, start + PAGE_SIZE);
+
   status.hidden = list.length > 0;
   if (!list.length) status.textContent = products.length ? "No products match your search." : "The catalog is being prepared.";
-  grid.innerHTML = list.map(card).join("");
+  summary.hidden = !list.length;
+  summary.textContent = list.length ? `Showing ${start + 1}–${start + visible.length} of ${list.length} products · MOQ 1 on every product` : "";
+  grid.innerHTML = visible.map(card).join("");
+
+  if (totalPages <= 1 || !list.length) {
+    pagination.innerHTML = "";
+    return;
+  }
+  pagination.innerHTML = [
+    pageButton("← Previous", currentPage - 1, { disabled: currentPage === 1, ariaLabel: "Previous catalog page" }),
+    ...Array.from({ length: totalPages }, (_, index) => pageButton(String(index + 1), index + 1, { active: currentPage === index + 1, ariaLabel: `Catalog page ${index + 1}` })),
+    pageButton("Next →", currentPage + 1, { disabled: currentPage === totalPages, ariaLabel: "Next catalog page" }),
+  ].join("");
 }
 
 function skuCard(sku) {
@@ -74,7 +107,7 @@ function openProduct(product) {
       <div><span class="detail-price">${usd(product.priceUsd)}</span><span class="detail-note">reference price</span></div>
       <h3 class="sku-title">Available variants</h3>
       <div class="sku-list">${(product.skus || []).map(skuCard).join("")}</div>
-      <div class="reference-note">Prices are for B2B sourcing reference only. Final price, MOQ, packaging, freight and terms are confirmed after inquiry.</div>
+      <div class="reference-note"><strong>MOQ 1:</strong> the displayed factory wholesale reference price is available from one unit. Packaging, freight and final terms are confirmed after inquiry.</div>
       <button class="inquiry-button product-inquiry" type="button">Send inquiry <span>↗</span></button>
     </div>
   </article>`;
@@ -123,8 +156,16 @@ productDialog.addEventListener("close", () => {
 document.querySelectorAll(".inquiry-trigger").forEach((button) => button.addEventListener("click", () => openInquiry()));
 
 search.addEventListener("input", () => {
-  const query = search.value.trim().toLowerCase();
-  render(products.filter((product) => `${product.title} ${(product.skus || []).map((sku) => sku.name).join(" ")}`.toLowerCase().includes(query)));
+  currentPage = 1;
+  render();
+});
+
+pagination.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-page]");
+  if (!button || button.disabled) return;
+  currentPage = Number(button.dataset.page);
+  render();
+  document.querySelector("#catalog").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 inquiryForm.addEventListener("submit", async (event) => {
@@ -163,7 +204,7 @@ async function loadProducts() {
     const payload = await response.json();
     products = Array.isArray(payload.products) ? payload.products : [];
     document.querySelector("#productCount").textContent = String(products.length).padStart(2, "0");
-    render(products);
+    render();
     const slug = new URLSearchParams(location.hash.replace(/^#/, "")).get("product");
     const selected = products.find((product) => product.slug === slug);
     if (selected) openProduct(selected);

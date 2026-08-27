@@ -11,6 +11,7 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: "DM Sans", sans-serif; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 a { color: inherit; text-decoration: none; }
 button, input, textarea { font: inherit; }
 .site-header { position: relative; z-index: 10; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 86px; padding: 0 4.5vw; border-bottom: 1px solid rgba(23, 33, 27, .14); }
@@ -34,6 +35,9 @@ nav a:hover, .header-link:hover { color: #5f8c43; }
 .hero h1 { margin: 30px 0 30px; font-family: Manrope, sans-serif; font-size: clamp(64px, 7.8vw, 124px); line-height: .91; letter-spacing: -.065em; }
 .hero h1 em { color: #608b4b; font-family: Georgia, serif; font-weight: 400; }
 .hero-copy > p { max-width: 620px; color: #5f6d65; font-size: 17px; line-height: 1.65; }
+.hero-promises { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.hero-promises span { padding: 11px 14px; border: 1px solid rgba(63, 97, 72, .24); border-radius: 999px; background: rgba(255,255,255,.58); color: #56675d; font-size: 12px; }
+.hero-promises strong { color: var(--forest); }
 .hero-cta { display: inline-flex; align-items: center; gap: 35px; margin-top: 30px; padding-bottom: 8px; border-bottom: 1px solid #43624d; font-size: 13px; font-weight: 800; }
 .hero-aside { align-self: end; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 18px; padding: 31px 0 0 32px; border-left: 1px solid #bfc9bf; }
 .stat strong { display: block; margin-bottom: 8px; font-family: Manrope, sans-serif; font-size: 32px; letter-spacing: -.04em; }
@@ -42,9 +46,11 @@ nav a:hover, .header-link:hover { color: #5f8c43; }
 .catalog-section { padding: 110px 4.5vw 125px; }
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; margin-bottom: 48px; }
 .section-heading h2 { margin: 15px 0 0; font-family: Manrope, sans-serif; font-size: clamp(38px, 4vw, 62px); line-height: 1; letter-spacing: -.05em; }
-.search { display: flex; align-items: center; gap: 9px; width: min(300px, 100%); padding: 9px 2px; border-bottom: 1px solid #aeb8af; color: #768079; }
-.search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 13px; }
+.search { display: flex; align-items: center; gap: 11px; width: min(390px, 100%); padding: 14px 17px; border: 1px solid #aeb8af; border-radius: 4px; background: #fff; color: #607068; box-shadow: 0 8px 28px rgba(24,63,44,.06); }
+.search:focus-within { border-color: #648950; box-shadow: 0 0 0 3px rgba(100,137,80,.13); }
+.search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 14px; }
 .catalog-status { padding: 50px 0; color: var(--muted); font-size: 13px; text-align: center; }
+.catalog-summary { margin: -20px 0 25px; color: #6b786f; font-size: 12px; }
 .product-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 34px 14px; }
 .product-card-wrap, .product-card { min-width: 0; }
 .product-card { display: block; cursor: pointer; }
@@ -57,6 +63,10 @@ nav a:hover, .header-link:hover { color: #5f8c43; }
 .card-meta h3 { display: -webkit-box; margin: 0; overflow: hidden; font-family: Manrope, sans-serif; font-size: 12px; font-weight: 700; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .card-meta strong { font-size: 12px; }
 .card-meta p { grid-column: 1/-1; margin: 0; color: #7a857e; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+.pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 64px; }
+.pagination button { min-width: 42px; height: 42px; padding: 0 14px; border: 1px solid #cbd2cb; background: #fff; color: #506057; cursor: pointer; font-size: 12px; font-weight: 700; }
+.pagination button:hover:not(:disabled), .pagination button.active { border-color: var(--forest); background: var(--forest); color: #fff; }
+.pagination button:disabled { cursor: not-allowed; opacity: .4; }
 .process-section { padding: 105px 7vw 120px; color: #ecf2ec; background: var(--forest); }
 .section-heading.light .kicker { color: #a8b9ad; }
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 66px; border-top: 1px solid rgba(255,255,255,.18); }

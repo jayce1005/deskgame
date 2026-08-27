@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Source wholesale games, journals, planners, activity books and gift products. Compare images, SKU options and USD reference prices, then request a B2B quotation.">
+    <meta name="description" content="Professional board game factory with MOQ 1 on every catalog product and wholesale pricing from a single unit. Search products, compare SKU options and request a B2B quotation.">
     <meta name="robots" content="index,follow,max-image-preview:large">
-    <title>Wholesale Games, Journals &amp; Gift Products | Desktop Game B2B</title>
+    <title>Board Game Factory — MOQ 1 &amp; Wholesale Prices | Desktop Game</title>
     <link rel="canonical" href="https://desktop-game.ocbinks.workers.dev/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Desktop Game">
-    <meta property="og:title" content="Wholesale Games, Journals &amp; Gift Products | Desktop Game B2B">
-    <meta property="og:description" content="Explore wholesale games, journals, planners and gift products with SKU options and USD reference pricing. Send an inquiry for MOQ, packaging and final quotation.">
+    <meta property="og:title" content="Board Game Factory — MOQ 1 &amp; Wholesale Prices | Desktop Game">
+    <meta property="og:description" content="MOQ 1 on every catalog product. Buy one unit at a wholesale display price and send a B2B inquiry for your quotation.">
     <meta property="og:url" content="https://desktop-game.ocbinks.workers.dev/">
     <meta property="og:image" content="https://desktop-game.ocbinks.workers.dev/images/catalog/bc174dec0653abe560b2fef43f04ffdd39a54b0c35484aaf6dcc60b078514329.jpg">
     <meta name="twitter:card" content="summary_large_image">
@@ -23,9 +23,9 @@
       {
         "@context": "https://schema.org",
         "@graph": [
-          { "@type": "Organization", "@id": "https://desktop-game.ocbinks.workers.dev/#organization", "name": "Desktop Game", "url": "https://desktop-game.ocbinks.workers.dev/" },
+          { "@type": "Organization", "@id": "https://desktop-game.ocbinks.workers.dev/#organization", "name": "Desktop Game", "url": "https://desktop-game.ocbinks.workers.dev/", "description": "Professional board game factory offering MOQ 1 and wholesale display prices." },
           { "@type": "WebSite", "@id": "https://desktop-game.ocbinks.workers.dev/#website", "url": "https://desktop-game.ocbinks.workers.dev/", "name": "Desktop Game Wholesale Catalog", "publisher": { "@id": "https://desktop-game.ocbinks.workers.dev/#organization" } },
-          { "@type": "CollectionPage", "name": "Wholesale Games, Journals and Gift Products", "url": "https://desktop-game.ocbinks.workers.dev/#catalog", "isPartOf": { "@id": "https://desktop-game.ocbinks.workers.dev/#website" }, "description": "A B2B sourcing catalog of games, journals, planners, activity books and gift products with SKU options and USD reference pricing." }
+          { "@type": "CollectionPage", "name": "Board Game Factory Wholesale Catalog", "url": "https://desktop-game.ocbinks.workers.dev/#catalog", "isPartOf": { "@id": "https://desktop-game.ocbinks.workers.dev/#website" }, "description": "A searchable B2B factory catalog with MOQ 1 on every product, SKU options and USD wholesale display pricing." }
         ]
       }
     </script>
@@ -47,40 +47,47 @@
     <main id="top">
       <section class="hero">
         <div class="hero-copy">
-          <div class="eyebrow"><span></span> Curated for global wholesale</div>
-          <h1>Wholesale products for<br><em>global buyers.</em></h1>
-          <p>Source games, journals, planners, activity books and gift products through a clear B2B catalog with product images, SKU options and USD reference pricing.</p>
+          <div class="eyebrow"><span></span> Professional board game factory</div>
+          <h1>Factory wholesale.<br><em>MOQ is always 1.</em></h1>
+          <p>Every catalog product is available from just one unit at the displayed wholesale price. Explore ready-to-source board games, card games and paper products, then contact our factory for a quotation.</p>
+          <div class="hero-promises" aria-label="Wholesale advantages">
+            <span><strong>MOQ 1</strong> on every product</span>
+            <span><strong>1 piece</strong> at wholesale price</span>
+            <span><strong>Factory direct</strong> B2B inquiry</span>
+          </div>
           <a class="hero-cta" href="#catalog">Explore the catalog <span>↓</span></a>
         </div>
         <div class="hero-aside">
           <div class="stat"><strong id="productCount">—</strong><span>Live products</span></div>
-          <div class="stat"><strong>USD</strong><span>Reference pricing</span></div>
-          <p>This is a B2B display catalog. Final price, MOQ, packaging, freight and commercial terms are confirmed by inquiry.</p>
+          <div class="stat"><strong>MOQ 1</strong><span>Every catalog product</span></div>
+          <p>Displayed USD prices are factory wholesale reference prices, including single-unit inquiries. Packaging, freight and final commercial terms are confirmed by quotation.</p>
         </div>
       </section>
 
       <section id="catalog" class="catalog-section">
         <div class="section-heading">
           <div><span class="kicker">01 / Catalog</span><h2>Wholesale product catalog</h2></div>
-          <label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search products or variants" autocomplete="off"></label>
+          <label class="search"><span aria-hidden="true">⌕</span><span class="sr-only">Search catalog</span><input id="searchInput" type="search" placeholder="Search products or SKU names…" autocomplete="off"></label>
         </div>
         <div id="catalogStatus" class="catalog-status">Loading products…</div>
+        <p id="catalogSummary" class="catalog-summary" aria-live="polite"></p>
         <div id="productGrid" class="product-grid" aria-live="polite"></div>
+        <nav id="pagination" class="pagination" aria-label="Catalog pages"></nav>
       </section>
 
       <section id="how-it-works" class="process-section">
         <div class="section-heading light"><div><span class="kicker">02 / Our process</span><h2>Simple by design</h2></div></div>
         <div class="steps">
           <article><span>01</span><h3>Explore</h3><p>Review product photos, available SKU options and indicative USD pricing.</p></article>
-          <article><span>02</span><h3>Inquire</h3><p>Tell us which product and variant you need, together with your target quantity.</p></article>
-          <article><span>03</span><h3>Confirm</h3><p>We confirm specifications, MOQ, packaging, freight and final commercial terms offline.</p></article>
+          <article><span>02</span><h3>Start with 1</h3><p>Every catalog item has MOQ 1, with the displayed wholesale price available from one unit.</p></article>
+          <article><span>03</span><h3>Confirm</h3><p>Send an inquiry and we confirm the SKU, packaging, freight and final commercial terms offline.</p></article>
         </div>
       </section>
 
       <section id="about" class="about-section">
         <span class="kicker">03 / About</span>
-        <p>A practical B2B sourcing catalog for finding the <em>right products for your market.</em></p>
-        <div class="b2b-copy"><p>Browse product styles and SKU options, then send your target quantity, destination country and packaging requirements. Display prices are indicative USD references; MOQ, customization, freight and final terms are confirmed in your quotation.</p></div>
+        <p>A professional board game factory built for <em>buyers of every size.</em></p>
+        <div class="b2b-copy"><p>Start with one unit at the displayed wholesale price, or ask about larger-volume sourcing and customization. Tell us your preferred SKU, quantity, destination country and packaging requirements; freight and final terms are confirmed in your quotation.</p></div>
         <button class="text-link inquiry-trigger" type="button">Send an inquiry <span>↗</span></button>
       </section>
     </main>
@@ -101,7 +108,7 @@
       <form id="inquiryForm" class="inquiry-form">
         <span class="kicker">Wholesale inquiry</span>
         <h2 id="inquiryTitle">Tell us what you need.</h2>
-        <p>We will confirm the selected item, MOQ, final pricing, packaging and shipping with you.</p>
+        <p>MOQ is 1 for every catalog product. We will confirm your selected SKU, quantity, final pricing, packaging and shipping.</p>
         <div id="inquiryProduct" class="inquiry-product" hidden></div>
         <input id="inquiryProductId" name="productId" type="hidden">
         <input id="inquiryProductTitle" name="productTitle" type="hidden">

@@ -52,7 +52,7 @@ export function findCatalogProduct(slug: string): CatalogProduct | undefined {
 
 export function renderProductPage(product: CatalogProduct, origin: string): string {
   const canonical = `${origin}/products/${encodeURIComponent(product.slug)}`;
-  const description = `${product.title} for wholesale buyers. Review ${product.skus.length} available ${product.skus.length === 1 ? "variant" : "variants"}, product images and USD reference pricing, then send a B2B inquiry.`;
+  const description = `${product.title} direct from a professional board game factory. MOQ 1 with wholesale display pricing, ${product.skus.length} available ${product.skus.length === 1 ? "variant" : "variants"}, product images and B2B inquiry.`;
   const prices = product.skus.map((sku) => sku.priceUsd);
   const lowPrice = Math.min(...prices);
   const highPrice = Math.max(...prices);
@@ -130,9 +130,9 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
         <section class="seo-product-copy">
           <span class="kicker">B2B wholesale catalog</span>
           <h1>${escapeHtml(product.title)}</h1>
-          <p class="seo-lead">Available for wholesale inquiry with clear SKU options and USD reference pricing.</p>
+          <p class="seo-lead">Factory-direct wholesale inquiry with clear SKU options, MOQ 1 and USD display pricing.</p>
           <div class="seo-price"><strong>${usd(lowPrice)}${lowPrice !== highPrice ? `–${usd(highPrice)}` : ""}</strong><span>USD reference price</span></div>
-          <div class="reference-note">This is a B2B inquiry listing, not an online checkout. Final price, MOQ, packaging, freight and commercial terms are confirmed separately.</div>
+          <div class="reference-note"><strong>MOQ 1:</strong> the displayed factory wholesale reference price is available from one unit. This is a B2B inquiry listing, not an online checkout; packaging, freight and final terms are confirmed separately.</div>
           <a class="inquiry-button" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Send wholesale inquiry <span>↗</span></a>
         </section>
       </article>
@@ -143,7 +143,7 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
       <section class="seo-b2b-note">
         <span class="kicker">Wholesale process</span>
         <h2>From product selection to a confirmed quotation.</h2>
-        <p>Include your preferred SKU, order quantity, destination country and packaging requirements in your inquiry. We will use those details to confirm the applicable MOQ, final unit price and shipping terms.</p>
+        <p>Every catalog product starts at MOQ 1. Include your preferred SKU, quantity, destination country and packaging requirements so we can confirm the final unit price and shipping terms.</p>
         <a class="text-link" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Request a quotation <span>↗</span></a>
       </section>
     </main>

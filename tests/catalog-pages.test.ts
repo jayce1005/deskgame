@@ -25,9 +25,14 @@ describe("SEO catalog pages", () => {
 
   it("includes canonical, social and structured metadata on the catalog page", () => {
     const homepage = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
-    expect(homepage).toContain("Wholesale Games, Journals &amp; Gift Products");
+    expect(homepage).toContain("Board Game Factory — MOQ 1 &amp; Wholesale Prices");
     expect(homepage).toContain('<link rel="canonical"');
     expect(homepage).toContain('type="application/ld+json"');
-    expect(homepage).toContain("B2B sourcing catalog");
+    expect(homepage).toContain("Professional board game factory");
+    expect(homepage).toContain("MOQ is always 1");
+    expect(homepage).toContain('id="searchInput"');
+    expect(homepage).toContain('id="pagination"');
+    const app = readFileSync(new URL("../public/app.js", import.meta.url), "utf8");
+    expect(app).toContain("const PAGE_SIZE = 100");
   });
 });
