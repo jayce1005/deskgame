@@ -42,7 +42,7 @@ describe("public catalog", () => {
     }
     expect(images.size).toBe(2032);
     for (const image of images) {
-      expect(image).toMatch(/^https:\/\/desktop-game\.ocbinks\.workers\.dev\/images\/catalog\/[a-f0-9]{64}\.(?:jpg|png|webp|gif|avif)$/);
+      expect(image).toMatch(/^https:\/\/boardgameb2b\.com\/images\/catalog\/[a-f0-9]{64}\.(?:jpg|png|webp|gif|avif)$/);
       const pathname = new URL(image).pathname;
       expect(existsSync(new URL(`../public${pathname}`, import.meta.url))).toBe(true);
     }

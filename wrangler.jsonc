@@ -4,6 +4,17 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-08-26",
   "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "boardgameb2b.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.boardgameb2b.com",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",

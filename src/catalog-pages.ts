@@ -96,12 +96,12 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${escapeHtml(product.title)} | Desktop Game Wholesale</title>
+    <title>${escapeHtml(product.title)} | BoardGame B2B Wholesale</title>
     <meta name="description" content="${escapeHtml(description)}">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <link rel="canonical" href="${escapeHtml(canonical)}">
     <meta property="og:type" content="product">
-    <meta property="og:site_name" content="Desktop Game">
+    <meta property="og:site_name" content="BoardGame B2B">
     <meta property="og:title" content="${escapeHtml(product.title)}">
     <meta property="og:description" content="${escapeHtml(description)}">
     <meta property="og:url" content="${escapeHtml(canonical)}">
@@ -116,7 +116,7 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
   </head>
   <body class="product-page-body">
     <header class="site-header">
-      <a class="logo" href="/" aria-label="Desktop Game home"><span class="logo-symbol"><i></i><i></i><i></i></span><span>DESKTOP <b>GAME</b></span></a>
+      <a class="logo" href="/" aria-label="BoardGame B2B home"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a>
       <nav aria-label="Primary navigation"><a href="/#catalog">Catalog</a><a href="/#how-it-works">How it works</a><a href="/#about">About</a></nav>
       <a class="header-link" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Send inquiry <span>↗</span></a>
     </header>
@@ -147,7 +147,7 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
         <a class="text-link" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Request a quotation <span>↗</span></a>
       </section>
     </main>
-    <footer><a class="logo footer-logo" href="/"><span class="logo-symbol"><i></i><i></i><i></i></span><span>DESKTOP <b>GAME</b></span></a><p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p><span>© 2026 Desktop Game</span></footer>
+    <footer><a class="logo footer-logo" href="/"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a><p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p><span>© 2026 BoardGame B2B</span></footer>
   </body>
 </html>`;
 }

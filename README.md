@@ -1,4 +1,4 @@
-# Desktop Game — English B2B Catalog
+# BoardGame B2B — English Factory Catalog
 
 一个不做在线成交的英文 B2B 产品展示站。当前目录来自 Mercado 插件导出的商品表，共 431 个商品、756 个 SKU。
 
@@ -59,7 +59,8 @@ Wrangler 会返回 `https://desktop-game.<你的子域>.workers.dev` 网站地�
 ## 当前线上地址
 
 - GitHub：`git@github.com:jayce1005/deskgame.git`
-- Cloudflare：`https://desktop-game.ocbinks.workers.dev`
+- 主域名：`https://boardgameb2b.com`
+- 备用地址：`https://desktop-game.ocbinks.workers.dev`
 
 部署方式与 UOUDIO 日本官网项目一致：先推送 `main` 到 GitHub，再使用已登录的 Wrangler 执行 `npm run deploy`。该命令会先应用 D1 数据库迁移，再部署 Worker 和静态商品目录。
 

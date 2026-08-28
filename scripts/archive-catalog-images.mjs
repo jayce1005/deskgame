@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const [catalogPath, imageOutputDir, stagedCatalogPath, publicBase = "https://desktop-game.ocbinks.workers.dev/images/catalog"] = process.argv.slice(2);
+const [catalogPath, imageOutputDir, stagedCatalogPath, publicBase = "https://boardgameb2b.com/images/catalog"] = process.argv.slice(2);
 if (!catalogPath || !imageOutputDir || !stagedCatalogPath) {
   throw new Error("Usage: archive-catalog-images.mjs <catalog.json> <image-output-dir> <staged-catalog.json> [public-base]");
 }
@@ -16,7 +16,7 @@ for (const product of catalog.products) {
 }
 
 const sourceUrls = [...urls].filter((value) => {
-  try { return new URL(value).hostname !== "desktop-game.ocbinks.workers.dev"; }
+  try { return !new Set(["boardgameb2b.com", "www.boardgameb2b.com", "desktop-game.ocbinks.workers.dev"]).has(new URL(value).hostname); }
   catch { return false; }
 });
 

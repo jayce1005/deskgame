@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } from "../src/catalog-pages";
 
-const origin = "https://desktop-game.ocbinks.workers.dev";
+const origin = "https://boardgameb2b.com";
 
 describe("SEO catalog pages", () => {
   it("renders a unique, indexable product page with visible B2B content", () => {
@@ -25,10 +25,10 @@ describe("SEO catalog pages", () => {
 
   it("includes canonical, social and structured metadata on the catalog page", () => {
     const homepage = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
-    expect(homepage).toContain("Board Game Factory — MOQ 1 &amp; Wholesale Prices");
+    expect(homepage).toContain("Board Game Factory — MOQ 1 &amp; Wholesale Prices | BoardGame B2B");
     expect(homepage).toContain('<link rel="canonical"');
     expect(homepage).toContain('type="application/ld+json"');
-    expect(homepage).toContain("Professional board game factory");
+    expect(homepage).toContain("Factory Games. MOQ One.");
     expect(homepage).toContain("MOQ is always 1");
     expect(homepage).toContain('id="searchInput"');
     expect(homepage).toContain('id="pagination"');

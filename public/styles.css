@@ -15,13 +15,11 @@ body { margin: 0; color: var(--ink); background: var(--paper); font-family: "DM 
 a { color: inherit; text-decoration: none; }
 button, input, textarea { font: inherit; }
 .site-header { position: relative; z-index: 10; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 86px; padding: 0 4.5vw; border-bottom: 1px solid rgba(23, 33, 27, .14); }
-.logo { display: inline-flex; align-items: center; gap: 11px; width: max-content; font-family: Manrope, sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .06em; }
+.logo { display: inline-flex; align-items: center; gap: 10px; width: max-content; font-family: Manrope, sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .055em; }
 .logo b { color: #577064; font-weight: 600; }
-.logo-symbol { display: flex; align-items: flex-end; gap: 2px; width: 24px; height: 22px; }
-.logo-symbol i { display: block; width: 6px; background: var(--forest); border-radius: 1px; transform: skew(-14deg); }
-.logo-symbol i:nth-child(1) { height: 12px; }
-.logo-symbol i:nth-child(2) { height: 18px; }
-.logo-symbol i:nth-child(3) { height: 22px; background: #74a456; }
+.brand-mark { display: block; width: 38px; height: 38px; }
+.logo-copy { display: grid; gap: 2px; }
+.logo-copy small { color: #718078; font-family: "DM Sans", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
 nav { display: flex; gap: 36px; color: #4f5d55; font-size: 13px; font-weight: 600; }
 nav a, .header-link { transition: color .2s; }
 nav a:hover, .header-link:hover { color: #5f8c43; }
