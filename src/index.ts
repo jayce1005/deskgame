@@ -2,6 +2,7 @@ import { parseInquiry } from "./inquiries";
 import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } from "./catalog-pages";
 
 const PUBLIC_ORIGIN = "https://boardgameb2b.com";
+const REDIRECT_HOSTS = new Set(["www.boardgameb2b.com", "desktop-game.ocbinks.workers.dev"]);
 const JSON_HEADERS = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",
@@ -98,7 +99,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     try {
       const url = new URL(request.url);
-      if (url.hostname === "www.boardgameb2b.com") {
+      if (REDIRECT_HOSTS.has(url.hostname)) {
         return Response.redirect(`${PUBLIC_ORIGIN}${url.pathname}${url.search}`, 301);
       }
       if (url.pathname.startsWith("/api/")) return await handleApi(request, env);

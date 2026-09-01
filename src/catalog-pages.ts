@@ -66,14 +66,19 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
         description,
         sku: product.id,
         url: canonical,
-        offers: {
-          "@type": "AggregateOffer",
-          priceCurrency: "USD",
-          lowPrice: lowPrice.toFixed(2),
-          highPrice: highPrice.toFixed(2),
-          offerCount: product.skus.length,
-          url: canonical,
+        mainEntityOfPage: canonical,
+        additionalProperty: {
+          "@type": "PropertyValue",
+          name: "Minimum order quantity",
+          value: "1 piece",
         },
+        offers: product.skus.map((sku) => ({
+          "@type": "Offer",
+          sku: sku.id,
+          priceCurrency: "USD",
+          price: sku.priceUsd.toFixed(2),
+          url: canonical,
+        })),
       },
       {
         "@type": "BreadcrumbList",
@@ -106,7 +111,12 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
     <meta property="og:description" content="${escapeHtml(description)}">
     <meta property="og:url" content="${escapeHtml(canonical)}">
     <meta property="og:image" content="${escapeHtml(product.mainImage)}">
+    <meta property="og:image:alt" content="${escapeHtml(product.title)}">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${escapeHtml(product.title)}">
+    <meta name="twitter:description" content="${escapeHtml(description)}">
+    <meta name="twitter:image" content="${escapeHtml(product.mainImage)}">
+    <meta name="twitter:image:alt" content="${escapeHtml(product.title)}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -154,8 +164,12 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
 
 export function renderSitemap(origin: string): string {
   const lastModified = catalog.generatedAt.slice(0, 10);
-  const urls = [`${origin}/`, ...catalog.products.map((product) => `${origin}/products/${encodeURIComponent(product.slug)}`)];
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url><loc>${escapeXml(url)}</loc><lastmod>${lastModified}</lastmod></url>`).join("\n")}\n</urlset>\n`;
+  const homepage = `  <url><loc>${escapeXml(`${origin}/`)}</loc><lastmod>${lastModified}</lastmod></url>`;
+  const products = catalog.products.map((product) => {
+    const url = `${origin}/products/${encodeURIComponent(product.slug)}`;
+    return `  <url><loc>${escapeXml(url)}</loc><lastmod>${lastModified}</lastmod><image:image><image:loc>${escapeXml(product.mainImage)}</image:loc><image:title>${escapeXml(product.title)}</image:title></image:image></url>`;
+  });
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${[homepage, ...products].join("\n")}\n</urlset>\n`;
 }
 
 export function renderRobots(origin: string): string {

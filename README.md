@@ -60,9 +60,17 @@ Wrangler 会返回 `https://desktop-game.<你的子域>.workers.dev` 网站地�
 
 - GitHub：`git@github.com:jayce1005/deskgame.git`
 - 主域名：`https://boardgameb2b.com`
-- 备用地址：`https://desktop-game.ocbinks.workers.dev`
+- Worker 地址：`https://desktop-game.ocbinks.workers.dev`（301 跳转到主域名，避免 SEO 重复内容）
 
 部署方式与 UOUDIO 日本官网项目一致：先推送 `main` 到 GitHub，再使用已登录的 Wrangler 执行 `npm run deploy`。该命令会先应用 D1 数据库迁移，再部署 Worker 和静态商品目录。
+
+## Google Search Console
+
+- 网站资源：`https://boardgameb2b.com/`
+- Sitemap：`https://boardgameb2b.com/sitemap.xml`
+- `robots.txt`：`https://boardgameb2b.com/robots.txt`
+
+Sitemap 自动包含首页、全部商品独立页面与每个商品的主图。产品更新并重新部署后，不需要手工生成文件；同一个 Sitemap 地址会自动返回最新版内容。
 
 ## 更新下一批商品
 
