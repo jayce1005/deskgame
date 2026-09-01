@@ -23,6 +23,7 @@ interface CatalogData {
 }
 
 const catalog = catalogJson as CatalogData;
+const SEO_TEMPLATE_UPDATED = "2026-09-01";
 
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
@@ -163,7 +164,8 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
 }
 
 export function renderSitemap(origin: string): string {
-  const lastModified = catalog.generatedAt.slice(0, 10);
+  const catalogUpdated = catalog.generatedAt.slice(0, 10);
+  const lastModified = catalogUpdated > SEO_TEMPLATE_UPDATED ? catalogUpdated : SEO_TEMPLATE_UPDATED;
   const homepage = `  <url><loc>${escapeXml(`${origin}/`)}</loc><lastmod>${lastModified}</lastmod></url>`;
   const products = catalog.products.map((product) => {
     const url = `${origin}/products/${encodeURIComponent(product.slug)}`;
