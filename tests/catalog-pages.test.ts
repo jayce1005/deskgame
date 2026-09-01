@@ -42,5 +42,7 @@ describe("SEO catalog pages", () => {
     expect(homepage).toContain('id="pagination"');
     const app = readFileSync(new URL("../public/app.js", import.meta.url), "utf8");
     expect(app).toContain("const PAGE_SIZE = 100");
+    const wrangler = readFileSync(new URL("../wrangler.jsonc", import.meta.url), "utf8");
+    expect(wrangler).toContain('"run_worker_first": true');
   });
 });
