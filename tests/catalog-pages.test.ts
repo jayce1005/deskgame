@@ -16,6 +16,9 @@ describe("SEO catalog pages", () => {
     expect(html).toContain('"@type":"Offer"');
     expect(html).not.toContain('"@type":"AggregateOffer"');
     expect(html).toContain('"name":"Minimum order quantity","value":"1 piece"');
+    expect(html).toContain('"telephone":"+86 199 2877 7176"');
+    expect(html).toContain("https://wa.me/8619928777176");
+    expect(html).toContain("boardgame_01@outlook.com");
     expect(html).toContain(product!.skus[0].name);
   });
 
@@ -24,7 +27,7 @@ describe("SEO catalog pages", () => {
     expect(sitemap.match(/<url>/g)).toHaveLength(432);
     expect(sitemap.match(/<image:image>/g)).toHaveLength(431);
     expect(sitemap).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
-    expect(sitemap).toContain("<lastmod>2026-09-01</lastmod>");
+    expect(sitemap).toContain("<lastmod>2026-09-07</lastmod>");
     expect(sitemap).toContain("/products/last-call-english-drinking-card-game");
     expect(sitemap).toContain("<image:title>");
     expect(renderRobots(origin)).toContain(`Sitemap: ${origin}/sitemap.xml`);
@@ -32,13 +35,22 @@ describe("SEO catalog pages", () => {
 
   it("includes canonical, social and structured metadata on the catalog page", () => {
     const homepage = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
-    expect(homepage).toContain("Board Game Factory — MOQ 1 &amp; Wholesale Prices | BoardGame B2B");
+    expect(homepage).toContain("Board Game Manufacturer &amp; Wholesale Supplier | BoardGame B2B");
     expect(homepage).toContain('<link rel="canonical"');
     expect(homepage).toContain('<link rel="sitemap"');
     expect(homepage).toContain('name="twitter:title"');
     expect(homepage).toContain('type="application/ld+json"');
     expect(homepage).toContain("Factory Games. MOQ One.");
     expect(homepage).toContain("MOQ is always 1");
+    expect(homepage).toContain('id="contact"');
+    expect(homepage).toContain("https://wa.me/8619928777176");
+    expect(homepage).toContain("boardgame_01@outlook.com");
+    const schemaMarkup = homepage.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1];
+    expect(schemaMarkup).toBeTruthy();
+    const schema = JSON.parse(schemaMarkup!);
+    const organization = schema["@graph"].find((item: { "@type": string }) => item["@type"] === "Organization");
+    expect(organization.email).toBe("boardgame_01@outlook.com");
+    expect(organization.telephone).toBe("+86 199 2877 7176");
     expect(homepage).toContain('id="searchInput"');
     expect(homepage).toContain('id="pagination"');
     const app = readFileSync(new URL("../public/app.js", import.meta.url), "utf8");

@@ -23,7 +23,10 @@ interface CatalogData {
 }
 
 const catalog = catalogJson as CatalogData;
-const SEO_TEMPLATE_UPDATED = "2026-09-01";
+const SEO_TEMPLATE_UPDATED = "2026-09-07";
+const CONTACT_EMAIL = "boardgame_01@outlook.com";
+const CONTACT_PHONE = "+86 199 2877 7176";
+const WHATSAPP_NUMBER = "8619928777176";
 
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
@@ -53,13 +56,32 @@ export function findCatalogProduct(slug: string): CatalogProduct | undefined {
 
 export function renderProductPage(product: CatalogProduct, origin: string): string {
   const canonical = `${origin}/products/${encodeURIComponent(product.slug)}`;
-  const description = `${product.title} direct from a professional board game factory. MOQ 1 with wholesale display pricing, ${product.skus.length} available ${product.skus.length === 1 ? "variant" : "variants"}, product images and B2B inquiry.`;
+  const description = `Wholesale ${product.title} from a professional game factory. MOQ 1, USD reference prices, ${product.skus.length} available ${product.skus.length === 1 ? "variant" : "variants"} and direct B2B quotation.`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hello, I am interested in ${product.title} (${product.id}). Please send me a wholesale quotation.`)}`;
+  const emailUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Wholesale inquiry: ${product.title}`)}`;
   const prices = product.skus.map((sku) => sku.priceUsd);
   const lowPrice = Math.min(...prices);
   const highPrice = Math.max(...prices);
   const productSchema = {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${origin}/#organization`,
+        name: "BoardGame B2B",
+        url: `${origin}/`,
+        logo: `${origin}/logo.svg`,
+        slogan: "Factory Games. MOQ One.",
+        email: CONTACT_EMAIL,
+        telephone: CONTACT_PHONE,
+        contactPoint: {
+          "@type": "ContactPoint",
+          contactType: "sales",
+          email: CONTACT_EMAIL,
+          telephone: CONTACT_PHONE,
+          availableLanguage: ["English", "Chinese"],
+        },
+      },
       {
         "@type": "Product",
         name: product.title,
@@ -79,6 +101,7 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
           priceCurrency: "USD",
           price: sku.priceUsd.toFixed(2),
           url: canonical,
+          seller: { "@id": `${origin}/#organization` },
         })),
       },
       {
@@ -128,7 +151,7 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
   <body class="product-page-body">
     <header class="site-header">
       <a class="logo" href="/" aria-label="BoardGame B2B home"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a>
-      <nav aria-label="Primary navigation"><a href="/#catalog">Catalog</a><a href="/#how-it-works">How it works</a><a href="/#about">About</a></nav>
+      <nav aria-label="Primary navigation"><a href="/#catalog">Catalog</a><a href="/#how-it-works">How it works</a><a href="/#about">About</a><a href="/#contact">Contact</a></nav>
       <a class="header-link" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Send inquiry <span>↗</span></a>
     </header>
     <main class="seo-product-page">
@@ -144,7 +167,8 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
           <p class="seo-lead">Factory-direct wholesale inquiry with clear SKU options, MOQ 1 and USD display pricing.</p>
           <div class="seo-price"><strong>${usd(lowPrice)}${lowPrice !== highPrice ? `–${usd(highPrice)}` : ""}</strong><span>USD reference price</span></div>
           <div class="reference-note"><strong>MOQ 1:</strong> the displayed factory wholesale reference price is available from one unit. This is a B2B inquiry listing, not an online checkout; packaging, freight and final terms are confirmed separately.</div>
-          <a class="inquiry-button" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Send wholesale inquiry <span>↗</span></a>
+          <div class="product-contact-actions"><a class="inquiry-button" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Send wholesale inquiry <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">Chat on WhatsApp <span>↗</span></a></div>
+          <p class="product-email">Or email <a href="${escapeHtml(emailUrl)}">${CONTACT_EMAIL}</a></p>
         </section>
       </article>
       <section class="seo-variants" aria-labelledby="variantsTitle">
@@ -156,9 +180,10 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
         <h2>From product selection to a confirmed quotation.</h2>
         <p>Every catalog product starts at MOQ 1. Include your preferred SKU, quantity, destination country and packaging requirements so we can confirm the final unit price and shipping terms.</p>
         <a class="text-link" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Request a quotation <span>↗</span></a>
+        <p class="seo-direct-contact"><a href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp ${CONTACT_PHONE}</a> · <a href="${escapeHtml(emailUrl)}">${CONTACT_EMAIL}</a></p>
       </section>
     </main>
-    <footer><a class="logo footer-logo" href="/"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a><p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p><span>© 2026 BoardGame B2B</span></footer>
+    <footer><a class="logo footer-logo" href="/"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a><p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p><div class="footer-contact"><a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" rel="noopener">WhatsApp: ${CONTACT_PHONE}</a><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></div><span>© 2026 BoardGame B2B</span></footer>
   </body>
 </html>`;
 }

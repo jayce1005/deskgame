@@ -109,6 +109,8 @@ function openProduct(product) {
       <div class="sku-list">${(product.skus || []).map(skuCard).join("")}</div>
       <div class="reference-note"><strong>MOQ 1:</strong> the displayed factory wholesale reference price is available from one unit. Packaging, freight and final terms are confirmed after inquiry.</div>
       <button class="inquiry-button product-inquiry" type="button">Send inquiry <span>↗</span></button>
+      <a class="whatsapp-button" href="https://wa.me/8619928777176?text=${encodeURIComponent(`Hello, I am interested in ${product.title} (${product.id}). Please send me a wholesale quotation.`)}" target="_blank" rel="noopener">Chat on WhatsApp <span>↗</span></a>
+      <p class="product-email">Or email <a href="mailto:boardgame_01@outlook.com?subject=${encodeURIComponent(`Wholesale inquiry: ${product.title}`)}">boardgame_01@outlook.com</a></p>
     </div>
   </article>`;
   productDialog.showModal();
