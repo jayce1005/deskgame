@@ -180,10 +180,10 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
         <h2>From product selection to a confirmed quotation.</h2>
         <p>Every catalog product starts at MOQ 1. Include your preferred SKU, quantity, destination country and packaging requirements so we can confirm the final unit price and shipping terms.</p>
         <a class="text-link" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Request a quotation <span>↗</span></a>
-        <p class="seo-direct-contact"><a href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp ${CONTACT_PHONE}</a> · <a href="${escapeHtml(emailUrl)}">${CONTACT_EMAIL}</a></p>
+        <p class="seo-direct-contact"><a class="whatsapp-icon-link" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><img src="/icons/whatsapp.svg" alt="" width="28" height="28">WhatsApp</a> · <a href="${escapeHtml(emailUrl)}">${CONTACT_EMAIL}</a></p>
       </section>
     </main>
-    <footer><a class="logo footer-logo" href="/"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a><p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p><div class="footer-contact"><a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" rel="noopener">WhatsApp: ${CONTACT_PHONE}</a><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></div><span>© 2026 BoardGame B2B</span></footer>
+    <footer><a class="logo footer-logo" href="/"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a><p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p><div class="footer-contact"><a class="whatsapp-icon-link" href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><img src="/icons/whatsapp.svg" alt="" width="28" height="28">WhatsApp</a><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></div><span>© 2026 BoardGame B2B</span></footer>
   </body>
 </html>`;
 }

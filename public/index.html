@@ -26,6 +26,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="showroom.css">
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -37,7 +38,7 @@
       }
     </script>
   </head>
-  <body>
+  <body class="showroom">
     <header class="site-header">
       <a class="logo" href="/" aria-label="BoardGame B2B home">
         <img class="brand-mark" src="/logo.svg" alt="" width="38" height="38">
@@ -45,37 +46,28 @@
       </a>
       <nav aria-label="Primary navigation">
         <a href="#catalog">Catalog</a>
-        <a href="#how-it-works">How it works</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
       </nav>
-      <div class="header-actions"><a class="header-whatsapp" href="https://wa.me/8619928777176?text=Hello%2C%20I%20would%20like%20a%20wholesale%20quotation." target="_blank" rel="noopener">WhatsApp</a><button class="header-link inquiry-trigger" type="button">Send inquiry <span>↗</span></button></div>
+      <div class="header-actions"><a class="header-whatsapp" href="https://wa.me/8619928777176?text=Hello%2C%20I%20would%20like%20a%20wholesale%20quotation." target="_blank" rel="noopener"><img src="/icons/whatsapp.svg" width="24" height="24" alt="">WhatsApp</a></div>
     </header>
 
     <main id="top">
       <section class="hero">
+        <img class="hero-scene" src="/images/brand/hero-games-v1.jpg" alt="" width="1774" height="887" fetchpriority="high">
         <div class="hero-copy">
-          <div class="eyebrow"><span></span> Factory Games. MOQ One.</div>
-          <h1>Board game factory.<br><em>MOQ is always 1.</em></h1>
-          <p>Source wholesale board games, card games, party games, journals and paper products directly from our professional factory catalog. Every product is available from one unit at the displayed USD reference price.</p>
-          <div class="hero-promises" aria-label="Wholesale advantages">
-            <span><strong>MOQ 1</strong> on every product</span>
-            <span><strong>1 piece</strong> at wholesale price</span>
-            <span><strong>Factory direct</strong> B2B inquiry</span>
-          </div>
-          <div class="hero-actions"><a class="hero-cta" href="#catalog">Explore the catalog <span>↓</span></a><a class="whatsapp-button" href="https://wa.me/8619928777176?text=Hello%2C%20I%20would%20like%20a%20wholesale%20quotation." target="_blank" rel="noopener">Chat on WhatsApp <span>↗</span></a></div>
-        </div>
-        <div class="hero-aside">
-          <div class="stat"><strong id="productCount">—</strong><span>Live products</span></div>
-          <div class="stat"><strong>MOQ 1</strong><span>Every catalog product</span></div>
-          <p>Displayed USD prices are factory wholesale reference prices, including single-unit inquiries. Packaging, freight and final commercial terms are confirmed by quotation.</p>
+          <div class="eyebrow">Professional board game factory</div>
+          <h1>Small orders.<br>Big possibilities.</h1>
+          <p>Every product. <strong>MOQ 1.</strong> Wholesale<br class="desktop-break"> reference prices from a single unit.</p>
+          <div class="hero-actions"><a class="hero-cta" href="#catalog">Explore products <img class="ui-icon" src="/icons/arrow-up-right.svg" alt="" width="20" height="20"></a><button class="hero-inquiry inquiry-trigger" type="button">Send inquiry <img class="ui-icon" src="/icons/arrow-up-right.svg" alt="" width="20" height="20"></button></div>
         </div>
       </section>
 
       <section id="catalog" class="catalog-section">
-        <div class="section-heading">
-          <div><span class="kicker">01 / Catalog</span><h2>Wholesale product catalog</h2></div>
-          <label class="search"><span aria-hidden="true">⌕</span><span class="sr-only">Search catalog</span><input id="searchInput" type="search" placeholder="Search products or SKU names…" autocomplete="off"></label>
+        <div class="section-heading catalog-heading">
+          <div class="catalog-title"><span class="kicker">Product catalog</span><h2>Wholesale board games, card games and paper products.</h2></div>
+          <label class="search"><img src="/icons/search.svg" alt="" width="19" height="19"><span class="sr-only">Search catalog</span><input id="searchInput" type="search" placeholder="Search products or SKU names" autocomplete="off"></label>
+          <div class="catalog-stats"><div><strong id="productCount">—</strong><span>products</span></div><div><strong>100</strong><span>per page</span></div></div>
         </div>
         <div id="catalogStatus" class="catalog-status">Loading products…</div>
         <p id="catalogSummary" class="catalog-summary" aria-live="polite"></p>
@@ -84,7 +76,7 @@
       </section>
 
       <section id="how-it-works" class="process-section">
-        <div class="section-heading light"><div><span class="kicker">02 / Our process</span><h2>Simple by design</h2></div></div>
+        <div class="section-heading light"><div><span class="kicker">Factory Games. MOQ One.</span><h2>A simpler way to source.</h2></div></div>
         <div class="steps">
           <article><span>01</span><h3>Explore</h3><p>Review product photos, available SKU options and indicative USD pricing.</p></article>
           <article><span>02</span><h3>Start with 1</h3><p>Every catalog item has MOQ 1, with the displayed wholesale price available from one unit.</p></article>
@@ -94,16 +86,16 @@
 
       <section id="about" class="about-section">
         <span class="kicker">03 / About</span>
-        <p>A professional board game manufacturer and wholesale supplier for <em>buyers of every size.</em></p>
-        <div class="b2b-copy"><p>Browse ready-to-source board games, card games, party games, journals and paper products. Start with one unit at the displayed wholesale reference price, or ask about larger-volume sourcing and customization. Share your preferred SKU, quantity, destination and packaging requirements for a confirmed quotation.</p></div>
+        <h2>Your next collection starts here.</h2>
+        <div class="b2b-copy"><p>We are a professional board game manufacturer and wholesale supplier for buyers of every size. Browse board games, card games, party games, journals and paper products. MOQ is always 1, with USD wholesale reference pricing from a single unit.</p><p>Share your preferred SKU, quantity, destination and packaging requirements. Our team will confirm availability, freight and final terms in your quotation.</p></div>
         <button class="text-link inquiry-trigger" type="button">Send an inquiry <span>↗</span></button>
       </section>
 
       <section id="contact" class="contact-section" aria-labelledby="contactTitle">
-        <div><span class="kicker">04 / Contact</span><h2 id="contactTitle">Talk to our wholesale team.</h2><p>Send the product name or SKU, required quantity, destination country and packaging needs. We will reply with the applicable quotation and shipping terms.</p></div>
+        <div class="contact-intro"><img class="contact-icon" src="/icons/chat-dots.svg" alt="" width="38" height="38"><div><h2 id="contactTitle">Need a quotation?</h2><p>Our wholesale team is ready to help.</p></div></div>
         <div class="contact-options">
-          <a class="contact-card whatsapp-card" href="https://wa.me/8619928777176?text=Hello%2C%20I%20would%20like%20a%20wholesale%20quotation." target="_blank" rel="noopener"><span>WhatsApp sales</span><strong>+86 199 2877 7176</strong><small>Start a direct chat ↗</small></a>
-          <a class="contact-card" href="mailto:boardgame_01@outlook.com?subject=Wholesale%20product%20inquiry"><span>Email sales</span><strong>boardgame_01@outlook.com</strong><small>Send an inquiry ↗</small></a>
+          <a class="contact-card whatsapp-card" href="https://wa.me/8619928777176?text=Hello%2C%20I%20would%20like%20a%20wholesale%20quotation." target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp"><span class="whatsapp-icon-badge"><img src="/icons/whatsapp.svg" alt="" width="36" height="36"></span><span class="whatsapp-label">WhatsApp</span></a>
+          <a class="contact-card" href="mailto:boardgame_01@outlook.com?subject=Wholesale%20product%20inquiry"><img class="contact-icon" src="/icons/envelope.svg" alt="" width="36" height="36"><div><span>Email</span><strong>boardgame_01@outlook.com</strong></div></a>
         </div>
       </section>
     </main>
@@ -111,7 +103,7 @@
     <footer>
       <a class="logo footer-logo" href="/"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a>
       <p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p>
-      <div class="footer-contact"><a href="https://wa.me/8619928777176" target="_blank" rel="noopener">WhatsApp: +86 199 2877 7176</a><a href="mailto:boardgame_01@outlook.com">boardgame_01@outlook.com</a></div>
+      <div class="footer-contact"><a class="whatsapp-icon-link" href="https://wa.me/8619928777176" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp"><img src="/icons/whatsapp.svg" alt="" width="28" height="28">WhatsApp</a><a href="mailto:boardgame_01@outlook.com">boardgame_01@outlook.com</a></div>
       <span>© <span id="year"></span> BoardGame B2B</span>
     </footer>
 

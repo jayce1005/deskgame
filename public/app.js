@@ -22,6 +22,7 @@ function escapeHtml(value) {
 function safeImage(value) {
   try {
     const url = new URL(value);
+    if (url.origin === "https://boardgameb2b.com") return `${url.pathname}${url.search}`;
     return ["http:", "https:"].includes(url.protocol) ? url.href : "";
   } catch { return ""; }
 }
@@ -35,12 +36,12 @@ function card(product) {
   return `<article class="product-card-wrap"><a class="product-card" href="/products/${encodeURIComponent(product.slug)}" aria-label="View ${escapeHtml(product.title)}" data-slug="${escapeHtml(product.slug)}">
     <div class="image-wrap">
       ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(`${product.title} wholesale product`)}" width="480" height="480" loading="lazy" referrerpolicy="no-referrer">` : ""}
-      <span class="view-mark">↗</span>
+      <span class="view-mark"><img src="/icons/arrow-up-right.svg" alt="" width="16" height="16"></span>
     </div>
     <div class="card-meta">
       <h3>${escapeHtml(product.title)}</h3>
-      <strong>${usd(product.priceUsd)}</strong>
-      <p>${product.skus?.length || 0} ${product.skus?.length === 1 ? "variant" : "variants"} · reference price</p>
+      <strong>${usd(product.priceUsd)} <span class="price-currency">USD</span></strong>
+      <p>${product.skus?.length || 0} ${product.skus?.length === 1 ? "variant" : "variants"} · MOQ 1 · reference price</p>
     </div>
   </a></article>`;
 }

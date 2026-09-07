@@ -26,6 +26,8 @@ nav a:hover, .header-link:hover { color: #5f8c43; }
 .header-actions { display: flex; align-items: center; justify-self: end; gap: 20px; }
 .header-whatsapp { color: #277c52; font-size: 12px; font-weight: 800; }
 .header-whatsapp:hover { color: #185d3b; }
+.whatsapp-icon-link { display: inline-flex; align-items: center; gap: 8px; color: #187c40; font-weight: 700; }
+.whatsapp-icon-link img { display: block; }
 .header-link { justify-self: end; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; font-size: 13px; font-weight: 700; }
 .header-link span { display: inline-block; margin-left: 7px; }
 .hero { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(280px, .65fr); min-height: 590px; padding: 90px 7vw 68px; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 79% 28%, rgba(196, 224, 150, .34), transparent 28%), linear-gradient(120deg, #f6f6f1 0%, #eff3eb 100%); }

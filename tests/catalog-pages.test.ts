@@ -5,6 +5,18 @@ import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } fr
 const origin = "https://boardgameb2b.com";
 
 describe("SEO catalog pages", () => {
+  it("uses WhatsApp icons without displaying the phone number", () => {
+    const homepage = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
+    const product = findCatalogProduct("last-call-english-drinking-card-game-for-friends-and-family-parties-125925")!;
+    for (const html of [homepage, renderProductPage(product, origin)]) {
+      const visibleMarkup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+      expect(visibleMarkup).not.toContain("+86 199 2877 7176");
+      expect(visibleMarkup).toContain('/icons/whatsapp.svg');
+      expect(visibleMarkup).toContain('aria-label="Chat on WhatsApp"');
+      expect(visibleMarkup).toContain("https://wa.me/8619928777176");
+    }
+  });
+
   it("renders a unique, indexable product page with visible B2B content", () => {
     const product = findCatalogProduct("last-call-english-drinking-card-game-for-friends-and-family-parties-125925");
     expect(product).toBeTruthy();
