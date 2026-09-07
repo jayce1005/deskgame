@@ -2,11 +2,23 @@ import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const catalog = JSON.parse(readFileSync(new URL("../public/products.json", import.meta.url), "utf8"));
+const release = JSON.parse(readFileSync(new URL("../scripts/catalog-release-20260907.json", import.meta.url), "utf8"));
 
 describe("public catalog", () => {
-  it("contains all 431 products and 756 SKU rows", () => {
-    expect(catalog.products).toHaveLength(431);
-    expect(catalog.products.flatMap((product: { skus: unknown[] }) => product.skus)).toHaveLength(756);
+  it("contains the complete reviewed release with one product per new SKU", () => {
+    expect(catalog.products).toHaveLength(release.totalProducts);
+    expect(catalog.products.flatMap((product: { skus: unknown[] }) => product.skus)).toHaveLength(release.totalSkus);
+    expect(release.newProducts.length).toBe(141);
+    for(const item of release.newProducts){
+      const p=catalog.products.find((p: {id:string})=>p.id===item.id);
+      expect(p).toBeTruthy();
+      expect(p.title).toBe(item.title);
+      expect(p.skus).toHaveLength(1);
+      expect(p.skus[0].name).toBe(p.title);
+      expect(p.priceUsd).toBe(item.priceUsd);
+      expect(p.skus[0].priceUsd).toBe(item.priceUsd);
+      expect(p.skus[0].image).toBe(p.mainImage);
+    }
   });
 
   it("keeps English names, public USD prices, and valid images", () => {
@@ -40,7 +52,7 @@ describe("public catalog", () => {
       for (const image of product.images) images.add(image);
       for (const sku of product.skus) images.add(sku.image);
     }
-    expect(images.size).toBe(2032);
+    expect(images.size).toBe(release.totalImages);
     for (const image of images) {
       expect(image).toMatch(/^https:\/\/boardgameb2b\.com\/images\/catalog\/[a-f0-9]{64}\.(?:jpg|png|webp|gif|avif)$/);
       const pathname = new URL(image).pathname;

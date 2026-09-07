@@ -68,9 +68,24 @@ const replacements = new Map();
 const files = new Map();
 const failures = [];
 let completed = 0;
+const checkpointPath = `${stagedCatalogPath}.sources.json`;
+let cachedSources = {};
+try { cachedSources = JSON.parse(await fs.readFile(checkpointPath, 'utf8')); }
+catch (error) { if (error.code !== 'ENOENT') throw error; }
 
 async function processUrl(url) {
   try {
+    const cached = cachedSources[url];
+    if (cached && /^[a-f0-9]{64}\.(jpg|png|webp|gif|avif)$/.test(cached.filename)) {
+      try {
+        const existing = await fs.readFile(path.join(imageOutputDir, cached.filename));
+        if (createHash('sha256').update(existing).digest('hex') === cached.filename.split('.')[0]) {
+          replacements.set(url, `${publicBase}/${cached.filename}`);
+          files.set(cached.filename, cached);
+          return;
+        }
+      } catch (error) { if (error.code !== 'ENOENT') throw error; }
+    }
     const { bytes, contentType } = await fetchImage(url);
     const hash = createHash("sha256").update(bytes).digest("hex");
     const extension = detectExtension(bytes, contentType);
@@ -81,6 +96,7 @@ async function processUrl(url) {
       files.set(filename, { filename, bytes: bytes.byteLength, contentType: extensionByType.has(contentType) ? contentType : `image/${extension === "jpg" ? "jpeg" : extension}` });
     }
     replacements.set(url, `${publicBase}/${filename}`);
+    cachedSources[url] = files.get(filename);
   } catch (error) {
     failures.push({ url, error: error instanceof Error ? error.message : String(error) });
   } finally {
@@ -92,6 +108,7 @@ async function processUrl(url) {
 const concurrency = 12;
 for (let index = 0; index < sourceUrls.length; index += concurrency) {
   await Promise.all(sourceUrls.slice(index, index + concurrency).map(processUrl));
+  await fs.writeFile(checkpointPath, JSON.stringify(cachedSources));
 }
 
 if (failures.length) {

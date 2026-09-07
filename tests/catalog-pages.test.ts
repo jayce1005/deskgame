@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } from "../src/catalog-pages";
 
 const origin = "https://boardgameb2b.com";
+const catalog = JSON.parse(readFileSync(new URL("../public/products.json", import.meta.url), "utf8"));
 
 describe("SEO catalog pages", () => {
   it("uses WhatsApp icons without displaying the phone number", () => {
@@ -34,10 +35,10 @@ describe("SEO catalog pages", () => {
     expect(html).toContain(product!.skus[0].name);
   });
 
-  it("publishes the homepage and all 431 product URLs in the sitemap", () => {
+  it("publishes the homepage and every current product URL in the sitemap", () => {
     const sitemap = renderSitemap(origin);
-    expect(sitemap.match(/<url>/g)).toHaveLength(432);
-    expect(sitemap.match(/<image:image>/g)).toHaveLength(431);
+    expect(sitemap.match(/<url>/g)).toHaveLength(catalog.products.length+1);
+    expect(sitemap.match(/<image:image>/g)).toHaveLength(catalog.products.length);
     expect(sitemap).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
     expect(sitemap).toContain("<lastmod>2026-09-07</lastmod>");
     expect(sitemap).toContain("/products/last-call-english-drinking-card-game");
