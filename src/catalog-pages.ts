@@ -97,6 +97,8 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
         },
         offers: product.skus.map((sku) => ({
           "@type": "Offer",
+          name: sku.name,
+          image: sku.image,
           sku: sku.id,
           priceCurrency: "USD",
           price: sku.priceUsd.toFixed(2),
@@ -129,6 +131,8 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
     <meta name="description" content="${escapeHtml(description)}">
     <meta name="robots" content="index,follow,max-image-preview:large">
     <link rel="canonical" href="${escapeHtml(canonical)}">
+    <link rel="alternate" type="text/markdown" href="${escapeHtml(canonical)}.md">
+    <link rel="describedby" href="${origin}/llms.txt">
     <meta property="og:type" content="product">
     <meta property="og:site_name" content="BoardGame B2B">
     <meta property="og:title" content="${escapeHtml(product.title)}">
@@ -200,5 +204,5 @@ export function renderSitemap(origin: string): string {
 }
 
 export function renderRobots(origin: string): string {
-  return `User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${origin}/sitemap.xml\n`;
+  return `User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${origin}/sitemap.xml\n\n# Public machine-readable directory: ${origin}/llms.txt\n`;
 }

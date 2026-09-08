@@ -1,6 +1,7 @@
 import { parseInquiry } from "./inquiries";
 import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } from "./catalog-pages";
 import { redirectCatalogImage } from "./catalog-images";
+import {renderReadableCatalog, renderLlms, renderProductMarkdown, renderCatalogMarkdown} from './catalog-readable';
 
 const PUBLIC_ORIGIN = "https://boardgameb2b.com";
 const REDIRECT_HOSTS = new Set(["www.boardgameb2b.com", "desktop-game.ocbinks.workers.dev"]);
@@ -106,15 +107,35 @@ export default {
       if (url.pathname.startsWith("/api/")) return await handleApi(request, env);
       const imageRedirect = redirectCatalogImage(request);
       if (imageRedirect) return imageRedirect;
-      if (request.method === "GET" && url.pathname === "/sitemap.xml") {
-        return new Response(renderSitemap(PUBLIC_ORIGIN), { headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" } });
+      const readable = request.method === 'GET' || request.method === 'HEAD';
+      const textResponse = (body: string, type: string) => new Response(request.method==='HEAD'?null:body, {headers:{'content-type':type,'cache-control':'public, max-age=300','x-content-type-options':'nosniff',link:`<${PUBLIC_ORIGIN}/llms.txt>; rel="describedby"`,...(type.startsWith('text/markdown')?{'x-robots-tag':'noindex, follow'}:{})}});
+      if (readable && url.pathname === '/llms.txt') return textResponse(renderLlms(PUBLIC_ORIGIN),'text/plain; charset=utf-8');
+      if (readable && url.pathname === '/catalog.md') return textResponse(renderCatalogMarkdown(PUBLIC_ORIGIN),'text/markdown; charset=utf-8');
+      if (readable && url.pathname === '/catalog') return Response.redirect(`${PUBLIC_ORIGIN}/catalog/${url.search}`,301);
+      if (readable && url.pathname === '/catalog/') {
+        const raw = url.searchParams.get('page') ?? '1';
+        const page = /^\d+$/.test(raw) ? Number(raw) : NaN;
+        const body = renderReadableCatalog(PUBLIC_ORIGIN,page);
+        if (!body) return html('<!doctype html><title>Page not found</title><h1>Page not found</h1>',404);
+        const canonical = `${PUBLIC_ORIGIN}/catalog/${page===1?'':`?page=${page}`}`;
+        if (`${url.pathname}${url.search}`!==new URL(canonical).pathname+new URL(canonical).search) return Response.redirect(canonical,301);
+        return textResponse(body,'text/html; charset=utf-8');
       }
-      if (request.method === "GET" && url.pathname === "/robots.txt") {
-        return new Response(renderRobots(PUBLIC_ORIGIN), { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } });
+      if (readable && url.pathname.startsWith('/products/') && url.pathname.endsWith('.md')) {
+        const product = findCatalogProduct(decodeURIComponent(url.pathname.slice('/products/'.length,-3)));
+        if (!product) return new Response('Product not found',{status:404});
+        return textResponse(renderProductMarkdown(product,PUBLIC_ORIGIN),'text/markdown; charset=utf-8');
       }
-      if (request.method === "GET" && url.pathname.startsWith("/products/")) {
+      if (readable && url.pathname === "/sitemap.xml") {
+        return new Response(request.method==='HEAD'?null:renderSitemap(PUBLIC_ORIGIN), { headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" } });
+      }
+      if (readable && url.pathname === "/robots.txt") {
+        return new Response(request.method==='HEAD'?null:renderRobots(PUBLIC_ORIGIN), { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } });
+      }
+      if (readable && url.pathname.startsWith("/products/")) {
         const product = findCatalogProduct(decodeURIComponent(url.pathname.slice("/products/".length).replace(/\/$/, "")));
-        return product ? html(renderProductPage(product, PUBLIC_ORIGIN)) : html("<!doctype html><title>Product not found</title><h1>Product not found</h1><p><a href='/#catalog'>Return to the wholesale catalog</a></p>", 404);
+        const response = product ? html(renderProductPage(product, PUBLIC_ORIGIN)) : html("<!doctype html><title>Product not found</title><h1>Product not found</h1><p><a href='/#catalog'>Return to the wholesale catalog</a></p>", 404);
+        return request.method==='HEAD'?new Response(null,response):response;
       }
       return env.ASSETS.fetch(request);
     } catch (error) {
