@@ -3,15 +3,17 @@ import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 
 const catalog = JSON.parse(readFileSync(new URL("../public/products.json", import.meta.url), "utf8"));
-const release = JSON.parse(readFileSync(new URL("../scripts/catalog-release-20260907.json", import.meta.url), "utf8"));
+const previousRelease = JSON.parse(readFileSync(new URL("../scripts/catalog-release-20260907.json", import.meta.url), "utf8"));
+const release = JSON.parse(readFileSync(new URL("../scripts/catalog-release-20260908.json", import.meta.url), "utf8"));
 const imageManifest = JSON.parse(readFileSync(new URL("../scripts/catalog-images.json", import.meta.url), "utf8"));
 
 describe("public catalog", () => {
   it("contains the complete reviewed release with one product per new SKU", () => {
     expect(catalog.products).toHaveLength(release.totalProducts);
     expect(catalog.products.flatMap((product: { skus: unknown[] }) => product.skus)).toHaveLength(release.totalSkus);
-    expect(release.newProducts.length).toBe(141);
-    for(const item of release.newProducts){
+    expect(previousRelease.newProducts.length).toBe(141);
+    expect(release.newProducts.length).toBe(609);
+    for(const item of [...previousRelease.newProducts,...release.newProducts]){
       const p=catalog.products.find((p: {id:string})=>p.id===item.id);
       expect(p).toBeTruthy();
       expect(p.title).toBe(item.title);

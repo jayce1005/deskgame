@@ -1,0 +1,32 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { referencePriceUsd } from './catalog-pricing.mjs';
+const [input, output, markupArg] = process.argv.slice(2);
+const markup = Number(markupArg);
+if (!input || !output || !Number.isInteger(markup) || markup < 0 || markup > 1000) throw new Error('Usage: inspect-mercado-batch.mjs input.xlsx output.json markup-percent');
+const {FileBlob, SpreadsheetFile} = await import(process.env.ARTIFACT_TOOL_MODULE);
+const workbook = await SpreadsheetFile.importXlsx(await FileBlob.load(input));
+console.log((await workbook.inspect({kind:'workbook,sheet',maxChars:1500,tableMaxRows:2,tableMaxCols:5})).ndjson);
+const worksheet = workbook.worksheets.getItemAt(0);
+const values = worksheet.getUsedRange().values;
+const headers = values[0].map(v => String(v ?? '').trim());
+const index = Object.fromEntries(headers.map((h,i)=>[h,i]));
+for (const h of ['全球产品ID','产品标题','全球价格','产品图片','SKU','变种图片']) if(index[h] === undefined) throw new Error(`Missing ${h}`);
+const clean = v => String(v ?? '').trim();
+const urls = v => [...new Set(clean(v).split(/[\n|]+/).map(s=>s.trim()).filter(s=>/^https:\/\//i.test(s)))];
+const groups = new Map();
+for (let i=1;i<values.length;i++) {
+  const row=values[i], id=clean(row[index['全球产品ID']]);
+  if(!id) continue;
+  const costUsd=Number(row[index['全球价格']]);
+  if(!clean(row[index['全球价格']]) || !Number.isFinite(costUsd) || costUsd<=0) throw new Error(`Invalid cost at row ${i+1}`);
+  if(!groups.has(id)) groups.set(id,{id,sourceTitle:clean(row[index['产品标题']]),productImages:urls(row[index['产品图片']]),skus:[]});
+  const descriptors={};
+  headers.forEach((h,j)=>{if(h && /(^sku$|color|colour|tone|pattern|flavor|flavour|size|style|model|edition|language|quantity|颜色|尺寸|规格|款式|型号|口味)/i.test(h) && clean(row[j])) descriptors[h]=clean(row[j]);});
+  groups.get(id).skus.push({rowNumber:i+1,sourceSku:clean(row[index.SKU]),descriptors,costUsd,displayPriceUsd:referencePriceUsd(costUsd,markup),variantImages:urls(row[index['变种图片']])});
+}
+const products=[...groups.values()];
+const summary={sourceFile:input,worksheet:worksheet.name,headers:headers.filter(Boolean),sourceCurrency:'USD',markupPercent:markup,productCount:products.length,skuCount:products.reduce((n,p)=>n+p.skus.length,0),products};
+await fs.mkdir(path.dirname(output),{recursive:true});
+await fs.writeFile(output,JSON.stringify(summary,null,2)+'\n');
+console.log(JSON.stringify({...summary,products:undefined}));

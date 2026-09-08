@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fetch, EnvHttpProxyAgent} from 'undici';
 import assert from 'node:assert/strict';
+import {cleanupImageNames} from './import-cleanup-plan.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const account = '84e4375bb0b189f1b8e33cbfc48866ae';
@@ -130,7 +131,8 @@ try {
     }); } finally { await checkpoint; await writeJson(receiptPath,receipts); }
     console.log(`Upload complete: ${Object.keys(receipts).length} objects`);
   } else if(command==='verify') {
-    const manifest=await readJson(manifestPath);
+    const manifestBytes=await fs.readFile(manifestPath);
+    const manifest=JSON.parse(manifestBytes);
     const checked=[];
     let uploads=process.argv.includes('--wait-for-upload') ? await readJson(receiptPath,{}) : null;
     await pool(manifest.files,async file=>{
@@ -146,7 +148,8 @@ try {
       checked.push(file.key);
       if(checked.length%100===0) console.log(`Verified ${checked.length}/${manifest.files.length}`);
     },8);
-    await writeJson(path.join(privateDir,'verified.json'),{origin,manifestSha256:digest(await fs.readFile(manifestPath)),verifiedAt:new Date().toISOString(),count:checked.length,keys:checked.sort()});
+    assert.equal(digest(await fs.readFile(manifestPath)),digest(manifestBytes),'Manifest changed during verification; re-run verify');
+    await writeJson(path.join(privateDir,'verified.json'),{origin,manifestSha256:digest(manifestBytes),verifiedAt:new Date().toISOString(),count:checked.length,keys:checked.sort()});
     console.log(`All ${checked.length} remote image bytes verified`);
   } else if(command==='install') {
     const manifest=await verifiedManifest();
@@ -189,6 +192,55 @@ try {
     }
     await writeJson(path.join(privateDir,'site-verified.json'),{verifiedAt:new Date().toISOString(),catalogSha256:digest(await fs.readFile(path.join(root,'public/products.json'))),manifestSha256:digest(await fs.readFile(manifestPath)),products:local.products.length});
     console.log(`Production verified: ${local.products.length} products, sitemap and R2 links`);
+  } else if(command==='cleanup-imports') {
+    const manifest=await verifiedManifest();
+    const local=await readJson(path.join(root,'public/products.json'));
+    const live=await (await request('https://boardgameb2b.com/products.json')).json();
+    assert.deepEqual(live,local,'Production must match the local catalog before cleanup');
+    const verifiedKeys=new Set(manifest.files.map(f=>f.key));
+    const plan=[];
+    for(const entry of await fs.readdir(path.join(root,'.catalog-imports'),{withFileTypes:true})) {
+      if(!entry.isDirectory() || !/^\d{8}-\d{6}$/.test(entry.name)) continue;
+      const batch=path.join(root,'.catalog-imports',entry.name);
+      const review=await readJson(path.join(batch,'publication-review.json'),null);
+      const candidates=await readJson(path.join(batch,'review-candidates.json'),null);
+      if(!review || !candidates) continue;
+      const indexes=[], sources={};
+      for(const name of ['archived-image-index.json','alternate-probe.json']) {
+        const index=await readJson(path.join(batch,name),null);
+        if(index) indexes.push(index);
+        Object.assign(sources,await readJson(path.join(batch,`${name}.sources.json`),{}));
+      }
+      const names=cleanupImageNames({catalog:live,decisions:review.decisions,candidates,indexes,sources,verifiedKeys});
+      for(const dir of ['images','alternate-probe-images','publish-images']) for(const name of names) {
+        const folder=path.join(batch,dir);
+        try { assert.equal(await fs.realpath(folder),folder,'Do not follow symlinked cache directories'); }
+        catch(e) { if(e.code==='ENOENT') continue; throw e; }
+        const file=path.join(folder,name);
+        try {
+          const stat=await fs.lstat(file); assert(stat.isFile() && !stat.isSymbolicLink());
+          const bytes=await fs.readFile(file); assert.equal(digest(bytes),name.split('.')[0]);
+          plan.push({file,key:`images/catalog/${name}`,sha256:digest(bytes),bytes:bytes.length});
+        } catch(e) { if(e.code!=='ENOENT') throw e; }
+      }
+    }
+    const summary={files:plan.length,bytes:plan.reduce((n,f)=>n+f.bytes,0),apply:process.argv.includes('--apply')};
+    console.log(JSON.stringify(summary));
+    if(summary.apply) {
+      await pool([...new Map(plan.map(f=>[f.key,f])).values()],async file=>{
+        const bytes=new Uint8Array(await (await request(`${origin}/${file.key}`)).arrayBuffer());
+        assert.equal(bytes.length,file.bytes); assert.equal(digest(bytes),file.sha256);
+      });
+      assert.deepEqual(await (await request('https://boardgameb2b.com/products.json')).json(),live);
+      const receipt=path.join(privateDir,`import-cleanup-${Date.now()}.json`);
+      await writeJson(receipt,{...summary,plan,preparedAt:new Date().toISOString()});
+      for(const file of plan) {
+        assert.equal(digest(await fs.readFile(file.file)),file.sha256);
+        await fs.unlink(file.file);
+      }
+      await writeJson(receipt,{...summary,plan,completedAt:new Date().toISOString()});
+      console.log('Published image replicas removed; pending images and all review/deduplication records retained.');
+    }
   } else if(command==='cleanup') {
     const manifest=await verifiedManifest();
     const site=await readJson(path.join(privateDir,'site-verified.json'));
@@ -204,5 +256,5 @@ try {
     }
     for(const target of files) await fs.unlink(target);
     console.log(`Removed ${files.length} verified local replicas; R2 and Git history preserved`);
-  } else throw new Error('Usage: node scripts/r2-catalog-images.mjs prepare|zone|upload|verify|install|verify-site|cleanup [image-directory]');
+  } else throw new Error('Usage: node scripts/r2-catalog-images.mjs prepare|zone|upload|verify|install|verify-site|cleanup|cleanup-imports [image-directory] [--apply]');
 } finally { await dispatcher.close(); }

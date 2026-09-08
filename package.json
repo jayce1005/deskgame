@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "catalog:finish": "node scripts/r2-catalog-images.mjs verify-site && node scripts/r2-catalog-images.mjs cleanup-imports --apply",
     "dev": "wrangler dev",
     "deploy": "wrangler d1 migrations apply DB --remote && wrangler deploy",
     "cf-typegen": "WRANGLER_LOG_PATH=/tmp/desktop-game-wrangler.log wrangler types --include-runtime false --strict-vars false",

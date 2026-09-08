@@ -40,7 +40,7 @@ describe("SEO catalog pages", () => {
     expect(sitemap.match(/<url>/g)).toHaveLength(catalog.products.length+1);
     expect(sitemap.match(/<image:image>/g)).toHaveLength(catalog.products.length);
     expect(sitemap).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
-    expect(sitemap).toContain("<lastmod>2026-09-07</lastmod>");
+    expect(sitemap).toContain(`<lastmod>${catalog.generatedAt.slice(0,10)}</lastmod>`);
     expect(sitemap).toContain("/products/last-call-english-drinking-card-game");
     expect(sitemap).toContain("<image:title>");
     expect(renderRobots(origin)).toContain(`Sitemap: ${origin}/sitemap.xml`);

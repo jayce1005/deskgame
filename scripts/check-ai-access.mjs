@@ -19,7 +19,7 @@ try {
       console.log(JSON.stringify({endpoint,status:response.status,data:await response.json()}));
     }
   } else {
-    const paths=process.argv.includes('--before')?['/robots.txt','/products.json']:['/robots.txt','/sitemap.xml','/llms.txt','/catalog/','/catalog/?page=6','/catalog.md','/products.json',`/products/${catalog.products[0].slug}`,`/products/${catalog.products[0].slug}.md`];
+    const paths=process.argv.includes('--before')?['/robots.txt','/products.json']:['/robots.txt','/sitemap.xml','/llms.txt','/catalog/',`/catalog/?page=${Math.ceil(catalog.products.length/100)}`,'/catalog.md','/products.json',`/products/${catalog.products.at(-1).slug}`,`/products/${catalog.products.at(-1).slug}.md`];
     for(const ua of ['Mozilla/5.0','OAI-SearchBot','ChatGPT-User','Claude-SearchBot','PerplexityBot']) {
       for(const pathname of paths) {
         const r=await read(`https://boardgameb2b.com${pathname}`,{headers:{'user-agent':ua}});
