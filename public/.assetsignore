@@ -1,0 +1,2 @@
+# Catalog photos live independently in R2, never in a Worker deployment.
+/images/catalog/**

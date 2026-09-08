@@ -1,5 +1,6 @@
 import { parseInquiry } from "./inquiries";
 import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } from "./catalog-pages";
+import { redirectCatalogImage } from "./catalog-images";
 
 const PUBLIC_ORIGIN = "https://boardgameb2b.com";
 const REDIRECT_HOSTS = new Set(["www.boardgameb2b.com", "desktop-game.ocbinks.workers.dev"]);
@@ -103,6 +104,8 @@ export default {
         return Response.redirect(`${PUBLIC_ORIGIN}${url.pathname}${url.search}`, 301);
       }
       if (url.pathname.startsWith("/api/")) return await handleApi(request, env);
+      const imageRedirect = redirectCatalogImage(request);
+      if (imageRedirect) return imageRedirect;
       if (request.method === "GET" && url.pathname === "/sitemap.xml") {
         return new Response(renderSitemap(PUBLIC_ORIGIN), { headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" } });
       }

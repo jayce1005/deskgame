@@ -7,3 +7,4 @@ worker-configuration.d.ts
 .DS_Store
 dist/
 .catalog-imports/
+public/images/catalog/

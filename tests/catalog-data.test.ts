@@ -1,8 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 
 const catalog = JSON.parse(readFileSync(new URL("../public/products.json", import.meta.url), "utf8"));
 const release = JSON.parse(readFileSync(new URL("../scripts/catalog-release-20260907.json", import.meta.url), "utf8"));
+const imageManifest = JSON.parse(readFileSync(new URL("../scripts/catalog-images.json", import.meta.url), "utf8"));
 
 describe("public catalog", () => {
   it("contains the complete reviewed release with one product per new SKU", () => {
@@ -45,7 +47,7 @@ describe("public catalog", () => {
     expect(new Set(catalog.products.map((product: { slug: string }) => product.slug)).size).toBe(catalog.products.length);
   });
 
-  it("serves every catalog image from a checked-in local asset", () => {
+  it("serves every catalog image from the project R2 archive with a content hash manifest", () => {
     const images = new Set<string>();
     for (const product of catalog.products) {
       images.add(product.mainImage);
@@ -53,10 +55,23 @@ describe("public catalog", () => {
       for (const sku of product.skus) images.add(sku.image);
     }
     expect(images.size).toBe(release.totalImages);
+    expect(imageManifest.bucket).toBe("boardgameb2b-images");
+    expect(imageManifest.origin).toBe("https://images.boardgameb2b.com");
+    const files = new Map<string, {sha256:string; bytes:number}>(imageManifest.files.map((f: {key:string; sha256:string; bytes:number})=>[f.key,f]));
+    expect(files.size).toBe(imageManifest.files.length);
     for (const image of images) {
-      expect(image).toMatch(/^https:\/\/boardgameb2b\.com\/images\/catalog\/[a-f0-9]{64}\.(?:jpg|png|webp|gif|avif)$/);
+      expect(image).toMatch(/^https:\/\/images\.boardgameb2b\.com\/images\/catalog\/[a-f0-9]{64}\.(?:jpg|png|webp|gif|avif)$/);
       const pathname = new URL(image).pathname;
-      expect(existsSync(new URL(`../public${pathname}`, import.meta.url))).toBe(true);
+      const file = files.get(pathname.slice(1));
+      expect(file).toBeTruthy();
+      expect(file?.sha256).toBe(pathname.split('/').at(-1)?.split('.')[0]);
+      expect(file?.bytes).toBeGreaterThan(0);
+      const local = new URL(`../public${pathname}`, import.meta.url);
+      if (existsSync(local)) {
+        const bytes = readFileSync(local);
+        expect(createHash('sha256').update(bytes).digest('hex')).toBe(file?.sha256);
+        expect(bytes.length).toBe(file?.bytes);
+      }
     }
   });
 });
