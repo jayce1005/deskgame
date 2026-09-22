@@ -173,6 +173,48 @@ dialog::backdrop { background: rgba(9, 25, 16, .72); backdrop-filter: blur(5px);
 .seo-b2b-note h2 { margin: 20px 0; font: 700 clamp(34px, 4.5vw, 62px)/1.08 Manrope, sans-serif; letter-spacing: -.05em; }
 .seo-b2b-note p { max-width: 720px; margin: 0 auto 30px; color: #657169; font-size: 14px; line-height: 1.75; }
 .seo-direct-contact { margin-top: 24px !important; font-size: 12px !important; overflow-wrap: anywhere; }
+/* Buyer guides */
+.guide-index { min-height: 70vh; padding: 90px 7vw 120px; }
+.guide-index > h1 { max-width: 900px; margin: 18px 0 22px; font: 700 clamp(48px, 7vw, 92px)/.98 Manrope, sans-serif; letter-spacing: -.06em; }
+.guide-index-lead { max-width: 680px; margin: 0; color: #637068; font-size: 17px; line-height: 1.7; }
+.guide-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 58px; }
+.guide-card { padding: 38px; border: 1px solid var(--line); background: #fff; }
+.guide-card h2 { margin: 15px 0; font: 700 clamp(24px, 3vw, 38px)/1.15 Manrope, sans-serif; letter-spacing: -.04em; }
+.guide-card h2 a:hover { color: #4f7c3e; }
+.guide-card p { max-width: 640px; margin: 0 0 28px; color: #657169; line-height: 1.7; }
+.guide-index-catalog { margin: 55px 0 0; }
+.guide-page { padding: 34px 4.5vw 110px; }
+.guide-article { max-width: 1180px; margin: 0 auto; background: #fff; }
+.guide-hero { padding: 72px max(7vw, 60px) 62px; border-bottom: 1px solid var(--line); background: linear-gradient(135deg, #eef3e9, #fff 70%); }
+.guide-hero h1 { max-width: 980px; margin: 20px 0 24px; font: 700 clamp(44px, 6vw, 82px)/1.01 Manrope, sans-serif; letter-spacing: -.06em; }
+.guide-hero > p { max-width: 760px; margin: 0; color: #58675e; font-size: 18px; line-height: 1.65; }
+.guide-meta { display: flex; gap: 22px; margin-top: 34px; color: #77837b; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.guide-body { max-width: 800px; margin: 0 auto; padding: 68px 30px 85px; }
+.guide-body p, .guide-body li { color: #4f5e55; font-size: 16px; line-height: 1.82; }
+.guide-body p { margin: 0 0 24px; }
+.guide-body h2 { margin: 60px 0 18px; color: var(--ink); font: 700 clamp(28px, 3vw, 39px)/1.15 Manrope, sans-serif; letter-spacing: -.04em; }
+.guide-body ul, .guide-body ol { padding-left: 24px; }
+.guide-body a { color: #376d50; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.guide-intro { color: #293b31 !important; font-size: 20px !important; line-height: 1.7 !important; }
+.guide-summary { margin: 48px 0 12px; padding: 32px 36px; border-left: 4px solid #6f9658; background: #f0f3ec; }
+.guide-summary h2 { margin: 0 0 14px; font-size: 24px; }
+.guide-summary ol { margin: 0; }
+.guide-table-wrap { margin: 30px 0; overflow-x: auto; }
+.guide-table-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.guide-table-wrap th, .guide-table-wrap td { padding: 15px 14px; border: 1px solid var(--line); text-align: left; vertical-align: top; line-height: 1.55; }
+.guide-table-wrap thead th { background: var(--forest); color: #fff; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+.guide-table-wrap tbody th { min-width: 260px; font-weight: 700; }
+.guide-table-wrap td:nth-child(2) { min-width: 120px; color: #4f7c3e; font-weight: 800; white-space: nowrap; }
+.guide-cta { margin-top: 70px; padding: 38px; background: var(--forest); color: #fff; }
+.guide-cta .kicker { color: #b9cbbd; }
+.guide-cta h2 { margin-top: 15px; color: #fff; }
+.guide-cta p { color: #c2cec5; }
+.guide-cta > div { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.guide-cta .inquiry-button { background: var(--lime); color: var(--forest); text-decoration: none; }
+.guide-cta .whatsapp-button { margin-top: 16px; border-color: rgba(255,255,255,.5); background: transparent; color: #fff; text-decoration: none; }
+.guide-contact { margin: 18px 0 0 !important; font-size: 12px !important; }
+.guide-contact a { color: var(--lime); }
+.guide-more { display: flex; justify-content: center; gap: 30px; max-width: 1180px; margin: 42px auto 0; }
 @media (max-width: 820px) {
   .site-header { grid-template-columns: 1fr auto; min-height: 72px; }
   nav { display: none; }
@@ -188,6 +230,7 @@ dialog::backdrop { background: rgba(9, 25, 16, .72); backdrop-filter: blur(5px);
   .seo-main-image { max-width: 320px; }
   .seo-sku-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .contact-section { grid-template-columns: 1fr; }
+  .guide-grid { grid-template-columns: 1fr; }
   footer { grid-template-columns: 1fr; }
 }
 @media (max-width: 520px) {
@@ -214,6 +257,13 @@ dialog::backdrop { background: rgba(9, 25, 16, .72); backdrop-filter: blur(5px);
   .seo-product-shell { padding: 20px; }
   .seo-sku-grid { grid-template-columns: 1fr; }
   .product-contact-actions { grid-template-columns: 1fr; }
+  .guide-index { padding: 70px 20px 90px; }
+  .guide-page { padding: 24px 18px 80px; }
+  .guide-hero { padding: 50px 24px 42px; }
+  .guide-body { padding: 45px 20px 60px; }
+  .guide-summary, .guide-cta { padding: 25px 22px; }
+  .guide-cta > div { grid-template-columns: 1fr; }
+  .guide-more { align-items: center; flex-direction: column; gap: 12px; }
 }
 @media (min-width: 821px) and (max-width: 1120px) {
   .product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }

@@ -2,6 +2,7 @@ import { parseInquiry } from "./inquiries";
 import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } from "./catalog-pages";
 import { redirectCatalogImage } from "./catalog-images";
 import {renderReadableCatalog, renderLlms, renderProductMarkdown, renderCatalogMarkdown} from './catalog-readable';
+import { findGuide, renderGuideIndex, renderGuideMarkdown, renderGuidePage } from "./guides";
 
 const PUBLIC_ORIGIN = "https://boardgameb2b.com";
 const REDIRECT_HOSTS = new Set(["www.boardgameb2b.com", "desktop-game.ocbinks.workers.dev"]);
@@ -111,6 +112,25 @@ export default {
       const textResponse = (body: string, type: string) => new Response(request.method==='HEAD'?null:body, {headers:{'content-type':type,'cache-control':'public, max-age=300','x-content-type-options':'nosniff',link:`<${PUBLIC_ORIGIN}/llms.txt>; rel="describedby"`,...(type.startsWith('text/markdown')?{'x-robots-tag':'noindex, follow'}:{})}});
       if (readable && url.pathname === '/llms.txt') return textResponse(renderLlms(PUBLIC_ORIGIN),'text/plain; charset=utf-8');
       if (readable && url.pathname === '/catalog.md') return textResponse(renderCatalogMarkdown(PUBLIC_ORIGIN),'text/markdown; charset=utf-8');
+      if (readable && url.pathname === '/guides') return Response.redirect(`${PUBLIC_ORIGIN}/guides/${url.search}`, 301);
+      if (readable && url.pathname === '/guides/') {
+        const response = html(renderGuideIndex(PUBLIC_ORIGIN));
+        return request.method === 'HEAD' ? new Response(null, response) : response;
+      }
+      if (readable && url.pathname.startsWith('/guides/') && url.pathname.endsWith('.md')) {
+        const guide = findGuide(decodeURIComponent(url.pathname.slice('/guides/'.length, -3)));
+        if (!guide) return new Response('Guide not found', { status: 404 });
+        return textResponse(renderGuideMarkdown(guide, PUBLIC_ORIGIN), 'text/markdown; charset=utf-8');
+      }
+      if (readable && url.pathname.startsWith('/guides/')) {
+        const requestedSlug = decodeURIComponent(url.pathname.slice('/guides/'.length).replace(/\/$/, ''));
+        const guide = findGuide(requestedSlug);
+        if (!guide) return html('<!doctype html><title>Guide not found</title><h1>Guide not found</h1>', 404);
+        const canonicalPath = `/guides/${guide.slug}`;
+        if (url.pathname !== canonicalPath) return Response.redirect(`${PUBLIC_ORIGIN}${canonicalPath}`, 301);
+        const response = html(renderGuidePage(guide, PUBLIC_ORIGIN));
+        return request.method === 'HEAD' ? new Response(null, response) : response;
+      }
       if (readable && url.pathname === '/catalog') return Response.redirect(`${PUBLIC_ORIGIN}/catalog/${url.search}`,301);
       if (readable && url.pathname === '/catalog/') {
         const raw = url.searchParams.get('page') ?? '1';

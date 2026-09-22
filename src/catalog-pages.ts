@@ -1,4 +1,5 @@
 import catalogJson from "../public/products.json";
+import { GUIDES } from "./guides";
 
 interface CatalogSku {
   id: string;
@@ -196,11 +197,13 @@ export function renderSitemap(origin: string): string {
   const catalogUpdated = catalog.generatedAt.slice(0, 10);
   const lastModified = catalogUpdated > SEO_TEMPLATE_UPDATED ? catalogUpdated : SEO_TEMPLATE_UPDATED;
   const homepage = `  <url><loc>${escapeXml(`${origin}/`)}</loc><lastmod>${lastModified}</lastmod></url>`;
+  const guideIndex = `  <url><loc>${escapeXml(`${origin}/guides/`)}</loc><lastmod>${GUIDES[0]?.updated ?? lastModified}</lastmod></url>`;
+  const guides = GUIDES.map((guide) => `  <url><loc>${escapeXml(`${origin}/guides/${guide.slug}`)}</loc><lastmod>${guide.updated}</lastmod></url>`);
   const products = catalog.products.map((product) => {
     const url = `${origin}/products/${encodeURIComponent(product.slug)}`;
     return `  <url><loc>${escapeXml(url)}</loc><lastmod>${lastModified}</lastmod><image:image><image:loc>${escapeXml(product.mainImage)}</image:loc><image:title>${escapeXml(product.title)}</image:title></image:image></url>`;
   });
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${[homepage, ...products].join("\n")}\n</urlset>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${[homepage, guideIndex, ...guides, ...products].join("\n")}\n</urlset>\n`;
 }
 
 export function renderRobots(origin: string): string {

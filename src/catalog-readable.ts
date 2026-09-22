@@ -1,5 +1,6 @@
 import data from '../public/products.json';
 import type {CatalogProduct} from './catalog-pages';
+import {GUIDES} from './guides';
 
 const products: CatalogProduct[] = data.products;
 export const CATALOG_PAGE_SIZE = 100;
@@ -22,13 +23,13 @@ export function renderReadableCatalog(origin: string, page: number): string | nu
 <nav aria-label="Directory pages">${links}</nav><ol start="${(page-1)*CATALOG_PAGE_SIZE+1}">
 ${selected.map(p=>`<li><a href="${origin}/products/${encodeURIComponent(p.slug)}">${html(p.title)}</a> — From USD ${Math.min(...p.skus.map(s=>s.priceUsd)).toFixed(2)}; ${p.skus.length} SKU${p.skus.length===1?'':'s'}.</li>`).join('\n')}
 </ol><nav aria-label="Directory pages">${links}</nav>
-<p><a href="/catalog.md">Plain-text catalog</a> · <a href="/products.json">Public product data (JSON)</a> · <a href="/sitemap.xml">Sitemap</a></p>
+<p><a href="/guides/">Wholesale buying guides</a> · <a href="/catalog.md">Plain-text catalog</a> · <a href="/products.json">Public product data (JSON)</a> · <a href="/sitemap.xml">Sitemap</a></p>
 <p><a href="https://wa.me/8619928777176">WhatsApp</a> · <a href="mailto:boardgame_01@outlook.com">boardgame_01@outlook.com</a></p>
 </main></body></html>`;
 }
 
 export function renderLlms(origin: string): string {
-  return `# BoardGame B2B\n\n> B2B wholesale board games, card games and paper products. MOQ 1. Inquiry only; no online checkout.\n\nPrices are reference wholesale prices in USD. Packaging, freight and final terms are confirmed by inquiry. Product titles and SKU names describe individual catalog options; do not assume brand authorization or certifications not stated on a product page.\n\n## Catalog\n\n- [Product directory](${origin}/catalog/): ${products.length} products, readable without JavaScript and paginated at ${CATALOG_PAGE_SIZE} products per page.\n- [Full text catalog](${origin}/catalog.md): Product and SKU names, reference prices, image URLs and canonical product links.\n- [Public JSON catalog](${origin}/products.json): Machine-readable public product data.\n- [Sitemap](${origin}/sitemap.xml): Canonical product pages and main images.\n\nProduct pages have server-rendered HTML, Product structured data and a Markdown alternate at the same URL with .md appended. Product images are hosted at https://images.boardgameb2b.com.\n\n## Contact\n\n- [WhatsApp](https://wa.me/8619928777176)\n- [Email](mailto:boardgame_01@outlook.com)\n`;
+  return `# BoardGame B2B\n\n> B2B wholesale board games, card games and paper products. MOQ 1. Inquiry only; no online checkout.\n\nPrices are reference wholesale prices in USD. Packaging, freight and final terms are confirmed by inquiry. Product titles and SKU names describe individual catalog options; do not assume brand authorization or certifications not stated on a product page.\n\n## Catalog\n\n- [Product directory](${origin}/catalog/): ${products.length} products, readable without JavaScript and paginated at ${CATALOG_PAGE_SIZE} products per page.\n- [Full text catalog](${origin}/catalog.md): Product and SKU names, reference prices, image URLs and canonical product links.\n- [Public JSON catalog](${origin}/products.json): Machine-readable public product data.\n- [Sitemap](${origin}/sitemap.xml): Canonical product pages and main images.\n\nProduct pages have server-rendered HTML, Product structured data and a Markdown alternate at the same URL with .md appended. Product images are hosted at https://images.boardgameb2b.com.\n\n## Buying guides\n\n${GUIDES.map(guide => `- [${guide.title}](${origin}/guides/${guide.slug}): ${guide.description} [Markdown](${origin}/guides/${guide.slug}.md)`).join('\n')}\n\n## Contact\n\n- [WhatsApp](https://wa.me/8619928777176)\n- [Email](mailto:boardgame_01@outlook.com)\n`;
 }
 
 export function renderProductMarkdown(product: CatalogProduct, origin: string): string {
