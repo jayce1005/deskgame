@@ -9,7 +9,7 @@ describe("wholesale buying guides", () => {
     const guide = findGuide(slug)!;
     const html = renderGuidePage(guide, origin);
     expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${slug}">`);
-    expect(html).toContain(`<h1>${guide.title}</h1>`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
     expect(html).toContain('"@type":"Article"');
     expect(html).toContain('"@type":"BreadcrumbList"');
     expect(html).toContain('property="og:type" content="article"');
@@ -38,5 +38,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain(`Canonical URL: ${origin}/guides/${slug}`);
     expect(markdown).toContain("## Buyer checklist");
     expect(markdown).toContain("Displayed prices are USD wholesale reference prices");
+  });
+
+  it("publishes a distinct custom printing and packaging inquiry guide", () => {
+    const customSlug = "custom-card-game-printing-packaging-inquiry-checklist";
+    const guide = findGuide(customSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${customSlug}">`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Artwork status and one version-controlled file set");
+    expect(html).toContain("not custom-printing quotations");
+    expect(html).toContain("destination country and postal code");
+    expect(html).not.toMatch(/certified|licensed|annual capacity|ships in \d+ days/i);
+    expect(markdown).toContain("## Information to prepare");
+    expect(markdown).toContain("must be confirmed by inquiry");
   });
 });
