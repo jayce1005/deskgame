@@ -57,4 +57,22 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Information to prepare");
     expect(markdown).toContain("must be confirmed by inquiry");
   });
+
+  it("publishes a distinct MOQ 1 sample-order planning guide", () => {
+    const sampleSlug = "moq-1-board-game-sample-order-plan";
+    const guide = findGuide(sampleSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${sampleSlug}">`);
+    expect(html).toContain(`<h1>${guide.title}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Every sample should have a reason for being in the order");
+    expect(html).toContain("website reference price from the final quotation");
+    expect(html).toContain("destination country and postal code");
+    expect(html).not.toMatch(/certified|licensed|annual capacity|ships in \d+ days/i);
+    expect(markdown).toContain("## Sample order plan");
+    expect(markdown).toContain("MOQ 1 for public catalog products");
+  });
 });

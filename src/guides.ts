@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "moq-1-board-game-sample-order-plan",
+    title: "MOQ 1 Board Game Sourcing: A Sample Order Plan for B2B Buyers",
+    description: "A practical plan for using MOQ 1 to compare board game and card game samples, document SKU findings and prepare a better follow-up quotation request.",
+    published: "2026-09-25",
+    updated: "2026-09-25",
+  },
+  {
     slug: "custom-card-game-printing-packaging-inquiry-checklist",
     title: "Custom Card Game Printing & Packaging: An Inquiry Checklist",
     description: "A practical B2B checklist for organizing artwork, card content, packaging choices, quantities and delivery details before requesting a custom card game quotation.",
@@ -92,6 +99,39 @@ const customExamples = [
   },
 ];
 
+const sampleOrderExamples = [
+  {
+    title: "Digital Number Tile Family Board Game",
+    slug: "digital-number-tile-family-board-game-745351",
+    price: "USD 6.51",
+    review: "A family board-game format for reviewing a component-based product.",
+  },
+  {
+    title: "Guess in 10 Animal Planet Kids' Educational Card Game",
+    slug: "guess-in-10-animal-planet-kids-educational-card-game-125219",
+    price: "USD 2.24",
+    review: "A children’s educational card-game format with a named catalog SKU.",
+  },
+  {
+    title: "Tag Team English Two-Player Fighting Card Game",
+    slug: "tag-team-english-two-player-fighting-card-game-740413",
+    price: "USD 7.45",
+    review: "An English two-player card-game format for checking audience and language fit.",
+  },
+  {
+    title: "Mindful Talk for Kids Parent-Child Conversation Cards",
+    slug: "mindful-talk-for-kids-parent-child-conversation-cards-124559",
+    price: "USD 3.73",
+    review: "A parent-child conversation-card format for comparing a prompt-led deck.",
+  },
+  {
+    title: "Casting Shadows English Strategy Board Game and Expansion",
+    slug: "casting-shadows-english-strategy-board-game-and-expansion-744615",
+    price: "USD 14.90",
+    review: "A two-SKU listing that separates the English base game from its English expansion.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -140,6 +180,88 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderSampleOrderGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like to prepare an MOQ 1 board game sample inquiry.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = sampleOrderExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.review)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">MOQ 1 sample order plan</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Low-quantity product review</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published September 25, 2026</time><span>8-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">MOQ 1 gives a wholesale buyer a practical way to examine individual catalog products before planning a larger assortment. The value of a sample order, however, depends on how it is designed and recorded. A random group of attractive games produces less useful information than a small set chosen to answer specific buying questions.</p>
+          <aside class="guide-summary" aria-labelledby="sampleQuickChecklist"><h2 id="sampleQuickChecklist">A useful sample plan</h2><ol><li>Write the decision each sample must support.</li><li>Select exact product and SKU links.</li><li>Compare different formats without mixing the criteria.</li><li>Record language, packaging, components and displayed price.</li><li>Use the findings in a SKU-by-SKU follow-up inquiry.</li></ol></aside>
+
+          <h2>1. Decide what the sample order must teach you</h2>
+          <p>Start with a short list of questions. You may need to compare a card-only deck with a component-based board game, review the difference between a base game and an expansion, check whether an English edition fits your market, or examine how a children’s product differs from an adult product. Every sample should have a reason for being in the order.</p>
+          <p>This prevents the review from becoming a simple preference test. The objective is to collect facts that help a buyer decide which exact SKUs deserve a quotation for the next quantity.</p>
+
+          <h2>2. Select exact SKUs, not broad product ideas</h2>
+          <p>Record the canonical product URL, full product title and chosen SKU name. If one listing contains several SKUs, treat each option as a separate line. A base game and an expansion, for example, should not be merged because their roles in an assortment are different even when they share a product page.</p>
+          <p>Language and edition wording should be copied exactly from the catalog. Do not shorten a title in a way that removes “English,” “bilingual,” “kids,” “expansion” or another detail that changes the buyer’s interpretation.</p>
+
+          <h2>3. Build a balanced review set</h2>
+          <p>A balanced set does not need to be large. It needs enough contrast to answer your questions. One approach is to select a family game, an educational card game, a two-player title, a conversation deck and a listing with more than one SKU. This creates a useful comparison across audience, play format and product structure.</p>
+          <p>Keep category expectations separate. A compact prompt deck and a component-based strategy game should not be judged by the same packaging or displayed-price benchmark. Compare each sample with the role you want it to fill.</p>
+
+          <h2>4. Review current catalog examples</h2>
+          <p>The following live listings illustrate a varied sample set. Prices are the current USD wholesale reference prices displayed for these catalog products. They are not delivered prices or final quotation terms.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog sample</th><th>Displayed price</th><th>What it can help review</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>The purpose of this table is not to recommend one product over another. It shows how a buyer can give each sample a defined review task and preserve the link between the product, SKU and reference price.</p>
+
+          <h2>5. Use one inspection sheet for every sample</h2>
+          <p>Create the same record for each item so observations remain comparable. Include the product and SKU names, language or edition, package condition on arrival, visible components, printed content, reference price captured from the site and any questions that need supplier confirmation.</p>
+          <p>Photographing the received item beside its SKU record can reduce mix-ups when several visually similar products are reviewed at once. Keep subjective reactions—such as audience appeal—separate from observable details and unanswered commercial questions.</p>
+
+          <h2>6. Understand what MOQ 1 does and does not mean</h2>
+          <p>BoardGame B2B states MOQ 1 for the products in its public catalog, with USD wholesale reference pricing available from a single unit. The site is for B2B inquiries, not online checkout. Availability, packaging, freight and final terms are confirmed separately.</p>
+          <p>MOQ 1 makes a small starting selection possible; it does not make every cost or condition identical at every quantity. Use the displayed price for initial comparison, then request confirmation for the exact SKUs, quantities and destination you plan to buy.</p>
+
+          <h2>7. Turn inspection notes into a follow-up quotation</h2>
+          <p>After review, divide samples into three groups: proceed, hold for clarification and remove from the shortlist. For each “proceed” item, send the product URL, exact SKU name and intended quantity. Add the destination country and postal code, packaging requirements and desired receiving date or planning window.</p>
+          <p>For items needing clarification, ask a specific question tied to the SKU. Avoid a general request such as “send more information.” A question about edition, included components, packaging or availability is easier to confirm and keep in the final quotation record.</p>
+
+          <h2>8. Preserve the decision trail</h2>
+          <p>Keep the sample inspection sheet with the supplier’s confirmed response. Separate the website reference price from the final quotation and note the date each was recorded. If you later change the SKU, quantity, packaging request or destination, request an updated confirmation rather than applying an old figure to a new requirement.</p>
+
+          <section class="guide-cta" aria-labelledby="sampleGuideCta"><span class="kicker">Start with a defined review</span><h2 id="sampleGuideCta">Choose the questions first, then choose the samples.</h2><p>Send the exact product links and SKU names, quantity for each item, destination and any packaging questions. The wholesale team can confirm availability, freight and final terms.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=MOQ%201%20board%20game%20sample%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderCustomGuidePage(guide: Guide, origin: string): string {
@@ -225,6 +347,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "moq-1-board-game-sample-order-plan") return renderSampleOrderGuidePage(guide, origin);
   if (guide.slug === "custom-card-game-printing-packaging-inquiry-checklist") return renderCustomGuidePage(guide, origin);
   const canonical = `${origin}/guides/${guide.slug}`;
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like a quotation for wholesale party card games.")}`;
@@ -305,6 +428,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "moq-1-board-game-sample-order-plan") {
+    const products = sampleOrderExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.review}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Sample order plan\n\n1. Write the decision each sample must support.\n2. Select exact product and SKU links.\n3. Compare different formats without mixing the criteria.\n4. Record language, packaging, components and displayed price.\n5. Use the findings in a SKU-by-SKU follow-up inquiry.\n\n## Catalog sample references\n\n${products}\n\nBoardGame B2B states MOQ 1 for public catalog products and displays USD wholesale reference prices. The site is for B2B inquiries, not online checkout. Availability, packaging, freight and final terms are confirmed separately.\n\n## Follow-up quotation\n\nSend the product URL, exact SKU name, quantity for each item, destination country and postal code, packaging questions, and desired receiving date or planning window. Keep the displayed reference price separate from the final quotation.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "custom-card-game-printing-packaging-inquiry-checklist") {
     const products = customExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.format}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Information to prepare\n\n1. Project purpose, audience and language.\n2. Card count and any other required components.\n3. Finished format and packaging direction.\n4. Artwork status and one version-controlled file set.\n5. Quantity options, destination and desired timing.\n\n## Catalog format references\n\n${products}\n\nDisplayed prices apply to the linked catalog products and are not custom-printing quotations. Existing catalog listings show MOQ 1 and USD reference prices; custom project requirements, pricing, packaging, freight and final terms must be confirmed by inquiry.\n\n## Inquiry details\n\nSend the working name of each SKU, its component list, language, packaging direction, artwork status, requested quantities, destination country and postal code, and desired timing. Ask the supplier to confirm accepted artwork requirements and all final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
