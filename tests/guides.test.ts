@@ -75,4 +75,22 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Sample order plan");
     expect(markdown).toContain("MOQ 1 for public catalog products");
   });
+
+  it("publishes a distinct lead-time and shipping inquiry guide", () => {
+    const shippingSlug = "board-game-lead-time-shipping-inquiry-checklist";
+    const guide = findGuide(shippingSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${shippingSlug}">`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Separate availability, preparation and transit");
+    expect(html).toContain("Destination country, city and postal code");
+    expect(html).toContain("not freight quotes or delivered costs");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Details to send together");
+    expect(markdown).toContain("not freight quotes or delivered costs");
+  });
 });

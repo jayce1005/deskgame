@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "board-game-lead-time-shipping-inquiry-checklist",
+    title: "Board Game Lead Time & Shipping: A B2B Inquiry Checklist",
+    description: "A practical checklist for giving suppliers the product, quantity, destination and timing details needed to confirm board game availability, lead time and freight terms.",
+    published: "2026-09-29",
+    updated: "2026-09-29",
+  },
+  {
     slug: "moq-1-board-game-sample-order-plan",
     title: "MOQ 1 Board Game Sourcing: A Sample Order Plan for B2B Buyers",
     description: "A practical plan for using MOQ 1 to compare board game and card game samples, document SKU findings and prepare a better follow-up quotation request.",
@@ -132,6 +139,39 @@ const sampleOrderExamples = [
   },
 ];
 
+const shippingInquiryExamples = [
+  {
+    title: "So... Cards English Conversation Starter Deck",
+    slug: "so-cards-english-conversation-starter-deck-739639",
+    price: "USD 1.49",
+    planning: "A single-SKU English card deck for a straightforward product-line record.",
+  },
+  {
+    title: "Captain Flip Bilingual Family Board Game",
+    slug: "captain-flip-bilingual-family-board-game-727561",
+    price: "USD 5.13",
+    planning: "A bilingual board-game listing with two named SKUs that must be separated in an inquiry.",
+  },
+  {
+    title: "Sewing Journal and Quilting Project Cards – 3 Options",
+    slug: "sewing-journal-and-quilting-project-cards-3-options-570163",
+    price: "USD 4.10",
+    planning: "A three-option listing that illustrates why quantities belong beside exact SKU names.",
+  },
+  {
+    title: "Patchwork Christmas Edition Two-Player Board Game",
+    slug: "patchwork-christmas-edition-two-player-board-game-737871",
+    price: "USD 4.48",
+    planning: "A seasonal edition where the requested receiving date should be stated clearly.",
+  },
+  {
+    title: "Sail English Two-Player Cooperative Card Game with Expansion",
+    slug: "sail-english-two-player-cooperative-card-game-with-expansion-732493",
+    price: "USD 3.73",
+    planning: "A listing whose title identifies an included expansion, useful for confirming package scope.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -180,6 +220,89 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderShippingInquiryGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like to confirm availability, lead time and freight for a board game inquiry.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = shippingInquiryExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.planning)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Lead time and shipping checklist</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Quotation and delivery planning</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published September 29, 2026</time><span>8-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">A supplier cannot confirm a useful board game timeline from a product name and country alone. Availability, preparation time and freight depend on the exact SKU, quantity, package scope, destination and the meaning of your requested date. A complete first inquiry gives both sides a shared basis for planning without turning an estimate into an unsupported promise.</p>
+          <aside class="guide-summary" aria-labelledby="shippingQuickChecklist"><h2 id="shippingQuickChecklist">Send these details together</h2><ol><li>Exact product URL and SKU name.</li><li>Quantity for every SKU.</li><li>Destination country, city and postal code.</li><li>Packaging or labeling requirements.</li><li>Your requested receiving date or planning window.</li></ol></aside>
+
+          <h2>1. Separate availability, preparation and transit</h2>
+          <p>“How long does shipping take?” combines several different questions. First confirm whether the exact SKU and quantity are available. Then ask when the order could be ready under the confirmed packaging requirements. Finally, request the freight option and estimated transit information for the stated destination.</p>
+          <p>Keeping these stages separate makes revisions easier to understand. A change in SKU, quantity, packaging or destination can affect one or more stages, so the earlier answer should not automatically be applied to the new request.</p>
+
+          <h2>2. Identify every line by product and SKU</h2>
+          <p>Copy the canonical product URL, full title and selected SKU name into the inquiry. For a multi-SKU listing, place the quantity beside each option. Do not send only a screenshot or a shortened name, because similar artwork or related editions may not describe the same item.</p>
+          <p>Repeat language, edition and expansion wording exactly as shown. If a listing distinguishes a base game, expansion, seasonal edition or bilingual option, keep that distinction in the order plan and ask the supplier to confirm the package scope.</p>
+
+          <h2>3. State the destination precisely</h2>
+          <p>Country alone is not enough for a useful freight discussion. Provide the destination city and postal code, and explain whether the address is commercial or residential if that information is relevant to the requested quotation. If you require delivery to a warehouse, port or other named point, state it clearly and ask what the quoted freight basis includes.</p>
+          <p>Do not assume that a freight figure includes duties, taxes, local handling or every delivery service. Ask the supplier to identify inclusions and exclusions in plain language. Legal and import obligations should be confirmed with the appropriate qualified parties for the destination market.</p>
+
+          <h2>4. Define the date you actually mean</h2>
+          <p>A buyer’s “deadline” may mean the date goods must be ready, leave the origin, reach a destination facility or become available for a launch. Write the specific milestone and date. When the schedule is flexible, provide a planning window instead of a single hard date.</p>
+          <p>For seasonal or event-led products, also state the latest useful receiving date. This helps the supplier evaluate the request against availability and freight choices without assuming a timetable that was never provided.</p>
+
+          <h2>5. Use live catalog listings as planning examples</h2>
+          <p>The listings below illustrate why timeline questions should stay attached to exact SKUs and package descriptions. Their displayed prices are USD wholesale references for the linked catalog items, not freight quotes or delivered costs.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog reference</th><th>Displayed price</th><th>Planning detail to preserve</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>The examples range from a single card-deck SKU to multi-option listings and a seasonal edition. The right comparison is not which item is “fastest”; it is whether the inquiry contains enough detail for the supplier to confirm the requested item and timing.</p>
+
+          <h2>6. Keep packaging changes visible</h2>
+          <p>If you need labels, outer-carton marks, inserts or another packaging change, include that requirement before requesting the timeline. Do not treat a modified package as identical to the standard catalog item. Ask what files, approvals or confirmations are needed and whether the request changes the preparation schedule.</p>
+          <p>Use version-controlled artwork names when files are involved. A clear file version and approval status help prevent the timeline from being discussed against an obsolete package.</p>
+
+          <h2>7. Ask for a dated, conditional response</h2>
+          <p>Request confirmation for the exact inquiry version and note the date of the response. A useful reply should identify the SKU and quantity, current availability, any preparation assumptions, the freight basis and the timing estimate associated with those details.</p>
+          <p>Treat timing as an estimate until the supplier confirms the final commercial terms. If the order details change or time passes, ask for an updated confirmation rather than relying on an older message.</p>
+
+          <h2>8. Keep website prices separate from delivered cost</h2>
+          <p>BoardGame B2B displays MOQ 1 and USD wholesale reference prices for catalog products. It is a B2B inquiry site, not an online checkout. The displayed product price does not by itself include packaging changes, freight or final commercial terms.</p>
+          <p>In your comparison sheet, keep columns for the displayed reference price, confirmed product quotation, freight basis and other confirmed amounts. This preserves the source of each figure and prevents a product-page price from being mistaken for a delivered total.</p>
+
+          <section class="guide-cta" aria-labelledby="shippingGuideCta"><span class="kicker">Request a usable timeline</span><h2 id="shippingGuideCta">Send the SKU, quantity, destination and date in one message.</h2><p>Add packaging requirements and ask the wholesale team to confirm availability, preparation assumptions, freight basis and final terms for that exact request.</p><div><a class="inquiry-button" href="/#contact">Start an inquiry <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Board%20game%20lead%20time%20and%20shipping%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderSampleOrderGuidePage(guide: Guide, origin: string): string {
@@ -347,6 +470,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "board-game-lead-time-shipping-inquiry-checklist") return renderShippingInquiryGuidePage(guide, origin);
   if (guide.slug === "moq-1-board-game-sample-order-plan") return renderSampleOrderGuidePage(guide, origin);
   if (guide.slug === "custom-card-game-printing-packaging-inquiry-checklist") return renderCustomGuidePage(guide, origin);
   const canonical = `${origin}/guides/${guide.slug}`;
@@ -428,6 +552,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "board-game-lead-time-shipping-inquiry-checklist") {
+    const products = shippingInquiryExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.planning}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Details to send together\n\n1. Exact product URL and SKU name.\n2. Quantity for every SKU.\n3. Destination country, city and postal code.\n4. Packaging or labeling requirements.\n5. Requested receiving date or planning window.\n\n## Catalog planning references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. They are not freight quotes or delivered costs. BoardGame B2B is a B2B inquiry site with MOQ 1; availability, preparation assumptions, packaging, freight and final terms are confirmed separately.\n\n## Timeline request\n\nAsk the supplier to separate current availability, order preparation and transit information. State the milestone your date refers to and request a dated response for the exact SKU, quantity, destination and packaging version.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "moq-1-board-game-sample-order-plan") {
     const products = sampleOrderExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.review}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Sample order plan\n\n1. Write the decision each sample must support.\n2. Select exact product and SKU links.\n3. Compare different formats without mixing the criteria.\n4. Record language, packaging, components and displayed price.\n5. Use the findings in a SKU-by-SKU follow-up inquiry.\n\n## Catalog sample references\n\n${products}\n\nBoardGame B2B states MOQ 1 for public catalog products and displays USD wholesale reference prices. The site is for B2B inquiries, not online checkout. Availability, packaging, freight and final terms are confirmed separately.\n\n## Follow-up quotation\n\nSend the product URL, exact SKU name, quantity for each item, destination country and postal code, packaging questions, and desired receiving date or planning window. Keep the displayed reference price separate from the final quotation.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
