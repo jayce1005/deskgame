@@ -93,4 +93,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Details to send together");
     expect(markdown).toContain("not freight quotes or delivered costs");
   });
+
+  it("publishes a distinct two-player games category guide", () => {
+    const twoPlayerSlug = "wholesale-two-player-board-games-card-games-guide";
+    const guide = findGuide(twoPlayerSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${twoPlayerSlug}">`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Separate play style from product format");
+    expect(html).toContain("Language affects the product customers receive");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Two-player category checklist");
+    expect(markdown).toContain("USD wholesale references");
+  });
 });

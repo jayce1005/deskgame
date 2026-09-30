@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "wholesale-two-player-board-games-card-games-guide",
+    title: "Wholesale Two-Player Board Games & Card Games: A Buyer’s Category Guide",
+    description: "A practical B2B guide to comparing two-player board games and card games by play style, language, edition, SKU and wholesale reference price.",
+    published: "2026-09-30",
+    updated: "2026-09-30",
+  },
+  {
     slug: "board-game-lead-time-shipping-inquiry-checklist",
     title: "Board Game Lead Time & Shipping: A B2B Inquiry Checklist",
     description: "A practical checklist for giving suppliers the product, quantity, destination and timing details needed to confirm board game availability, lead time and freight terms.",
@@ -172,6 +179,39 @@ const shippingInquiryExamples = [
   },
 ];
 
+const twoPlayerExamples = [
+  {
+    title: "Twilight Struggle English Two-Player Strategy Board Game",
+    slug: "twilight-struggle-english-two-player-strategy-board-game-735415",
+    price: "USD 11.18",
+    role: "An English strategy board-game reference for a longer-form category position.",
+  },
+  {
+    title: "Kimono Memories Bilingual Two-Player Card Game",
+    slug: "kimono-memories-bilingual-two-player-card-game-736023",
+    price: "USD 4.10",
+    role: "A bilingual card-game option for buyers comparing language presentation.",
+  },
+  {
+    title: "Sky Team English Two-Player Cooperative Board Game",
+    slug: "sky-team-english-two-player-cooperative-board-game-727073",
+    price: "USD 9.31",
+    role: "An English cooperative board game for a teamwork-led assortment position.",
+  },
+  {
+    title: "Agent Avenue Bilingual Two-Player Deduction Game",
+    slug: "agent-avenue-bilingual-two-player-deduction-game-726175",
+    price: "USD 2.33",
+    role: "A bilingual deduction game for a compact comparison option.",
+  },
+  {
+    title: "The Fox in the Forest Two-Player Card Game",
+    slug: "the-fox-in-the-forest-two-player-card-game-5d47590bc2bb378249ea",
+    price: "USD 5.60",
+    role: "A two-player card-game listing for a card-focused assortment position.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -220,6 +260,81 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderTwoPlayerGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like a quotation for wholesale two-player games.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = twoPlayerExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.role)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Two-player games</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Two-player category guide</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published September 30, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">Two-player games can support several different buying occasions: couples, friends, travel collections, gift assortments and dedicated strategy players. The player count alone does not make the products interchangeable. A useful B2B shortlist should connect the intended customer with the play style, language, edition, exact SKU and displayed reference price.</p>
+          <aside class="guide-summary" aria-labelledby="twoPlayerChecklist"><h2 id="twoPlayerChecklist">Build the shortlist in five steps</h2><ol><li>Define the intended buyer and playing occasion.</li><li>Choose the play style and physical format.</li><li>Confirm language, edition and package scope.</li><li>Record the exact product URL, SKU and reference price.</li><li>Send quantities and delivery details in one inquiry.</li></ol></aside>
+
+          <h2>1. Start with the buying occasion</h2>
+          <p>Decide where the product belongs in your assortment before comparing boxes. A couples or gift collection may need an approachable format, while a specialist game range may need strategy-led options. A travel or compact-card section creates a different brief from a shelf position for boxed board games.</p>
+          <p>Write one sentence describing the target customer and occasion. This makes it easier to reject products that match the player count but not the role you need them to fill.</p>
+
+          <h2>2. Separate play style from product format</h2>
+          <p>Two-player describes the audience size, not the experience. The catalog includes titles identified as cooperative, deduction, strategy and card-game formats. Compare those labels separately from physical format: a card game and a component-based board game may require different shelf space, packaging review and customer explanation.</p>
+          <p>Use only information confirmed by the listing title, SKU and images when creating your first shortlist. If an important mechanic, component or rule detail is not clear, mark it as a question for the inquiry rather than filling the gap with an assumption.</p>
+
+          <h2>3. Confirm language, edition and package scope</h2>
+          <p>Language affects the product customers receive. Repeat “English” or “bilingual” wording exactly when it appears in the catalog title and SKU. Do not infer the language from artwork alone, and do not treat visually similar editions as the same product.</p>
+          <p>Also check whether the requested line is a base game, an expansion or a special edition. Keep that wording attached to the SKU and ask for confirmation whenever the package scope is unclear.</p>
+
+          <h2>4. Compare real two-player catalog references</h2>
+          <p>These live catalog listings illustrate distinct positions within the two-player category. Prices shown are current USD wholesale reference prices for the linked items. They are not freight-inclusive or final quotation prices.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog product</th><th>Reference price</th><th>Category position</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>Price should stay attached to the exact SKU. A different language, edition or option can have a different reference price, so a parent title without its SKU is not enough for a reliable buying sheet.</p>
+
+          <h2>5. Use MOQ 1 for focused evaluation</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. Buyers can use a small initial quantity to compare selected formats, check the visible language and packaging, and document questions before preparing a broader assortment. MOQ 1 does not turn the site into a retail checkout; availability, packaging, freight and final commercial terms are confirmed by inquiry.</p>
+          <p>For each evaluation item, record the canonical product link, exact SKU name, displayed price and the decision it is meant to support. This keeps feedback tied to the correct product.</p>
+
+          <h2>6. Send a SKU-by-SKU quotation request</h2>
+          <p>Include the product URL, exact SKU name and quantity for every line. Add the destination country, city and postal code, any packaging or labeling requirements, and your desired receiving date or planning window. Ask the supplier to confirm availability, final unit price, package scope, freight basis and applicable commercial terms.</p>
+          <p>Keep the website reference price separate from the final quotation in your records. If the selected edition, quantity or destination changes, request an updated confirmation instead of carrying the earlier figure forward.</p>
+
+          <section class="guide-cta" aria-labelledby="twoPlayerCta"><span class="kicker">Build a two-player shortlist</span><h2 id="twoPlayerCta">Send exact product and SKU links for a quotation.</h2><p>Tell the sales team which options you need, the quantity for each SKU and the destination. The team can then confirm the current commercial details.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Wholesale%20two-player%20game%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderShippingInquiryGuidePage(guide: Guide, origin: string): string {
@@ -470,6 +585,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-two-player-board-games-card-games-guide") return renderTwoPlayerGuidePage(guide, origin);
   if (guide.slug === "board-game-lead-time-shipping-inquiry-checklist") return renderShippingInquiryGuidePage(guide, origin);
   if (guide.slug === "moq-1-board-game-sample-order-plan") return renderSampleOrderGuidePage(guide, origin);
   if (guide.slug === "custom-card-game-printing-packaging-inquiry-checklist") return renderCustomGuidePage(guide, origin);
@@ -552,6 +668,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-two-player-board-games-card-games-guide") {
+    const products = twoPlayerExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Two-player category checklist\n\n1. Define the intended buyer and playing occasion.\n2. Choose the play style and physical format.\n3. Confirm language, edition and package scope.\n4. Record the exact product URL, SKU and reference price.\n5. Send quantities and delivery details in one inquiry.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, packaging, freight and final terms are confirmed separately.\n\n## Quotation request\n\nSend each product URL, exact SKU name and quantity, plus the destination country, city and postal code, packaging requirements, and requested receiving date or planning window. Ask the supplier to confirm availability, final unit price, package scope, freight basis and applicable commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "board-game-lead-time-shipping-inquiry-checklist") {
     const products = shippingInquiryExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.planning}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Details to send together\n\n1. Exact product URL and SKU name.\n2. Quantity for every SKU.\n3. Destination country, city and postal code.\n4. Packaging or labeling requirements.\n5. Requested receiving date or planning window.\n\n## Catalog planning references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. They are not freight quotes or delivered costs. BoardGame B2B is a B2B inquiry site with MOQ 1; availability, preparation assumptions, packaging, freight and final terms are confirmed separately.\n\n## Timeline request\n\nAsk the supplier to separate current availability, order preparation and transit information. State the milestone your date refers to and request a dated response for the exact SKU, quantity, destination and packaging version.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
