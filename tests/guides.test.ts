@@ -112,4 +112,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Two-player category checklist");
     expect(markdown).toContain("USD wholesale references");
   });
+
+  it("publishes a distinct board game supplier cooperation FAQ", () => {
+    const supplierSlug = "board-game-supplier-faq-before-ordering";
+    const guide = findGuide(supplierSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${supplierSlug}">`);
+    expect(html).toContain(`<h1>${guide.title}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Is this the exact product and SKU?");
+    expect(html).toContain("Which language and edition will be supplied?");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Nine supplier questions");
+    expect(markdown).toContain("USD wholesale references");
+  });
 });

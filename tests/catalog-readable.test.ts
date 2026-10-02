@@ -23,6 +23,7 @@ it('offers machine-readable public data without private supplier information',()
   expect(llms).toContain('/guides/moq-1-board-game-sample-order-plan');
   expect(llms).toContain('/guides/board-game-lead-time-shipping-inquiry-checklist');
   expect(llms).toContain('/guides/wholesale-two-player-board-games-card-games-guide');
+  expect(llms).toContain('/guides/board-game-supplier-faq-before-ordering');
   expect(full.match(/Product URL:/g)).toHaveLength(catalog.products.length);
   expect(full.match(/SKU ID:/g)).toHaveLength(catalog.products.flatMap((p:{skus:unknown[]})=>p.skus).length);
   expect(full).not.toMatch(/1688\.com|alicdn\.com|sourcePrice|costUsd/);
@@ -41,7 +42,7 @@ it('serves GET and HEAD for public machine-readable routes without exposing inqu
   // These public routes never use the database or static-asset binding.
   const env={} as Env;
   const slug=catalog.products[0].slug;
-  for(const pathname of ['/robots.txt','/sitemap.xml','/llms.txt','/catalog.md','/catalog/','/catalog/?page=6','/guides/','/guides/wholesale-party-card-games-buyer-checklist','/guides/wholesale-party-card-games-buyer-checklist.md','/guides/custom-card-game-printing-packaging-inquiry-checklist','/guides/custom-card-game-printing-packaging-inquiry-checklist.md','/guides/moq-1-board-game-sample-order-plan','/guides/moq-1-board-game-sample-order-plan.md','/guides/board-game-lead-time-shipping-inquiry-checklist','/guides/board-game-lead-time-shipping-inquiry-checklist.md','/guides/wholesale-two-player-board-games-card-games-guide','/guides/wholesale-two-player-board-games-card-games-guide.md',`/products/${slug}`,`/products/${slug}.md`]) {
+  for(const pathname of ['/robots.txt','/sitemap.xml','/llms.txt','/catalog.md','/catalog/','/catalog/?page=6','/guides/','/guides/wholesale-party-card-games-buyer-checklist','/guides/wholesale-party-card-games-buyer-checklist.md','/guides/custom-card-game-printing-packaging-inquiry-checklist','/guides/custom-card-game-printing-packaging-inquiry-checklist.md','/guides/moq-1-board-game-sample-order-plan','/guides/moq-1-board-game-sample-order-plan.md','/guides/board-game-lead-time-shipping-inquiry-checklist','/guides/board-game-lead-time-shipping-inquiry-checklist.md','/guides/wholesale-two-player-board-games-card-games-guide','/guides/wholesale-two-player-board-games-card-games-guide.md','/guides/board-game-supplier-faq-before-ordering','/guides/board-game-supplier-faq-before-ordering.md',`/products/${slug}`,`/products/${slug}.md`]) {
     const get=await worker.fetch(new Request(origin+pathname),env);
     const head=await worker.fetch(new Request(origin+pathname,{method:'HEAD'}),env);
     expect(get.status).toBe(200); expect(head.status).toBe(200);
