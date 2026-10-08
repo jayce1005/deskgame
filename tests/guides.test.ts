@@ -131,4 +131,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Nine supplier questions");
     expect(markdown).toContain("USD wholesale references");
   });
+
+  it("publishes a distinct wholesale family games assortment guide", () => {
+    const familySlug = "wholesale-family-board-games-card-games-assortment-guide";
+    const guide = findGuide(familySlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${familySlug}">`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Give every product a category role");
+    expect(html).toContain("Compare product format before price");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Family game assortment checklist");
+    expect(markdown).toContain("USD wholesale references");
+  });
 });

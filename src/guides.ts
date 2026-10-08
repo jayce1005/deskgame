@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "wholesale-family-board-games-card-games-assortment-guide",
+    title: "Wholesale Family Board Games & Card Games: A Buyer’s Assortment Guide",
+    description: "A practical B2B guide to building a family game assortment across card games, board games, language options, price points and exact catalog SKUs.",
+    published: "2026-10-08",
+    updated: "2026-10-08",
+  },
+  {
     slug: "board-game-supplier-faq-before-ordering",
     title: "Board Game Supplier FAQ: 9 Questions B2B Buyers Should Ask Before Ordering",
     description: "A practical FAQ for confirming products, SKUs, language, samples, packaging, timing, freight and quotation terms with a board game supplier.",
@@ -252,6 +259,39 @@ const supplierFaqExamples = [
   },
 ];
 
+const familyGameExamples = [
+  {
+    title: "Slapburger Fast-Paced Family Card Game",
+    slug: "slapburger-fast-paced-family-card-game-124615",
+    price: "USD 2.24",
+    role: "A single-SKU family card game for a compact, card-led assortment position.",
+  },
+  {
+    title: "Happy Salmon English Family Party Card Game",
+    slug: "happy-salmon-english-family-party-card-game-120901",
+    price: "USD 3.70",
+    role: "An English family party card game for a social-play category position.",
+  },
+  {
+    title: "Tiki Topple Family Strategy Board Game",
+    slug: "tiki-topple-family-strategy-board-game-742287",
+    price: "USD 2.61",
+    role: "A family strategy board-game reference for comparing a board format with card-only options.",
+  },
+  {
+    title: "Dragonwood English Family Strategy Card Game",
+    slug: "dragonwood-english-family-strategy-card-game-733429",
+    price: "USD 4.48",
+    role: "An English strategy card game for a more strategy-led family category position.",
+  },
+  {
+    title: "Wandering Towers English Family Strategy Board Game",
+    slug: "wandering-towers-english-family-strategy-board-game-727587",
+    price: "USD 11.18",
+    role: "An English family strategy board game at a higher displayed reference price in this comparison set.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -300,6 +340,85 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderFamilyGameGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like a quotation for wholesale family games.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = familyGameExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.role)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Family game assortment</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Family game category guide</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published October 8, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">“Family game” is a broad buying category rather than one product format. A useful wholesale assortment may include compact card games, social party formats and strategy board games, but every item still needs a clear category role, confirmed language, exact SKU and price record. This guide provides a practical way to build that mix without treating every family-labelled title as interchangeable.</p>
+          <aside class="guide-summary" aria-labelledby="familyGameChecklist"><h2 id="familyGameChecklist">Build the assortment in five steps</h2><ol><li>Define the customer and shelf role.</li><li>Balance card, party and board-game formats.</li><li>Confirm language and exact SKU.</li><li>Compare reference prices within the same scope.</li><li>Evaluate a focused sample set before expanding.</li></ol></aside>
+
+          <h2>1. Give every product a category role</h2>
+          <p>Start by describing why each shortlisted item belongs in the range. One product may serve as a compact card option, another as a social-play choice and another as a strategy board game. These roles make the assortment easier to review than a long list built only around box artwork.</p>
+          <p>Use the wording that is actually confirmed by the catalog title and SKU. If audience, rules, components or other important details are unclear, make them inquiry questions instead of adding assumptions to the buying sheet.</p>
+
+          <h2>2. Compare product format before price</h2>
+          <p>A card game and a boxed board game can occupy different positions even when both sit in the family category. Compare physical format, language wording, SKU scope and intended assortment role before using displayed price as the deciding factor.</p>
+          <p>Keep board games and card games visible as separate columns or tags in the shortlist. That simple distinction helps buyers see whether the proposed range is concentrated in one format or intentionally varied.</p>
+
+          <h2>3. Confirm language and edition</h2>
+          <p>Language belongs in the product record. Repeat “English,” “bilingual” or other language wording exactly when it appears in the title or SKU, and check the current product images. Do not infer language from artwork or carry a language description from one edition to another.</p>
+          <p>Record the canonical product URL and exact SKU name. If a page later contains more than one edition, keeping that identifying pair together prevents the title, image and price from being mixed during internal review.</p>
+
+          <h2>4. Compare real family-game catalog references</h2>
+          <p>The examples below show several possible positions within a family-game assortment. Prices are the current displayed USD wholesale references for the linked catalog SKUs. They do not include freight and are not final quotations.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog product</th><th>Reference price</th><th>Possible assortment role</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>The displayed price range in this small set should not be read as a quality ranking. The products differ in format and category role, so compare like with like and open each page to confirm the exact SKU.</p>
+
+          <h2>5. Use MOQ 1 to evaluate a focused mix</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. A buyer can use a small initial quantity to compare selected formats, visible language, packaging and assortment fit before requesting a broader quotation. The site is for B2B inquiries rather than online checkout; availability, freight and final terms are confirmed separately.</p>
+          <p>Choose samples that answer different questions. For example, compare one compact card format, one social-play format and one board-game format instead of ordering several products that fill the same role.</p>
+
+          <h2>6. Keep a checkable comparison sheet</h2>
+          <p>For every shortlisted line, record the full product title, canonical URL, exact SKU name, displayed reference price, desired quantity and intended assortment role. Add a question column for any language, package-scope or packaging detail that still needs confirmation.</p>
+          <p>When the shortlist changes, update the sheet version and date. This prevents a later supplier reply from being matched to an earlier product mix.</p>
+
+          <h2>7. Request the quotation SKU by SKU</h2>
+          <p>Send the product URL, exact SKU name and quantity for each line. Include the destination country, city and postal code, any packaging or labeling requirements, and the desired receiving date or planning window.</p>
+          <p>Ask the supplier to confirm current availability, final unit price, package scope, packaging, freight basis and applicable commercial terms. Keep the displayed website price separate from the final dated quotation in your records.</p>
+
+          <section class="guide-cta" aria-labelledby="familyGameCta"><span class="kicker">Build a family-game shortlist</span><h2 id="familyGameCta">Send exact product and SKU links for a quotation.</h2><p>Share the role, quantity and destination for each selected item. The sales team can then confirm the current details.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Wholesale%20family%20game%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderSupplierFaqPage(guide: Guide, origin: string): string {
@@ -711,6 +830,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-family-board-games-card-games-assortment-guide") return renderFamilyGameGuidePage(guide, origin);
   if (guide.slug === "board-game-supplier-faq-before-ordering") return renderSupplierFaqPage(guide, origin);
   if (guide.slug === "wholesale-two-player-board-games-card-games-guide") return renderTwoPlayerGuidePage(guide, origin);
   if (guide.slug === "board-game-lead-time-shipping-inquiry-checklist") return renderShippingInquiryGuidePage(guide, origin);
@@ -795,6 +915,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-family-board-games-card-games-assortment-guide") {
+    const products = familyGameExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Family game assortment checklist\n\n1. Define the customer and shelf role.\n2. Balance card, party and board-game formats.\n3. Confirm language and exact SKU.\n4. Compare reference prices within the same product scope.\n5. Evaluate a focused sample set before expanding.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, packaging, freight and final commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name and quantity, plus the intended assortment role, destination country, city and postal code, packaging requirements, and requested receiving window. Keep the website reference price separate from the final dated quotation.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "board-game-supplier-faq-before-ordering") {
     const products = supplierFaqExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.lesson}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Nine supplier questions\n\n1. Is this the exact product and SKU?\n2. Which language and edition will be supplied?\n3. Is the SKU a base game, expansion, accessory or bundle?\n4. How should MOQ 1 be used for evaluation?\n5. What does the displayed reference price include?\n6. What packaging or labeling must be confirmed?\n7. Which files or approvals are needed?\n8. Which timing milestone are we discussing?\n9. Which destination and freight basis should be quoted?\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, final unit pricing, package scope, packaging, freight and commercial terms are confirmed separately.\n\n## Inquiry details\n\nSend every canonical product URL, exact SKU name and quantity, plus language, edition, package scope, destination country, city and postal code, packaging requirements, and requested receiving window. Ask for a dated response tied to that exact inquiry version.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
