@@ -150,4 +150,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Family game assortment checklist");
     expect(markdown).toContain("USD wholesale references");
   });
+
+  it("publishes a distinct base game, expansion and bundle SKU guide", () => {
+    const scopeSlug = "base-game-expansion-bundle-b2b-sku-guide";
+    const guide = findGuide(scopeSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${scopeSlug}">`);
+    expect(html).toContain(`<h1>${guide.title}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Treat product scope as a required field");
+    expect(html).toContain("Ask whether an expansion is usable on its own");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Product scope checklist");
+    expect(markdown).toContain("USD wholesale references");
+  });
 });

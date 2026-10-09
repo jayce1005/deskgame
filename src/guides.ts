@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "base-game-expansion-bundle-b2b-sku-guide",
+    title: "Base Game, Expansion or Bundle? A B2B Board Game SKU Verification Guide",
+    description: "A practical guide to identifying base games, expansions, accessories and bundles before requesting a wholesale board game quotation.",
+    published: "2026-10-09",
+    updated: "2026-10-09",
+  },
+  {
     slug: "wholesale-family-board-games-card-games-assortment-guide",
     title: "Wholesale Family Board Games & Card Games: A Buyer’s Assortment Guide",
     description: "A practical B2B guide to building a family game assortment across card games, board games, language options, price points and exact catalog SKUs.",
@@ -292,6 +299,39 @@ const familyGameExamples = [
   },
 ];
 
+const gameScopeExamples = [
+  {
+    title: "Here to Slay Base Game – English Edition",
+    slug: "here-to-slay-base-game-english-edition-122673",
+    price: "USD 3.73",
+    scope: "A single-SKU English listing explicitly identified as a base game.",
+  },
+  {
+    title: "Splendor The Sun Never Sets Strategy Game Expansion",
+    slug: "splendor-the-sun-never-sets-strategy-game-expansion-742729",
+    price: "USD 11.18",
+    scope: "A single-SKU listing explicitly identified as an expansion rather than a base game.",
+  },
+  {
+    title: "Azul Joker Tiles Acrylic Game Expansion",
+    slug: "azul-joker-tiles-acrylic-game-expansion-739427",
+    price: "USD 2.98",
+    scope: "An acrylic-tile expansion listing whose package scope should remain attached to its exact title.",
+  },
+  {
+    title: "Project L Bilingual Puzzle Board Game with Expansions",
+    slug: "project-l-bilingual-puzzle-board-game-with-expansions-733789",
+    price: "USD 35.38",
+    scope: "A bilingual listing whose title states that expansions are included with the board game.",
+  },
+  {
+    title: "Carcassonne 3.0 English Board Game with Mini Expansions",
+    slug: "carcassonne-3-0-english-board-game-with-mini-expansions-725505",
+    price: "USD 6.51",
+    scope: "An English board-game listing whose title identifies included mini expansions.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -340,6 +380,87 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderGameScopeGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like to confirm whether selected SKUs are base games, expansions or bundles.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = gameScopeExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.scope)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Game scope and SKU verification</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Product scope checklist</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published October 9, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">A base game, an expansion and a bundle can share artwork, a product family name or a catalog page while representing different buying lines. Before comparing wholesale prices, identify exactly what the selected SKU contains and whether it is intended to stand alone. This prevents a visually similar option from being recorded as the wrong product scope.</p>
+          <aside class="guide-summary" aria-labelledby="gameScopeChecklist"><h2 id="gameScopeChecklist">Verify these five points</h2><ol><li>Exact product URL and SKU name.</li><li>Base game, expansion, accessory or bundle status.</li><li>Language and edition wording.</li><li>Included package scope.</li><li>Reference price, quantity and unresolved questions.</li></ol></aside>
+
+          <h2>1. Treat product scope as a required field</h2>
+          <p>Add a “product scope” column to the buying sheet and classify each line using the listing’s confirmed wording. Useful categories include base game, expansion, accessory and bundle. If the scope cannot be confirmed from the title, SKU and current images, mark it as an inquiry question.</p>
+          <p>Do not let an internal shorthand replace the full name. A family name alone may not distinguish the complete game from an add-on or special package.</p>
+
+          <h2>2. Keep the exact SKU attached to the page</h2>
+          <p>Record the canonical product URL and full SKU name together. On a multi-option listing, each SKU can describe a different edition or package. The page title is useful context, but it may not be precise enough for the requested line.</p>
+          <p>Copy the displayed price beside the same SKU. This reduces the risk of attaching the price of an expansion or accessory to a base game in a later spreadsheet.</p>
+
+          <h2>3. Ask whether an expansion is usable on its own</h2>
+          <p>An item labelled “expansion” should not automatically be treated as a complete game. Ask the supplier to confirm whether another product is required and identify the compatible base game when that matters to the buying decision.</p>
+          <p>Do not infer compatibility only from similar branding or artwork. Keep the supplier’s confirmation with the exact SKU record and repeat the question when the edition changes.</p>
+
+          <h2>4. Define what a bundle includes</h2>
+          <p>Words such as “with expansions,” “complete,” “set” or “bundle” still require a checkable package description. Ask which named items or components are included in the selected SKU and whether the images show the same package currently being quoted.</p>
+          <p>If the requested package differs from the standard listing, write the change separately. A custom combination should not inherit the displayed reference price or timing of the catalog SKU without confirmation.</p>
+
+          <h2>5. Preserve language and edition wording</h2>
+          <p>Language and edition belong in the same line as product scope. Repeat “English,” “bilingual,” a version number or other edition wording exactly as shown. Do not move scope information from one language edition to another unless the supplier confirms it.</p>
+
+          <h2>6. Compare real catalog scope examples</h2>
+          <p>The listings below illustrate how scope can be expressed in a title. Their displayed prices are USD wholesale references for the linked catalog SKUs, not proof that different products contain equivalent components.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog reference</th><th>Reference price</th><th>Scope indicated by the listing</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>Open each product page and keep the exact title and SKU in the comparison sheet. When a detail is important but not stated, ask for confirmation instead of filling the gap from another listing.</p>
+
+          <h2>7. Use MOQ 1 to check the selected scope</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. A focused sample can help a buyer review the selected SKU, visible language and package presentation before planning a wider order. This is a B2B inquiry site rather than an online checkout, so availability, final pricing, freight and commercial terms are confirmed separately.</p>
+
+          <h2>8. Send a scope-aware quotation request</h2>
+          <p>For every line, send the canonical product URL, exact SKU name, requested quantity, language, edition and expected package scope. Add the destination country, city and postal code, packaging requirements, and desired receiving date or planning window.</p>
+          <p>Ask the supplier to confirm whether the line is a base game, expansion, accessory or bundle; what it includes; whether another product is required; current availability; final unit price; freight basis; and applicable commercial terms. Keep that dated response with the same buying-sheet version.</p>
+
+          <section class="guide-cta" aria-labelledby="gameScopeCta"><span class="kicker">Confirm the complete buying line</span><h2 id="gameScopeCta">Send exact SKU links and the scope you expect.</h2><p>The sales team can confirm whether each option is a base game, expansion or included bundle before preparing the quotation.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Base%20game%20and%20expansion%20SKU%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderFamilyGameGuidePage(guide: Guide, origin: string): string {
@@ -830,6 +951,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "base-game-expansion-bundle-b2b-sku-guide") return renderGameScopeGuidePage(guide, origin);
   if (guide.slug === "wholesale-family-board-games-card-games-assortment-guide") return renderFamilyGameGuidePage(guide, origin);
   if (guide.slug === "board-game-supplier-faq-before-ordering") return renderSupplierFaqPage(guide, origin);
   if (guide.slug === "wholesale-two-player-board-games-card-games-guide") return renderTwoPlayerGuidePage(guide, origin);
@@ -915,6 +1037,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "base-game-expansion-bundle-b2b-sku-guide") {
+    const products = gameScopeExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.scope}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Product scope checklist\n\n1. Record the exact product URL and SKU name.\n2. Classify the line as a base game, expansion, accessory or bundle.\n3. Preserve language and edition wording.\n4. Confirm what the selected package includes.\n5. Keep reference price, quantity and unresolved questions together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, final package scope, compatibility, packaging, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language, edition and expected package scope, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask whether an expansion requires another product and request a dated response for the exact inquiry version.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "wholesale-family-board-games-card-games-assortment-guide") {
     const products = familyGameExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Family game assortment checklist\n\n1. Define the customer and shelf role.\n2. Balance card, party and board-game formats.\n3. Confirm language and exact SKU.\n4. Compare reference prices within the same product scope.\n5. Evaluate a focused sample set before expanding.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, packaging, freight and final commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name and quantity, plus the intended assortment role, destination country, city and postal code, packaging requirements, and requested receiving window. Keep the website reference price separate from the final dated quotation.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;

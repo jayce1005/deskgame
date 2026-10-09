@@ -37,7 +37,7 @@ describe("SEO catalog pages", () => {
 
   it("publishes the homepage and every current product URL in the sitemap", () => {
     const sitemap = renderSitemap(origin);
-    expect(sitemap.match(/<url>/g)).toHaveLength(catalog.products.length+9);
+    expect(sitemap.match(/<url>/g)).toHaveLength(catalog.products.length+10);
     expect(sitemap.match(/<image:image>/g)).toHaveLength(catalog.products.length);
     expect(sitemap).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
     expect(sitemap).toContain(`<lastmod>${catalog.generatedAt.slice(0,10)}</lastmod>`);
@@ -50,6 +50,7 @@ describe("SEO catalog pages", () => {
     expect(sitemap).toContain("/guides/wholesale-two-player-board-games-card-games-guide</loc>");
     expect(sitemap).toContain("/guides/board-game-supplier-faq-before-ordering</loc>");
     expect(sitemap).toContain("/guides/wholesale-family-board-games-card-games-assortment-guide</loc>");
+    expect(sitemap).toContain("/guides/base-game-expansion-bundle-b2b-sku-guide</loc>");
     expect(sitemap).toContain("<image:title>");
     expect(renderRobots(origin)).toContain(`Sitemap: ${origin}/sitemap.xml`);
   });
