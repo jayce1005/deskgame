@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "board-game-language-edition-b2b-buying-guide",
+    title: "English, Bilingual or Multilingual? A B2B Board Game Language Edition Guide",
+    description: "A practical B2B guide to verifying card text, rules, packaging language, edition wording and exact SKUs before sourcing games for a target market.",
+    published: "2026-10-13",
+    updated: "2026-10-13",
+  },
+  {
     slug: "base-game-expansion-bundle-b2b-sku-guide",
     title: "Base Game, Expansion or Bundle? A B2B Board Game SKU Verification Guide",
     description: "A practical guide to identifying base games, expansions, accessories and bundles before requesting a wholesale board game quotation.",
@@ -332,6 +339,39 @@ const gameScopeExamples = [
   },
 ];
 
+const languageEditionExamples = [
+  {
+    title: "Pelusas Spanish and Portuguese Family Card Game",
+    slug: "pelusas-spanish-and-portuguese-family-card-game-121689",
+    price: "USD 3.35",
+    language: "The title identifies Spanish and Portuguese; confirm where each language appears in the selected package.",
+  },
+  {
+    title: "Nana 777 Bilingual Family Card Game",
+    slug: "nana-777-bilingual-family-card-game-745827",
+    price: "USD 1.40",
+    language: "The listing says bilingual but does not name both languages in the title, so the pair should be confirmed by inquiry.",
+  },
+  {
+    title: "Räuber Raupe Multilingual Family Card Game",
+    slug: "ra-uber-raupe-multilingual-family-card-game-744241",
+    price: "USD 2.24",
+    language: "The listing says multilingual; ask which printed elements and languages are included.",
+  },
+  {
+    title: "Azul First Edition Multilingual Tile Board Game",
+    slug: "azul-first-edition-multilingual-tile-board-game-741181",
+    price: "USD 8.94",
+    language: "A multilingual board-game listing where rules, packaging and component text should be checked separately.",
+  },
+  {
+    title: "5 Towers Bilingual Family Card Game",
+    slug: "5-towers-bilingual-family-card-game-741851",
+    price: "USD 2.24",
+    language: "A bilingual card-game reference for confirming the exact language pair and printed content before quotation.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -380,6 +420,85 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderLanguageEditionGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like to confirm language and edition details for selected game SKUs.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = languageEditionExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.language)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Language editions</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Language edition guide</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published October 13, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">Language is part of the SKU, not a note to add after product selection. “English,” “bilingual” and “multilingual” can describe different combinations of cards, boards, rules and packaging. A buyer should identify the required market language first, then confirm where that language appears in the exact catalog option before comparing prices or quantities.</p>
+          <aside class="guide-summary" aria-labelledby="languageEditionChecklist"><h2 id="languageEditionChecklist">Verify these five language details</h2><ol><li>Exact language or language pair.</li><li>Text printed on cards, boards and components.</li><li>Rulebook and instruction language.</li><li>Box, label and insert language.</li><li>Exact product URL, SKU and edition.</li></ol></aside>
+
+          <h2>1. Name the target language before choosing products</h2>
+          <p>Write the required market language or acceptable language combinations at the top of the shortlist. A general request for “international” or “bilingual” games is not precise enough when the exact languages matter to customers.</p>
+          <p>If more than one language is acceptable, list them in order of preference. Keep this requirement separate from product theme and format so it remains visible during selection.</p>
+
+          <h2>2. Ask what bilingual and multilingual mean for the SKU</h2>
+          <p>A title labelled bilingual does not always name the two languages. A multilingual title may not show which printed elements contain each language. Ask the supplier to state the language set for the exact SKU instead of assuming it from another edition or similar artwork.</p>
+          <p>Record the response beside the canonical product URL and full SKU name. If the language pair changes, treat it as a different buying line until the supplier confirms otherwise.</p>
+
+          <h2>3. Check cards, components and rules separately</h2>
+          <p>Language can appear in several places: playing cards, boards, tiles, reference sheets, rulebooks, inserts and packaging. Ask which elements contain text and which language appears on each one. A multilingual rulebook does not automatically mean all in-game text is multilingual.</p>
+          <p>When images are important, request current images for the selected SKU. Do not use the images of another edition as proof of the language content being quoted.</p>
+
+          <h2>4. Preserve edition wording and package scope</h2>
+          <p>Keep language, edition and package-scope wording in the same product record. An English base game, a bilingual edition and an expansion may share a product family name while requiring separate confirmation.</p>
+          <p>If the listing includes multiple SKU options, copy the exact selected name rather than shortening it. This helps prevent a language label, image and reference price from being attached to the wrong option.</p>
+
+          <h2>5. Compare real language-edition catalog references</h2>
+          <p>The listings below illustrate different ways language is described in the public catalog. Their displayed prices are USD wholesale references for the linked SKUs; the table does not add language claims beyond each listing title.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog reference</th><th>Reference price</th><th>Language point to confirm</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>Use these pages as selection references, then confirm the exact printed language set and package scope in the inquiry. Keep the supplier’s answer with the same SKU record.</p>
+
+          <h2>6. Use MOQ 1 for language and packaging review</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. A focused sample can help a buyer review visible card text, rules and packaging for the selected SKU before planning a broader assortment. The site is for B2B inquiries rather than online checkout; availability, final pricing, freight and commercial terms are confirmed separately.</p>
+          <p>Document the sample with the product URL, SKU, received language set and any discrepancy or open question. That record becomes the basis for the follow-up quotation.</p>
+
+          <h2>7. Send a language-specific quotation request</h2>
+          <p>For every line, include the canonical product URL, exact SKU name, requested quantity, required language, edition and expected package scope. Add the destination country, city and postal code, packaging or labeling requirements, and desired receiving date or planning window.</p>
+          <p>Ask the supplier to confirm language on cards or components, rules, box and inserts; current availability; final unit price; freight basis; and applicable commercial terms. Keep the displayed website reference price separate from the final dated quotation.</p>
+
+          <section class="guide-cta" aria-labelledby="languageEditionCta"><span class="kicker">Confirm the language edition</span><h2 id="languageEditionCta">Send exact SKU links and the language set you need.</h2><p>The sales team can confirm which printed elements and language options apply before preparing the quotation.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Game%20language%20edition%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderGameScopeGuidePage(guide: Guide, origin: string): string {
@@ -951,6 +1070,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "board-game-language-edition-b2b-buying-guide") return renderLanguageEditionGuidePage(guide, origin);
   if (guide.slug === "base-game-expansion-bundle-b2b-sku-guide") return renderGameScopeGuidePage(guide, origin);
   if (guide.slug === "wholesale-family-board-games-card-games-assortment-guide") return renderFamilyGameGuidePage(guide, origin);
   if (guide.slug === "board-game-supplier-faq-before-ordering") return renderSupplierFaqPage(guide, origin);
@@ -1037,6 +1157,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "board-game-language-edition-b2b-buying-guide") {
+    const products = languageEditionExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.language}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Language edition checklist\n\n1. Name the exact required language or language pair.\n2. Confirm text printed on cards, boards and components.\n3. Confirm rulebook and instruction language.\n4. Confirm box, label and insert language.\n5. Keep the exact product URL, SKU and edition together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, final language set, package scope, packaging, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, required language, edition and expected package scope, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask which language appears on cards or components, rules, packaging and inserts.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "base-game-expansion-bundle-b2b-sku-guide") {
     const products = gameScopeExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.scope}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Product scope checklist\n\n1. Record the exact product URL and SKU name.\n2. Classify the line as a base game, expansion, accessory or bundle.\n3. Preserve language and edition wording.\n4. Confirm what the selected package includes.\n5. Keep reference price, quantity and unresolved questions together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, final package scope, compatibility, packaging, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language, edition and expected package scope, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask whether an expansion requires another product and request a dated response for the exact inquiry version.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;

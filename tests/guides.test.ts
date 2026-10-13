@@ -169,4 +169,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Product scope checklist");
     expect(markdown).toContain("USD wholesale references");
   });
+
+  it("publishes a distinct board game language edition buying guide", () => {
+    const languageSlug = "board-game-language-edition-b2b-buying-guide";
+    const guide = findGuide(languageSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${languageSlug}">`);
+    expect(html).toContain(`<h1>${guide.title}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Ask what bilingual and multilingual mean for the SKU");
+    expect(html).toContain("Check cards, components and rules separately");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Language edition checklist");
+    expect(markdown).toContain("USD wholesale references");
+  });
 });
