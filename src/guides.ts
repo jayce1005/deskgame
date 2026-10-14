@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "wholesale-cooperative-board-games-card-games-guide",
+    title: "Wholesale Cooperative Board Games & Card Games: A B2B Assortment Guide",
+    description: "A practical B2B guide to comparing cooperative card games and board games by format, language, package scope, exact SKU and wholesale reference price.",
+    published: "2026-10-14",
+    updated: "2026-10-14",
+  },
+  {
     slug: "board-game-language-edition-b2b-buying-guide",
     title: "English, Bilingual or Multilingual? A B2B Board Game Language Edition Guide",
     description: "A practical B2B guide to verifying card text, rules, packaging language, edition wording and exact SKUs before sourcing games for a target market.",
@@ -372,6 +379,39 @@ const languageEditionExamples = [
   },
 ];
 
+const cooperativeGameExamples = [
+  {
+    title: "Hanabi Bilingual Cooperative Card Game with Expansions",
+    slug: "hanabi-bilingual-cooperative-card-game-with-expansions-745531",
+    price: "USD 1.68",
+    role: "A bilingual cooperative card-game listing whose expansion wording and exact SKU should remain together.",
+  },
+  {
+    title: "The Gang English Cooperative Poker Card Game",
+    slug: "the-gang-english-cooperative-poker-card-game-744001",
+    price: "USD 5.21",
+    role: "An English cooperative card-game reference with a poker theme stated in the catalog title.",
+  },
+  {
+    title: "Regicide English Cooperative Fantasy Card Game",
+    slug: "regicide-english-cooperative-fantasy-card-game-740285",
+    price: "USD 2.24",
+    role: "An English cooperative fantasy card-game option for a compact card-led assortment position.",
+  },
+  {
+    title: "Bandida Cooperative Path-Building Card Game",
+    slug: "bandida-cooperative-path-building-card-game-736489",
+    price: "USD 2.05",
+    role: "A cooperative path-building card-game listing whose language should be confirmed for the target market.",
+  },
+  {
+    title: "Bomb Busters English Cooperative Deduction Game",
+    slug: "bomb-busters-english-cooperative-deduction-game-735081",
+    price: "USD 13.04",
+    role: "An English cooperative deduction-game reference at a higher displayed price within this comparison set.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -420,6 +460,85 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderCooperativeGameGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like a quotation for selected cooperative game SKUs.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = cooperativeGameExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.role)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Cooperative games</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Cooperative game sourcing</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published October 14, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">“Cooperative” describes how players work toward a shared result, but it does not identify the complete product. A B2B shortlist still needs the exact game format, language, edition, package scope and SKU. Treat those fields separately before comparing displayed prices or requesting a quotation.</p>
+          <aside class="guide-summary" aria-labelledby="cooperativeChecklist"><h2 id="cooperativeChecklist">Cooperative assortment checklist</h2><ol><li>Assign each product a clear assortment role.</li><li>Separate card games from component-based games.</li><li>Confirm player count, audience and play details.</li><li>Preserve language, edition and expansion wording.</li><li>Quote the exact URL, SKU and quantity.</li></ol></aside>
+
+          <h2>1. Give each cooperative game an assortment role</h2>
+          <p>Start with a simple reason for considering each product: compact card format, deduction theme, fantasy theme, bilingual option or a higher reference-price position. This makes the shortlist easier to compare and prevents several visually similar listings from filling the same role without a clear purpose.</p>
+          <p>Catalog titles are useful starting points, not complete gameplay specifications. Record open questions rather than inferring difficulty, session length or audience from artwork and theme.</p>
+
+          <h2>2. Compare product format before reference price</h2>
+          <p>A card-game listing and a component-based deduction game can both be cooperative while presenting different packaging, shelf-space and sample-review needs. Confirm what is included in the selected SKU before treating prices as directly comparable.</p>
+          <p>Keep the website price as a USD wholesale reference attached to its exact SKU. Final unit price, availability, freight and commercial terms are confirmed through the inquiry.</p>
+
+          <h2>3. Confirm play details for the target buyer</h2>
+          <p>Ask for the supported player count, recommended audience or age information, rules language and any other play details important to the target market. Do not carry these details from another edition or a product with similar artwork.</p>
+          <p>If the buyer needs a particular interaction style, explain it in the inquiry and ask the supplier to confirm the selected SKU. “Cooperative” alone does not answer every category-fit question.</p>
+
+          <h2>4. Keep language and package scope visible</h2>
+          <p>Repeat English, bilingual or other language wording exactly as shown, then confirm where that language appears. When a title mentions expansions, record whether the selected line is a base game, expansion or included set rather than shortening the name.</p>
+          <p>Current SKU images can help verify visible packaging, but they should not replace written confirmation of the language, edition and package contents being quoted.</p>
+
+          <h2>5. Compare real cooperative-game catalog references</h2>
+          <p>These public catalog listings illustrate several cooperative-game positions. Their displayed prices are USD wholesale references for the linked SKUs; the comparison does not add specifications beyond the current product titles.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog reference</th><th>Reference price</th><th>Assortment point to verify</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>Open each product page, retain the canonical URL and copy the exact SKU name into the buying sheet. Similar titles should remain separate until a supplier confirms they are the same option.</p>
+
+          <h2>6. Use MOQ 1 for a focused cooperative-game sample set</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. A focused sample set can help a buyer compare visible packaging, components, rules and language before planning a wider assortment. The site is for B2B inquiries rather than online checkout.</p>
+          <p>For each received sample, record the exact SKU, package contents, visible language and unresolved questions. Use the same record when asking for a larger-quantity quotation.</p>
+
+          <h2>7. Send a complete cooperative-game inquiry</h2>
+          <p>For every line, include the canonical product URL, exact SKU name, quantity, language, edition and expected package scope. Add the destination country, city and postal code, packaging or labeling requirements, and requested receiving date or planning window.</p>
+          <p>Ask the supplier to confirm current availability, player-count and audience details needed for your market, package contents, final unit price, freight basis and applicable commercial terms. Keep the dated supplier response with the selected SKU.</p>
+
+          <section class="guide-cta" aria-labelledby="cooperativeCta"><span class="kicker">Build a cooperative-game shortlist</span><h2 id="cooperativeCta">Send exact SKU links and the assortment roles you need.</h2><p>The sales team can confirm product options and prepare a quotation for the selected lines.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Cooperative%20game%20wholesale%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderLanguageEditionGuidePage(guide: Guide, origin: string): string {
@@ -1070,6 +1189,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-cooperative-board-games-card-games-guide") return renderCooperativeGameGuidePage(guide, origin);
   if (guide.slug === "board-game-language-edition-b2b-buying-guide") return renderLanguageEditionGuidePage(guide, origin);
   if (guide.slug === "base-game-expansion-bundle-b2b-sku-guide") return renderGameScopeGuidePage(guide, origin);
   if (guide.slug === "wholesale-family-board-games-card-games-assortment-guide") return renderFamilyGameGuidePage(guide, origin);
@@ -1157,6 +1277,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-cooperative-board-games-card-games-guide") {
+    const products = cooperativeGameExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Cooperative assortment checklist\n\n1. Give every product a defined assortment role.\n2. Separate card games from component-based games.\n3. Confirm player count, audience and other play details.\n4. Preserve language, edition and expansion wording.\n5. Keep the exact URL, SKU, quantity and reference price together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, specifications, final package scope, final pricing, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language, edition and expected package scope, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm the player-count and audience details needed for your market, package contents and final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "board-game-language-edition-b2b-buying-guide") {
     const products = languageEditionExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.language}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Language edition checklist\n\n1. Name the exact required language or language pair.\n2. Confirm text printed on cards, boards and components.\n3. Confirm rulebook and instruction language.\n4. Confirm box, label and insert language.\n5. Keep the exact product URL, SKU and edition together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, final language set, package scope, packaging, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, required language, edition and expected package scope, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask which language appears on cards or components, rules, packaging and inserts.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;

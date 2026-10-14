@@ -188,4 +188,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Language edition checklist");
     expect(markdown).toContain("USD wholesale references");
   });
+
+  it("publishes a distinct cooperative games assortment guide", () => {
+    const cooperativeSlug = "wholesale-cooperative-board-games-card-games-guide";
+    const guide = findGuide(cooperativeSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${cooperativeSlug}">`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Give each cooperative game an assortment role");
+    expect(html).toContain("Compare product format before reference price");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Cooperative assortment checklist");
+    expect(markdown).toContain("USD wholesale references");
+  });
 });
