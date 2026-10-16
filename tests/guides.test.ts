@@ -207,4 +207,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Cooperative assortment checklist");
     expect(markdown).toContain("USD wholesale references");
   });
+
+  it("publishes a distinct travel and mini edition verification guide", () => {
+    const travelSlug = "travel-mini-board-games-b2b-buying-guide";
+    const guide = findGuide(travelSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${travelSlug}">`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBe(4);
+    expect(html).toContain("Do not translate “travel” into an assumed size");
+    expect(html).toContain("current public catalog contains four game listings");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Travel-edition verification checklist");
+    expect(markdown).toContain("four current catalog game listings");
+  });
 });

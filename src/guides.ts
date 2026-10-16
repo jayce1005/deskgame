@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "travel-mini-board-games-b2b-buying-guide",
+    title: "Travel & Mini Board Games: A B2B Edition Verification Guide",
+    description: "A practical B2B guide to verifying travel and mini game editions by packaged size, components, language, exact SKU and wholesale reference price.",
+    published: "2026-10-16",
+    updated: "2026-10-16",
+  },
+  {
     slug: "wholesale-cooperative-board-games-card-games-guide",
     title: "Wholesale Cooperative Board Games & Card Games: A B2B Assortment Guide",
     description: "A practical B2B guide to comparing cooperative card games and board games by format, language, package scope, exact SKU and wholesale reference price.",
@@ -412,6 +419,33 @@ const cooperativeGameExamples = [
   },
 ];
 
+const travelGameExamples = [
+  {
+    title: "Digital Game Large Travel Number Tile Set",
+    slug: "digital-game-large-travel-number-tile-set-738631",
+    price: "USD 8.94",
+    check: "The title says both large and travel, so request packaged dimensions and the exact included set rather than assuming its size.",
+  },
+  {
+    title: "Catan Island Bilingual Travel Board Game",
+    slug: "catan-island-bilingual-travel-board-game-737425",
+    price: "USD 2.98",
+    check: "A bilingual travel-edition listing where language placement and package contents should be confirmed for the selected SKU.",
+  },
+  {
+    title: "Azul Mini English Travel Board Game",
+    slug: "azul-mini-english-travel-board-game-733991",
+    price: "USD 9.31",
+    check: "An English listing explicitly identified as both mini and travel; confirm dimensions and included components before comparison.",
+  },
+  {
+    title: "Unstable Unicorns Travel Edition Card Game - English Edition",
+    slug: "unstable-unicorns-travel-edition-card-game-english-edition-41c6ad0386e3feb31973",
+    price: "USD 4.12",
+    check: "An English travel-edition card game whose edition wording should remain attached to the exact product record.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -460,6 +494,85 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderTravelGameGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like to confirm travel and mini game SKU details for a quotation.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = travelGameExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.check)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Travel and mini games</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Travel edition sourcing</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published October 16, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">“Travel” and “mini” are edition labels, not complete size specifications. Buyers should keep the exact title and SKU, then confirm packaged dimensions, contents, language and edition before deciding whether a product fits a retail, gift or portable-game assortment.</p>
+          <aside class="guide-summary" aria-labelledby="travelChecklist"><h2 id="travelChecklist">Travel-edition verification checklist</h2><ol><li>Copy the exact product URL and SKU.</li><li>Request packaged dimensions and current images.</li><li>Confirm components and package contents.</li><li>Verify language and edition wording.</li><li>Keep reference price separate from the quotation.</li></ol></aside>
+
+          <h2>1. Do not translate “travel” into an assumed size</h2>
+          <p>A product title may say travel, mini or both, but those words do not provide measurements. Ask for the packaged length, width and height for the exact SKU. If logistics planning requires weight, request the packaged weight separately instead of estimating it from an image.</p>
+          <p>Keep the supplier’s measurements with the same product URL and SKU. Do not reuse dimensions from a standard edition or a visually similar listing.</p>
+
+          <h2>2. Confirm what the smaller edition contains</h2>
+          <p>Ask for a component list and current package images. A travel or mini edition may have a different box, board, cards, tiles, tokens, inserts or instructions from another edition; the catalog title alone does not define those differences.</p>
+          <p>If the buyer requires a complete playable set, state that requirement and ask the supplier to confirm the selected package scope in writing.</p>
+
+          <h2>3. Preserve language and edition wording</h2>
+          <p>Repeat English, bilingual, travel and mini wording exactly as shown. Language may appear on cards, boards, rulebooks, inserts or the box, so confirm each printed area important to the target market.</p>
+          <p>Do not shorten the product name in a way that makes the travel edition look interchangeable with a standard version.</p>
+
+          <h2>4. Compare fit before comparing price</h2>
+          <p>Define what the product must fit: a shelf position, display fixture, gift set, shipment plan or other buyer requirement. Use confirmed packaged dimensions and contents to assess fit before ranking options by price.</p>
+          <p>The website price is a USD wholesale reference for the linked SKU. Final unit price, availability, packaging, freight and commercial terms are confirmed separately through the inquiry.</p>
+
+          <h2>5. Review the explicitly labelled catalog options</h2>
+          <p>The current public catalog contains four game listings explicitly labelled travel or mini. Their displayed prices are references for the linked SKUs; this guide does not classify other small-looking products as travel editions without title-level evidence.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog reference</th><th>Reference price</th><th>Edition point to verify</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>Use each canonical page as the starting record, then add confirmed dimensions, contents and language to the same buying line.</p>
+
+          <h2>6. Use MOQ 1 for physical edition review</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. A focused sample can help a buyer check the actual package, components, printed language and storage experience before planning a wider order. The site is for B2B inquiries rather than online checkout.</p>
+          <p>Record any difference between the received sample and the buying sheet, then resolve it against the exact SKU before requesting larger quantities.</p>
+
+          <h2>7. Send a dimension-aware quotation request</h2>
+          <p>For every line, include the canonical product URL, exact SKU name, quantity, required language and edition. Add the destination country, city and postal code, packaging or labeling requirements, and requested receiving date or planning window.</p>
+          <p>Ask the supplier to confirm packaged dimensions, packaged weight if needed, included components, current availability, final unit price, freight basis and applicable commercial terms. Keep the dated response with the product record.</p>
+
+          <section class="guide-cta" aria-labelledby="travelCta"><span class="kicker">Confirm the travel edition</span><h2 id="travelCta">Send exact SKU links and the dimensions you need.</h2><p>The sales team can confirm available product details before preparing a quotation.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Travel%20game%20edition%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderCooperativeGameGuidePage(guide: Guide, origin: string): string {
@@ -1189,6 +1302,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "travel-mini-board-games-b2b-buying-guide") return renderTravelGameGuidePage(guide, origin);
   if (guide.slug === "wholesale-cooperative-board-games-card-games-guide") return renderCooperativeGameGuidePage(guide, origin);
   if (guide.slug === "board-game-language-edition-b2b-buying-guide") return renderLanguageEditionGuidePage(guide, origin);
   if (guide.slug === "base-game-expansion-bundle-b2b-sku-guide") return renderGameScopeGuidePage(guide, origin);
@@ -1277,6 +1391,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "travel-mini-board-games-b2b-buying-guide") {
+    const products = travelGameExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.check}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Travel-edition verification checklist\n\n1. Copy the exact product URL and SKU.\n2. Request packaged dimensions and current images.\n3. Confirm components and package contents.\n4. Verify language and edition wording.\n5. Keep the reference price separate from the final quotation.\n\n## Catalog references\n\n${products}\n\nThese are the four current catalog game listings explicitly labelled travel or mini. Displayed prices are USD wholesale references for the linked products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Dimensions, weight, contents, availability, final pricing, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language and edition, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm packaged dimensions, packaged weight if needed, included components and final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "wholesale-cooperative-board-games-card-games-guide") {
     const products = cooperativeGameExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Cooperative assortment checklist\n\n1. Give every product a defined assortment role.\n2. Separate card games from component-based games.\n3. Confirm player count, audience and other play details.\n4. Preserve language, edition and expansion wording.\n5. Keep the exact URL, SKU, quantity and reference price together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Availability, specifications, final package scope, final pricing, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language, edition and expected package scope, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm the player-count and audience details needed for your market, package contents and final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
