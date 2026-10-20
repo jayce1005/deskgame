@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "wholesale-conversation-cards-b2b-assortment-guide",
+    title: "Wholesale Conversation Cards: A B2B Assortment & Inquiry Guide",
+    description: "A practical B2B guide to comparing conversation card decks by audience, theme, language, deck contents, exact SKU and wholesale reference price.",
+    published: "2026-10-20",
+    updated: "2026-10-20",
+  },
+  {
     slug: "travel-mini-board-games-b2b-buying-guide",
     title: "Travel & Mini Board Games: A B2B Edition Verification Guide",
     description: "A practical B2B guide to verifying travel and mini game editions by packaged size, components, language, exact SKU and wholesale reference price.",
@@ -446,6 +453,39 @@ const travelGameExamples = [
   },
 ];
 
+const conversationCardExamples = [
+  {
+    title: "Our Moments Couples Conversation Starter Cards",
+    slug: "our-moments-couples-conversation-starter-cards-123965",
+    price: "USD 5.21",
+    role: "A couples conversation-starter listing whose prompt content and exact deck scope should be reviewed for the target audience.",
+  },
+  {
+    title: "Tell Me More Conversation Starter Card Game",
+    slug: "tell-me-more-conversation-starter-card-game-122207",
+    price: "USD 2.24",
+    role: "A general conversation-starter card-game reference where audience, language and included content should be confirmed.",
+  },
+  {
+    title: "Substance by Lovely Meaningful Conversation Card Game",
+    slug: "substance-by-lovely-meaningful-conversation-card-game-122163",
+    price: "USD 1.86",
+    role: "A meaningful-conversation listing that should remain attached to its exact title, SKU and current product images.",
+  },
+  {
+    title: "Life Story Interview Kit Conversation Cards",
+    slug: "life-story-interview-kit-conversation-cards-78f4b5016ed81fff678b",
+    price: "USD 3.54",
+    role: "An interview-kit conversation-card listing for buyers comparing a guided life-story category position.",
+  },
+  {
+    title: "Tales Family Edition Conversation Cards",
+    slug: "tales-family-edition-conversation-cards-7084a37c3b3ede63242a",
+    price: "USD 2.24",
+    role: "A family-edition conversation-card option whose edition and audience wording should be preserved in the inquiry.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -494,6 +534,85 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderConversationCardGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like a quotation for selected conversation card deck SKUs.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = conversationCardExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.role)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Conversation cards</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Conversation card sourcing</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published October 20, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">Conversation cards can serve different audience and theme positions even when the boxes look similar. A useful B2B assortment record keeps the intended audience, prompt theme, language, deck contents, edition and exact SKU visible before prices or quantities are compared.</p>
+          <aside class="guide-summary" aria-labelledby="conversationChecklist"><h2 id="conversationChecklist">Conversation-card assortment checklist</h2><ol><li>Assign a distinct audience and use position.</li><li>Review prompt theme and content suitability.</li><li>Confirm language and exact edition.</li><li>Verify card count, contents and packaging.</li><li>Quote the canonical URL, SKU and quantity.</li></ol></aside>
+
+          <h2>1. Separate audience from theme</h2>
+          <p>“Couples,” “family,” “interview” and “conversation starter” describe different assortment positions, but the title alone does not reveal every prompt. Record the intended buyer segment separately from the theme so two similar-looking decks are not treated as interchangeable.</p>
+          <p>If the buyer has audience or content requirements, state them in the inquiry and ask for the current prompt or content information available for the exact SKU.</p>
+
+          <h2>2. Review prompt content instead of guessing from packaging</h2>
+          <p>Cover artwork and product names can suggest a tone without showing the full deck. Ask which prompt categories are included and request current images or a sample when content review matters to the target market.</p>
+          <p>Do not infer age suitability, card count or complete subject coverage from the title. Keep unanswered content questions beside the product record until the supplier confirms them.</p>
+
+          <h2>3. Confirm language and edition together</h2>
+          <p>Language is part of a prompt-led product. Confirm the language printed on cards, instructions, inserts and packaging, and preserve family, couples, starter, deeper or other edition wording exactly as shown.</p>
+          <p>Products from one named series may still be separate editions. Use the canonical URL and exact SKU to keep the selected deck distinct.</p>
+
+          <h2>4. Verify deck contents and packaging</h2>
+          <p>Ask for the number of cards or prompts when it is not stated, plus the included instructions, inserts and packaging format. If dimensions are important for display or shipping planning, request packaged dimensions for the exact SKU.</p>
+          <p>Keep these confirmed details with current images. Do not copy specifications from another deck because its box shape or artwork looks similar.</p>
+
+          <h2>5. Compare real conversation-card catalog references</h2>
+          <p>The listings below illustrate different audience and theme positions in the current public catalog. Their displayed prices are USD wholesale references for the linked SKUs; the comparison adds no specifications beyond the current titles.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog reference</th><th>Reference price</th><th>Assortment point to verify</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>Open each product page, retain its canonical URL and copy the exact SKU name into the buying sheet before adding confirmed language, contents and quantity.</p>
+
+          <h2>6. Use MOQ 1 for content and packaging review</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. A focused sample can help a buyer review visible prompts, print, instructions and packaging before planning a broader assortment. The site is for B2B inquiries rather than online checkout.</p>
+          <p>Document the received SKU and any difference from the buying sheet. Use the same record for follow-up questions and a larger-quantity quotation.</p>
+
+          <h2>7. Send an audience-specific quotation request</h2>
+          <p>For every line, include the canonical product URL, exact SKU name, quantity, required language, edition and intended audience position. Add the destination country, city and postal code, packaging or labeling requirements, and requested receiving date or planning window.</p>
+          <p>Ask the supplier to confirm deck contents, card or prompt count if needed, current availability, final unit price, freight basis and applicable commercial terms. Keep the website reference price separate from the dated quotation.</p>
+
+          <section class="guide-cta" aria-labelledby="conversationCta"><span class="kicker">Build a conversation-card shortlist</span><h2 id="conversationCta">Send exact SKU links and the audience positions you need.</h2><p>The sales team can confirm available product details before preparing a quotation.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Conversation%20card%20wholesale%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderTravelGameGuidePage(guide: Guide, origin: string): string {
@@ -1302,6 +1421,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-conversation-cards-b2b-assortment-guide") return renderConversationCardGuidePage(guide, origin);
   if (guide.slug === "travel-mini-board-games-b2b-buying-guide") return renderTravelGameGuidePage(guide, origin);
   if (guide.slug === "wholesale-cooperative-board-games-card-games-guide") return renderCooperativeGameGuidePage(guide, origin);
   if (guide.slug === "board-game-language-edition-b2b-buying-guide") return renderLanguageEditionGuidePage(guide, origin);
@@ -1391,6 +1511,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-conversation-cards-b2b-assortment-guide") {
+    const products = conversationCardExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Conversation-card assortment checklist\n\n1. Assign a distinct audience and use position.\n2. Review prompt theme and content suitability.\n3. Confirm language and exact edition.\n4. Verify card count, contents and packaging.\n5. Keep the canonical URL, SKU, quantity and reference price together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Prompt content, language, deck contents, availability, final pricing, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language, edition and intended audience position, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm deck contents, card or prompt count if needed and final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "travel-mini-board-games-b2b-buying-guide") {
     const products = travelGameExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.check}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Travel-edition verification checklist\n\n1. Copy the exact product URL and SKU.\n2. Request packaged dimensions and current images.\n3. Confirm components and package contents.\n4. Verify language and edition wording.\n5. Keep the reference price separate from the final quotation.\n\n## Catalog references\n\n${products}\n\nThese are the four current catalog game listings explicitly labelled travel or mini. Displayed prices are USD wholesale references for the linked products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Dimensions, weight, contents, availability, final pricing, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language and edition, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm packaged dimensions, packaged weight if needed, included components and final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
