@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "wholesale-deduction-games-b2b-assortment-guide",
+    title: "Wholesale Deduction Games: A B2B Assortment & SKU Guide",
+    description: "A practical B2B guide to comparing deduction card games and board games by format, interaction, language, exact SKU and wholesale reference price.",
+    published: "2026-10-21",
+    updated: "2026-10-21",
+  },
+  {
     slug: "wholesale-conversation-cards-b2b-assortment-guide",
     title: "Wholesale Conversation Cards: A B2B Assortment & Inquiry Guide",
     description: "A practical B2B guide to comparing conversation card decks by audience, theme, language, deck contents, exact SKU and wholesale reference price.",
@@ -486,6 +493,39 @@ const conversationCardExamples = [
   },
 ];
 
+const deductionGameExamples = [
+  {
+    title: "Journey of Redemption Seven Sins Deduction Card Game",
+    slug: "journey-of-redemption-seven-sins-deduction-card-game-745563",
+    price: "USD 1.64",
+    role: "A deduction card-game listing whose language and audience details should be confirmed because they are not stated in the title.",
+  },
+  {
+    title: "Prisoner's Words Bilingual Deduction Card Game",
+    slug: "prisoner-s-words-bilingual-deduction-card-game-738793",
+    price: "USD 2.14",
+    role: "A bilingual deduction card-game reference where the exact language pair and printed content should be verified.",
+  },
+  {
+    title: "Decrypto English Team Deduction Board Game",
+    slug: "decrypto-english-team-deduction-board-game-738147",
+    price: "USD 9.13",
+    role: "An English team deduction board game for comparing a component-based format with card-only options.",
+  },
+  {
+    title: "Crazy Sherlock Bilingual Deduction Card Game",
+    slug: "crazy-sherlock-bilingual-deduction-card-game-735441",
+    price: "USD 1.49",
+    role: "A bilingual deduction card-game option whose language, contents and exact SKU should stay together.",
+  },
+  {
+    title: "Cryptid English Deduction Board Game",
+    slug: "cryptid-english-deduction-board-game-732467",
+    price: "USD 12.10",
+    role: "An English deduction board-game reference at a higher displayed price within this comparison set.",
+  },
+];
+
 function escapeHtml(value: unknown): string {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
     "&": "&amp;",
@@ -534,6 +574,85 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderDeductionGameGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like a quotation for selected deduction game SKUs.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = deductionGameExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${escapeHtml(item.role)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">Deduction games</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">Deduction game sourcing</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published October 21, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">“Deduction” identifies a broad play category, not a complete product specification. A B2B shortlist should keep card or board format, interaction style, language, player details, package contents and exact SKU separate before comparing prices or quantities.</p>
+          <aside class="guide-summary" aria-labelledby="deductionChecklist"><h2 id="deductionChecklist">Deduction-game assortment checklist</h2><ol><li>Define the assortment role for each game.</li><li>Separate product format from interaction style.</li><li>Confirm player and audience details.</li><li>Verify language and printed content.</li><li>Keep package scope, URL and SKU together.</li></ol></aside>
+
+          <h2>1. Define a distinct role for each deduction game</h2>
+          <p>Start with the category position the buyer needs: card-led, board-led, team, bilingual, English or another clearly stated attribute. This reduces accidental duplication when several products share the same deduction label.</p>
+          <p>Do not infer difficulty, session length or audience from the theme or cover. Record those as questions when they matter to the target market.</p>
+
+          <h2>2. Separate format from interaction style</h2>
+          <p>A card game and a board game can both use deduction while requiring different packaging, display and sample-review decisions. Team, cooperative, party, asymmetric or two-player wording may also identify different interaction positions.</p>
+          <p>Repeat only the interaction wording present in the exact title or confirmed by the supplier. Do not carry a play description from another edition with similar artwork.</p>
+
+          <h2>3. Confirm player and audience details</h2>
+          <p>Ask for the supported player count, recommended audience or age information, and other play details required by the buyer. Keep the supplier response with the canonical product URL and exact SKU.</p>
+          <p>If the assortment needs a particular group format, describe that requirement in the inquiry instead of assuming every deduction game fills it.</p>
+
+          <h2>4. Verify language and printed content</h2>
+          <p>Deduction games may depend on cards, clues, rules or reference materials. Confirm the language on each printed element important to the target market. When a title says bilingual, ask which two languages apply to the selected SKU.</p>
+          <p>If no language appears in the title, treat it as unconfirmed. Current images can support review, but written confirmation should stay with the quotation record.</p>
+
+          <h2>5. Compare real deduction-game catalog references</h2>
+          <p>The listings below illustrate several formats and language positions in the current public catalog. Their displayed prices are USD wholesale references for the linked SKUs; the comparison adds no specifications beyond the current titles.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog reference</th><th>Reference price</th><th>Assortment point to verify</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>Open each product page, retain its canonical URL and copy the exact SKU name into the buying sheet before adding confirmed player, language and package details.</p>
+
+          <h2>6. Use MOQ 1 for format and rules review</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. A focused sample can help a buyer review visible components, rules, language and packaging before planning a broader assortment. The site is for B2B inquiries rather than online checkout.</p>
+          <p>Document the received SKU and any unresolved difference from the buying sheet, then use the same record for follow-up questions and a larger-quantity quotation.</p>
+
+          <h2>7. Send a complete deduction-game inquiry</h2>
+          <p>For every line, include the canonical product URL, exact SKU name, quantity, required language, edition and intended assortment role. Add the destination country, city and postal code, packaging or labeling requirements, and requested receiving date or planning window.</p>
+          <p>Ask the supplier to confirm player and audience details needed for the market, package contents, current availability, final unit price, freight basis and applicable commercial terms. Keep the website reference price separate from the dated quotation.</p>
+
+          <section class="guide-cta" aria-labelledby="deductionCta"><span class="kicker">Build a deduction-game shortlist</span><h2 id="deductionCta">Send exact SKU links and the category positions you need.</h2><p>The sales team can confirm available product details before preparing a quotation.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=Deduction%20game%20wholesale%20inquiry">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderConversationCardGuidePage(guide: Guide, origin: string): string {
@@ -1421,6 +1540,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-deduction-games-b2b-assortment-guide") return renderDeductionGameGuidePage(guide, origin);
   if (guide.slug === "wholesale-conversation-cards-b2b-assortment-guide") return renderConversationCardGuidePage(guide, origin);
   if (guide.slug === "travel-mini-board-games-b2b-buying-guide") return renderTravelGameGuidePage(guide, origin);
   if (guide.slug === "wholesale-cooperative-board-games-card-games-guide") return renderCooperativeGameGuidePage(guide, origin);
@@ -1511,6 +1631,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "wholesale-deduction-games-b2b-assortment-guide") {
+    const products = deductionGameExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Deduction-game assortment checklist\n\n1. Define the assortment role for each game.\n2. Separate product format from interaction style.\n3. Confirm player and audience details.\n4. Verify language and printed content.\n5. Keep package scope, canonical URL and exact SKU together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Player details, language, contents, availability, final pricing, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language, edition and intended assortment role, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm player and audience details needed for the market, package contents and final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "wholesale-conversation-cards-b2b-assortment-guide") {
     const products = conversationCardExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Conversation-card assortment checklist\n\n1. Assign a distinct audience and use position.\n2. Review prompt theme and content suitability.\n3. Confirm language and exact edition.\n4. Verify card count, contents and packaging.\n5. Keep the canonical URL, SKU, quantity and reference price together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Prompt content, language, deck contents, availability, final pricing, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language, edition and intended audience position, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm deck contents, card or prompt count if needed and final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;

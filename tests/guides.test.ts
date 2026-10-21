@@ -245,4 +245,23 @@ describe("wholesale buying guides", () => {
     expect(markdown).toContain("## Conversation-card assortment checklist");
     expect(markdown).toContain("USD wholesale references");
   });
+
+  it("publishes a distinct deduction games assortment guide", () => {
+    const deductionSlug = "wholesale-deduction-games-b2b-assortment-guide";
+    const guide = findGuide(deductionSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${deductionSlug}">`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBeGreaterThanOrEqual(5);
+    expect(html).toContain("Define a distinct role for each deduction game");
+    expect(html).toContain("Separate format from interaction style");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## Deduction-game assortment checklist");
+    expect(markdown).toContain("USD wholesale references");
+  });
 });
