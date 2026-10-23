@@ -5,6 +5,25 @@ const origin = "https://boardgameb2b.com";
 const slug = "wholesale-party-card-games-buyer-checklist";
 
 describe("wholesale buying guides", () => {
+  it("publishes a distinct SKU image and price matching guide", () => {
+    const matchingSlug = "board-game-sku-image-price-matching-guide";
+    const guide = findGuide(matchingSlug)!;
+    const html = renderGuidePage(guide, origin);
+    const markdown = renderGuideMarkdown(guide, origin);
+    expect(html).toContain(`<link rel="canonical" href="${origin}/guides/${matchingSlug}">`);
+    expect(html).toContain(`<h1>${guide.title.replace("&", "&amp;")}</h1>`);
+    expect(html).toContain('"@type":"Article"');
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html.match(/href="\/products\//g)?.length).toBe(5);
+    expect(html).toContain("Treat one row as one exact SKU");
+    expect(html).toContain("Verify image evidence for the selected SKU");
+    expect(html).toContain("destination country, city and postal code");
+    expect(html).toContain("MOQ 1");
+    expect(html).not.toMatch(/guaranteed delivery|ships in \d+ days|certified|annual capacity/i);
+    expect(markdown).toContain("## SKU matching checklist");
+    expect(markdown).toContain("USD wholesale references");
+  });
+
   it("renders an indexable article with matching metadata and structured data", () => {
     const guide = findGuide(slug)!;
     const html = renderGuidePage(guide, origin);

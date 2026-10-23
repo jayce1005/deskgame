@@ -8,6 +8,13 @@ export interface Guide {
 
 export const GUIDES: Guide[] = [
   {
+    slug: "board-game-sku-image-price-matching-guide",
+    title: "Board Game SKU Image & Price Matching: A B2B Verification Guide",
+    description: "A practical B2B checklist for keeping the parent product, exact SKU name, current image and USD wholesale reference price matched in one purchasing record.",
+    published: "2026-10-23",
+    updated: "2026-10-23",
+  },
+  {
     slug: "wholesale-deduction-games-b2b-assortment-guide",
     title: "Wholesale Deduction Games: A B2B Assortment & SKU Guide",
     description: "A practical B2B guide to comparing deduction card games and board games by format, interaction, language, exact SKU and wholesale reference price.",
@@ -493,6 +500,44 @@ const conversationCardExamples = [
   },
 ];
 
+const skuMatchingExamples = [
+  {
+    title: "Splendor Board Game, Duel, Expansions and Playmat Collection",
+    slug: "splendor-board-game-duel-expansions-and-playmat-collection-725361",
+    price: "USD 9.50",
+    skuCount: 18,
+    check: "The page combines base games, Duel, expansions and accessories, so every selected SKU name must stay attached to its own image and inquiry line.",
+  },
+  {
+    title: "VIRUS! and Spanish-Language Party Card Games – 24 Options",
+    slug: "virus-and-spanish-language-party-card-games-24-options-121015",
+    price: "USD 4.47",
+    skuCount: 24,
+    check: "The options contain different named Spanish-language games; the parent title alone does not identify the requested SKU.",
+  },
+  {
+    title: "Splurt! and Assorted English Party Card Games – 10 Options",
+    slug: "splurt-and-assorted-english-party-card-games-10-options-122313",
+    price: "USD 3.09",
+    skuCount: 10,
+    check: "Distinct English card games share one listing, making exact SKU wording and current image evidence essential.",
+  },
+  {
+    title: "Stick Stack Bilingual Balance Party Game",
+    slug: "stick-stack-bilingual-balance-party-game-737521",
+    price: "USD 26.63",
+    skuCount: 3,
+    check: "Classic, Colorful and Black editions should be recorded as separate SKU choices even though they share a parent product.",
+  },
+  {
+    title: "Sushi Go! Family Card and Dice Game Collection",
+    slug: "sushi-go-family-card-and-dice-game-collection-727243",
+    price: "USD 10.24",
+    skuCount: 3,
+    check: "The options change both title and language scope, so the product family name is not enough for a quotation request.",
+  },
+];
+
 const deductionGameExamples = [
   {
     title: "Journey of Redemption Seven Sins Deduction Card Game",
@@ -574,6 +619,85 @@ export function renderGuideIndex(origin: string): string {
     <meta property="og:type" content="website"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="Board Game Wholesale Buying Guides"><meta property="og:description" content="Practical selection and inquiry guidance for B2B board game buyers."><meta property="og:url" content="${canonical}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
     <body class="product-page-body">${header()}<main class="guide-index"><span class="kicker">B2B sourcing knowledge</span><h1>Wholesale buying guides</h1><p class="guide-index-lead">Use these practical checklists to compare catalog options and send a more complete quotation request.</p><div class="guide-grid">${cards}</div><p class="guide-index-catalog"><a class="text-link" href="/#catalog">Browse the wholesale catalog <span>↗</span></a></p></main>${footer()}</body></html>`;
+}
+
+function renderSkuMatchingGuidePage(guide: Guide, origin: string): string {
+  const canonical = `${origin}/guides/${guide.slug}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello, I would like to verify product titles, SKU images and reference prices for a quotation.")}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${canonical}#article`,
+        headline: guide.title,
+        description: guide.description,
+        datePublished: guide.published,
+        dateModified: guide.updated,
+        mainEntityOfPage: canonical,
+        author: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/` },
+        publisher: { "@type": "Organization", name: "BoardGame B2B", url: `${origin}/`, logo: { "@type": "ImageObject", url: `${origin}/logo.svg` } },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${origin}/` },
+          { "@type": "ListItem", position: 2, name: "Buying guides", item: `${origin}/guides/` },
+          { "@type": "ListItem", position: 3, name: guide.title, item: canonical },
+        ],
+      },
+    ],
+  };
+  const productRows = skuMatchingExamples.map((item) => `<tr><th scope="row"><a href="/products/${item.slug}">${escapeHtml(item.title)}</a></th><td>${item.price}</td><td>${item.skuCount}</td><td>${escapeHtml(item.check)}</td></tr>`).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(guide.title)} | BoardGame B2B</title>
+    <meta name="description" content="${escapeHtml(guide.description)}"><meta name="robots" content="index,follow,max-image-preview:large">
+    <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${canonical}.md"><link rel="describedby" href="${origin}/llms.txt">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="BoardGame B2B"><meta property="og:title" content="${escapeHtml(guide.title)}"><meta property="og:description" content="${escapeHtml(guide.description)}"><meta property="og:url" content="${canonical}"><meta property="article:published_time" content="${guide.published}"><meta property="article:modified_time" content="${guide.updated}">
+    <meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(guide.title)}"><meta name="twitter:description" content="${escapeHtml(guide.description)}">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles.css"><script type="application/ld+json">${jsonLd(schema)}</script></head>
+    <body class="product-page-body">${header()}<main class="guide-page">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/guides/">Buying guides</a><span>/</span><span aria-current="page">SKU image and price matching</span></nav>
+      <article class="guide-article">
+        <header class="guide-hero"><span class="kicker">SKU verification</span><h1>${escapeHtml(guide.title)}</h1><p>${escapeHtml(guide.description)}</p><div class="guide-meta"><time datetime="${guide.updated}">Published October 23, 2026</time><span>7-minute read</span></div></header>
+        <div class="guide-body">
+          <p class="guide-intro">Collecting a title, image and price is not enough when one supplier page contains several products or editions. A usable B2B record must show that the parent page, exact child SKU, image evidence and displayed price all refer to the same requested option.</p>
+          <aside class="guide-summary" aria-labelledby="skuMatchingChecklist"><h2 id="skuMatchingChecklist">SKU matching checklist</h2><ol><li>Copy the canonical product URL and full parent title.</li><li>Record the exact child SKU name or ID.</li><li>Verify image evidence for the selected SKU.</li><li>Record the displayed USD reference price and date.</li><li>Keep open questions beside the same inquiry line.</li></ol></aside>
+
+          <h2>1. Treat one row as one exact SKU</h2>
+          <p>Use one purchasing-sheet row for one selected option. The row should contain the canonical product URL, full parent title, exact SKU name or ID, requested quantity, current image reference, displayed price and the date checked. Do not reuse a parent-page title as if it were the name of every child SKU.</p>
+          <p>If a page includes different games, editions, colors, languages or accessories, create a separate row for each option you intend to quote. This keeps the commercial request auditable when screenshots or messages are reviewed later.</p>
+
+          <h2>2. Keep the parent product and child SKU separate</h2>
+          <p>The parent title explains the product family or listing scope. The child SKU identifies the option to be supplied. Preserve both fields: shortening them into one informal label can hide whether the request means a base game, expansion, alternate language, accessory or different title within an assorted listing.</p>
+          <p>When the SKU wording includes a language or edition, copy it exactly. Ask the supplier to confirm unclear abbreviations instead of rewriting them into a more familiar but unverified name.</p>
+
+          <h2>3. Verify image evidence for the selected SKU</h2>
+          <p>A listing image may represent the product family, a group of options or one selected SKU. Check whether the image visibly matches the exact SKU name, edition, color and language you recorded. If that relationship is not clear, mark the image as unconfirmed and ask for a current image of the selected option.</p>
+          <p>Keep the source image URL or saved image reference in the same row as the SKU. An attractive parent-page image is not proof that every child option uses the same box, components or printed language.</p>
+
+          <h2>4. Bind the price to the same SKU and date</h2>
+          <p>Record the displayed price beside the exact SKU and the date checked. Do not copy one visible page price across all variants without confirming that the catalog actually shows the same value for them. If prices differ by SKU, each row must preserve its own amount.</p>
+          <p>BoardGame B2B displays USD wholesale reference prices. They support early comparison but are not final quotations, freight-inclusive totals or checkout prices. Availability, final unit pricing, packaging, freight and commercial terms are confirmed separately.</p>
+
+          <h2>5. Compare real multi-SKU catalog references</h2>
+          <p>These current catalog pages show why matching matters. The option counts and displayed prices below come from the linked public records; the verification note explains what a buyer should keep distinct.</p>
+          <div class="guide-table-wrap"><table><thead><tr><th>Catalog reference</th><th>Reference price</th><th>SKU options</th><th>Matching point</th></tr></thead><tbody>${productRows}</tbody></table></div>
+          <p>A shared price does not make the options interchangeable. The exact SKU name and current image evidence still determine which title, edition, language or color is being requested.</p>
+
+          <h2>6. Use MOQ 1 to verify a physical sample</h2>
+          <p>BoardGame B2B lists MOQ 1 for public catalog products. For a multi-SKU page, select the exact option you want sampled and keep its record with the received item. Compare the box title, printed language, components and visible edition details with the information confirmed before ordering.</p>
+          <p>A sample review can reveal a mismatch, but it should not be used to invent specifications for other SKUs on the same page. Repeat the verification for every materially different option you plan to source.</p>
+
+          <h2>7. Send an SKU-specific inquiry</h2>
+          <p>For each line, send the canonical product URL, full parent title, exact SKU name, quantity, image reference and displayed USD price. Add the destination country, city and postal code, packaging requirements and requested receiving window.</p>
+          <p>Ask the supplier to confirm that the SKU name, current image and quoted price describe the same option. Keep unresolved language, edition, contents or packaging questions visibly marked until the response answers them.</p>
+
+          <section class="guide-cta" aria-labelledby="skuMatchingCta"><span class="kicker">Verify before quoting</span><h2 id="skuMatchingCta">Send one complete record for every selected SKU.</h2><p>The wholesale team can confirm the requested option and prepare a quotation from the exact links, names, images and quantities you provide.</p><div><a class="inquiry-button" href="/#catalog">Browse the catalog <span>↗</span></a><a class="whatsapp-button" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener">WhatsApp <span>↗</span></a></div><p class="guide-contact">Email: <a href="mailto:${CONTACT_EMAIL}?subject=SKU%20image%20and%20price%20verification">${CONTACT_EMAIL}</a></p></section>
+        </div>
+      </article>
+      <nav class="guide-more" aria-label="More buying resources"><a href="/guides/">All buying guides</a><a href="/catalog/">Text product directory</a></nav>
+    </main>${footer()}</body></html>`;
 }
 
 function renderDeductionGameGuidePage(guide: Guide, origin: string): string {
@@ -1540,6 +1664,7 @@ function renderCustomGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuidePage(guide: Guide, origin: string): string {
+  if (guide.slug === "board-game-sku-image-price-matching-guide") return renderSkuMatchingGuidePage(guide, origin);
   if (guide.slug === "wholesale-deduction-games-b2b-assortment-guide") return renderDeductionGameGuidePage(guide, origin);
   if (guide.slug === "wholesale-conversation-cards-b2b-assortment-guide") return renderConversationCardGuidePage(guide, origin);
   if (guide.slug === "travel-mini-board-games-b2b-buying-guide") return renderTravelGameGuidePage(guide, origin);
@@ -1631,6 +1756,10 @@ export function renderGuidePage(guide: Guide, origin: string): string {
 }
 
 export function renderGuideMarkdown(guide: Guide, origin: string): string {
+  if (guide.slug === "board-game-sku-image-price-matching-guide") {
+    const products = skuMatchingExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}; ${item.skuCount} SKU options. ${item.check}`).join("\n");
+    return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## SKU matching checklist\n\n1. Copy the canonical product URL and full parent title.\n2. Record the exact child SKU name or ID.\n3. Verify image evidence for the selected SKU.\n4. Record the displayed USD reference price and date.\n5. Keep open questions beside the same inquiry line.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. A shared price does not make different SKUs interchangeable. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Images, availability, final pricing, packaging, freight and commercial terms are confirmed separately.\n\n## SKU-specific inquiry\n\nSend each canonical product URL, full parent title, exact SKU name, quantity, image reference and displayed price, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm that the name, current image and quotation describe the same option.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;
+  }
   if (guide.slug === "wholesale-deduction-games-b2b-assortment-guide") {
     const products = deductionGameExamples.map((item) => `- [${item.title}](${origin}/products/${item.slug}) — ${item.price}. ${item.role}`).join("\n");
     return `# ${guide.title}\n\nCanonical URL: ${origin}/guides/${guide.slug}\nPublished: ${guide.published}\n\n${guide.description}\n\n## Deduction-game assortment checklist\n\n1. Define the assortment role for each game.\n2. Separate product format from interaction style.\n3. Confirm player and audience details.\n4. Verify language and printed content.\n5. Keep package scope, canonical URL and exact SKU together.\n\n## Catalog references\n\n${products}\n\nDisplayed prices are USD wholesale references for the linked catalog products. BoardGame B2B lists MOQ 1 and is a B2B inquiry site, not an online checkout. Player details, language, contents, availability, final pricing, freight and commercial terms are confirmed separately.\n\n## Quotation request\n\nSend each canonical product URL, exact SKU name, quantity, language, edition and intended assortment role, plus the destination country, city and postal code, packaging requirements, and requested receiving window. Ask the supplier to confirm player and audience details needed for the market, package contents and final commercial terms.\n\n- Catalog: ${origin}/#catalog\n- WhatsApp: https://wa.me/${WHATSAPP_NUMBER}\n- Email: ${CONTACT_EMAIL}\n`;

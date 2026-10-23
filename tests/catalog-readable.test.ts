@@ -18,6 +18,7 @@ it('discovers every product through bounded HTML pages without JavaScript',()=>{
 it('offers machine-readable public data without private supplier information',()=>{
   const llms=renderLlms(origin), full=renderCatalogMarkdown(origin);
   expect(llms).toContain('/products.json'); expect(llms).toContain('/sitemap.xml');
+  expect(llms).toContain('/guides/board-game-sku-image-price-matching-guide');
   expect(llms).toContain('/guides/wholesale-party-card-games-buyer-checklist');
   expect(llms).toContain('/guides/custom-card-game-printing-packaging-inquiry-checklist');
   expect(llms).toContain('/guides/moq-1-board-game-sample-order-plan');
@@ -49,6 +50,10 @@ it('serves GET and HEAD for public machine-readable routes without exposing inqu
   // These public routes never use the database or static-asset binding.
   const env={} as Env;
   const slug=catalog.products[0].slug;
+  for(const pathname of ['/guides/board-game-sku-image-price-matching-guide','/guides/board-game-sku-image-price-matching-guide.md']) {
+    const response=await worker.fetch(new Request(origin+pathname),env);
+    expect(response.status).toBe(200); expect(await response.text()).not.toBe('');
+  }
   for(const pathname of ['/robots.txt','/sitemap.xml','/llms.txt','/catalog.md','/catalog/','/catalog/?page=6','/guides/','/guides/wholesale-party-card-games-buyer-checklist','/guides/wholesale-party-card-games-buyer-checklist.md','/guides/custom-card-game-printing-packaging-inquiry-checklist','/guides/custom-card-game-printing-packaging-inquiry-checklist.md','/guides/moq-1-board-game-sample-order-plan','/guides/moq-1-board-game-sample-order-plan.md','/guides/board-game-lead-time-shipping-inquiry-checklist','/guides/board-game-lead-time-shipping-inquiry-checklist.md','/guides/wholesale-two-player-board-games-card-games-guide','/guides/wholesale-two-player-board-games-card-games-guide.md','/guides/board-game-supplier-faq-before-ordering','/guides/board-game-supplier-faq-before-ordering.md','/guides/wholesale-family-board-games-card-games-assortment-guide','/guides/wholesale-family-board-games-card-games-assortment-guide.md','/guides/base-game-expansion-bundle-b2b-sku-guide','/guides/base-game-expansion-bundle-b2b-sku-guide.md','/guides/board-game-language-edition-b2b-buying-guide','/guides/board-game-language-edition-b2b-buying-guide.md','/guides/wholesale-cooperative-board-games-card-games-guide','/guides/wholesale-cooperative-board-games-card-games-guide.md','/guides/travel-mini-board-games-b2b-buying-guide','/guides/travel-mini-board-games-b2b-buying-guide.md','/guides/wholesale-conversation-cards-b2b-assortment-guide','/guides/wholesale-conversation-cards-b2b-assortment-guide.md','/guides/wholesale-deduction-games-b2b-assortment-guide','/guides/wholesale-deduction-games-b2b-assortment-guide.md',`/products/${slug}`,`/products/${slug}.md`]) {
     const get=await worker.fetch(new Request(origin+pathname),env);
     const head=await worker.fetch(new Request(origin+pathname,{method:'HEAD'}),env);
