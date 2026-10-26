@@ -3,6 +3,7 @@ import { findCatalogProduct, renderProductPage, renderRobots, renderSitemap } fr
 import { redirectCatalogImage } from "./catalog-images";
 import {renderReadableCatalog, renderLlms, renderProductMarkdown, renderCatalogMarkdown} from './catalog-readable';
 import { findGuide, renderGuideIndex, renderGuideMarkdown, renderGuidePage } from "./guides";
+import { findLandingPage, renderLandingMarkdown, renderLandingPage } from "./landing-pages";
 
 const PUBLIC_ORIGIN = "https://boardgameb2b.com";
 const REDIRECT_HOSTS = new Set(["www.boardgameb2b.com", "desktop-game.ocbinks.workers.dev"]);
@@ -112,6 +113,20 @@ export default {
       const textResponse = (body: string, type: string) => new Response(request.method==='HEAD'?null:body, {headers:{'content-type':type,'cache-control':'public, max-age=300','x-content-type-options':'nosniff',link:`<${PUBLIC_ORIGIN}/llms.txt>; rel="describedby"`,...(type.startsWith('text/markdown')?{'x-robots-tag':'noindex, follow'}:{})}});
       if (readable && url.pathname === '/llms.txt') return textResponse(renderLlms(PUBLIC_ORIGIN),'text/plain; charset=utf-8');
       if (readable && url.pathname === '/catalog.md') return textResponse(renderCatalogMarkdown(PUBLIC_ORIGIN),'text/markdown; charset=utf-8');
+      if (readable && url.pathname.endsWith('.md')) {
+        const page = findLandingPage(decodeURIComponent(url.pathname.slice(1, -3)));
+        if (page) return textResponse(renderLandingMarkdown(page, PUBLIC_ORIGIN), 'text/markdown; charset=utf-8');
+      }
+      if (readable) {
+        const landingSlug = decodeURIComponent(url.pathname.slice(1).replace(/\/$/, ''));
+        const page = findLandingPage(landingSlug);
+        if (page) {
+          const canonicalPath = `/${page.slug}`;
+          if (url.pathname !== canonicalPath) return Response.redirect(`${PUBLIC_ORIGIN}${canonicalPath}`, 301);
+          const response = html(renderLandingPage(page, PUBLIC_ORIGIN));
+          return request.method === 'HEAD' ? new Response(null, response) : response;
+        }
+      }
       if (readable && url.pathname === '/guides') return Response.redirect(`${PUBLIC_ORIGIN}/guides/${url.search}`, 301);
       if (readable && url.pathname === '/guides/') {
         const response = html(renderGuideIndex(PUBLIC_ORIGIN));

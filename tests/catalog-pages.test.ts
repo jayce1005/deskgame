@@ -37,12 +37,17 @@ describe("SEO catalog pages", () => {
 
   it("publishes the homepage and every current product URL in the sitemap", () => {
     const sitemap = renderSitemap(origin);
-    expect(sitemap.match(/<url>/g)).toHaveLength(catalog.products.length+16);
+    expect(sitemap.match(/<url>/g)).toHaveLength(catalog.products.length+21);
     expect(sitemap.match(/<image:image>/g)).toHaveLength(catalog.products.length);
     expect(sitemap).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
-    expect(sitemap).toContain(`<lastmod>${catalog.generatedAt.slice(0,10)}</lastmod>`);
+    expect(sitemap).toContain("<lastmod>2026-10-26</lastmod>");
     expect(sitemap).toContain("/products/last-call-english-drinking-card-game");
     expect(sitemap).toContain("/guides/</loc>");
+    expect(sitemap).toContain("/custom-board-game-manufacturer</loc>");
+    expect(sitemap).toContain("/wholesale-card-games</loc>");
+    expect(sitemap).toContain("/private-label-card-game-printing</loc>");
+    expect(sitemap).toContain("/low-moq-board-game-supplier</loc>");
+    expect(sitemap).toContain("/custom-board-game-packaging</loc>");
     expect(sitemap).toContain("/guides/board-game-sku-image-price-matching-guide</loc>");
     expect(sitemap).toContain("/guides/wholesale-party-card-games-buyer-checklist</loc>");
     expect(sitemap).toContain("/guides/custom-card-game-printing-packaging-inquiry-checklist</loc>");

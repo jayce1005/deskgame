@@ -18,6 +18,11 @@ it('discovers every product through bounded HTML pages without JavaScript',()=>{
 it('offers machine-readable public data without private supplier information',()=>{
   const llms=renderLlms(origin), full=renderCatalogMarkdown(origin);
   expect(llms).toContain('/products.json'); expect(llms).toContain('/sitemap.xml');
+  expect(llms).toContain('/custom-board-game-manufacturer');
+  expect(llms).toContain('/wholesale-card-games');
+  expect(llms).toContain('/private-label-card-game-printing');
+  expect(llms).toContain('/low-moq-board-game-supplier');
+  expect(llms).toContain('/custom-board-game-packaging');
   expect(llms).toContain('/guides/board-game-sku-image-price-matching-guide');
   expect(llms).toContain('/guides/wholesale-party-card-games-buyer-checklist');
   expect(llms).toContain('/guides/custom-card-game-printing-packaging-inquiry-checklist');

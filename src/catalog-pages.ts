@@ -1,5 +1,6 @@
 import catalogJson from "../public/products.json";
 import { GUIDES } from "./guides";
+import { LANDING_PAGES } from "./landing-pages";
 
 interface CatalogSku {
   id: string;
@@ -24,7 +25,7 @@ interface CatalogData {
 }
 
 const catalog = catalogJson as CatalogData;
-const SEO_TEMPLATE_UPDATED = "2026-09-07";
+const SEO_TEMPLATE_UPDATED = "2026-10-26";
 const CONTACT_EMAIL = "boardgame_01@outlook.com";
 const CONTACT_PHONE = "+86 199 2877 7176";
 const WHATSAPP_NUMBER = "8619928777176";
@@ -187,6 +188,12 @@ export function renderProductPage(product: CatalogProduct, origin: string): stri
         <a class="text-link" href="/?inquiry=${escapeHtml(product.id)}#inquiry">Request a quotation <span>↗</span></a>
         <p class="seo-direct-contact"><a class="whatsapp-icon-link" href="${escapeHtml(whatsappUrl)}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><img src="/icons/whatsapp.svg" alt="" width="28" height="28">WhatsApp</a> · <a href="${escapeHtml(emailUrl)}">${CONTACT_EMAIL}</a></p>
       </section>
+      <nav class="product-resource-links" aria-label="Wholesale sourcing resources">
+        <strong>Wholesale sourcing resources</strong>
+        <a href="/${/card/i.test(product.title) ? "wholesale-card-games" : "custom-board-game-manufacturer"}">${/card/i.test(product.title) ? "Wholesale card game buying guide" : "Board game manufacturing inquiry guide"}</a>
+        <a href="/low-moq-board-game-supplier">MOQ 1 sourcing plan</a>
+        <a href="/custom-board-game-packaging">Packaging inquiry guide</a>
+      </nav>
     </main>
     <footer><a class="logo footer-logo" href="/"><img class="brand-mark" src="/logo.svg" alt="" width="38" height="38"><span class="logo-copy"><span>BOARDGAME <b>B2B</b></span><small>Factory Games. MOQ One.</small></span></a><p>Wholesale games, journals and gift products.<br>Pricing shown for reference only.</p><div class="footer-contact"><a class="whatsapp-icon-link" href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><img src="/icons/whatsapp.svg" alt="" width="28" height="28">WhatsApp</a><a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></div><span>© 2026 BoardGame B2B</span></footer>
   </body>
@@ -199,11 +206,12 @@ export function renderSitemap(origin: string): string {
   const homepage = `  <url><loc>${escapeXml(`${origin}/`)}</loc><lastmod>${lastModified}</lastmod></url>`;
   const guideIndex = `  <url><loc>${escapeXml(`${origin}/guides/`)}</loc><lastmod>${GUIDES[0]?.updated ?? lastModified}</lastmod></url>`;
   const guides = GUIDES.map((guide) => `  <url><loc>${escapeXml(`${origin}/guides/${guide.slug}`)}</loc><lastmod>${guide.updated}</lastmod></url>`);
+  const landingPages = LANDING_PAGES.map((page) => `  <url><loc>${escapeXml(`${origin}/${page.slug}`)}</loc><lastmod>${page.updated}</lastmod></url>`);
   const products = catalog.products.map((product) => {
     const url = `${origin}/products/${encodeURIComponent(product.slug)}`;
     return `  <url><loc>${escapeXml(url)}</loc><lastmod>${lastModified}</lastmod><image:image><image:loc>${escapeXml(product.mainImage)}</image:loc><image:title>${escapeXml(product.title)}</image:title></image:image></url>`;
   });
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${[homepage, guideIndex, ...guides, ...products].join("\n")}\n</urlset>\n`;
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${[homepage, guideIndex, ...landingPages, ...guides, ...products].join("\n")}\n</urlset>\n`;
 }
 
 export function renderRobots(origin: string): string {
